@@ -3,156 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AOSE - Timeless Elegance, Modern Legacy</title>
+    <title>AOSE | Premium Lifestyle & Clothing</title>
+    
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-            color: #333;
+        /* CSS STYLING */
+        :root {
+            --brand-black: #000000;
+            --brand-gold: #b18b5e;
+            --light-gray: #f8f8f8;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        
+        body { background-color: #fff; color: #333; }
+
+        /* Header & Nav */
         header {
-            background-color: #222;
-            color: #fff;
-            padding: 1rem;
+            background: #fff;
+            padding: 15px 5%;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-        }
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 1rem;
-        }
-        nav a {
-            color: #fff;
-            text-decoration: none;
-        }
+
+        .logo { font-size: 24px; font-weight: 900; letter-spacing: 3px; cursor: pointer; }
+
         .search-bar {
-            padding: 0.5rem;
-            width: 200px;
-            border-radius: 4px;
+            flex-grow: 0.5;
+            display: flex;
+            align-items: center;
+            background: var(--light-gray);
+            padding: 8px 15px;
+            border-radius: 5px;
+            margin: 0 20px;
+        }
+
+        .search-bar input {
             border: none;
-        }
-        .container {
-            padding: 2rem;
-        }
-        .products {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
-        }
-        .product {
-            background-color: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            padding: 1rem;
-        }
-        .product img {
+            background: transparent;
+            outline: none;
             width: 100%;
-            height: auto;
-            border-radius: 4px;
+            margin-left: 10px;
         }
-        .product h3 {
-            margin: 0.5rem 0;
+
+        .nav-right { display: flex; gap: 20px; align-items: center; }
+
+        /* Hero */
+        .hero {
+            height: 400px;
+            background: #111;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 40px;
         }
-        .product p {
-            color: #666;
+
+        /* Tabs/Categories */
+        .category-nav {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
         }
-        .price {
-            font-weight: bold;
-            color: #222;
-        }
-        .btn {
-            background-color: #222;
-            color: #fff;
+
+        .category-nav button {
+            background: none;
             border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
+            font-weight: 600;
             cursor: pointer;
-            margin-top: 0.5rem;
-            width: 100%;
+            text-transform: uppercase;
+            padding-bottom: 5px;
         }
-        .btn:hover {
-            background-color: #444;
+
+        .category-nav button:hover { border-bottom: 2px solid var(--brand-black); }
+
+        /* Product Grid */
+        .container { max-width: 1200px; margin: auto; padding: 0 20px; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
         }
+
+        .card {
+            background: white;
+            border: 1px solid #f0f0f0;
+            padding: 15px;
+            transition: 0.3s;
+        }
+
+        .card:hover { box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+
+        .card img { width: 100%; height: 300px; object-fit: cover; margin-bottom: 15px; border-radius: 4px; }
+
+        .price { font-size: 1.2rem; font-weight: bold; margin: 10px 0; }
+
+        .btn-group { display: flex; gap: 10px; }
+
+        .add-cart { flex: 1; background: #333; color: white; border: none; padding: 10px; cursor: pointer; }
+        .buy-now { flex: 1; background: var(--brand-gold); color: white; border: none; padding: 10px; cursor: pointer; }
+
+        /* Pagination */
         .pagination {
             display: flex;
             justify-content: center;
-            margin-top: 2rem;
-            gap: 0.5rem;
+            margin: 50px 0;
+            gap: 10px;
         }
+
         .pagination a {
-            text-decoration: none;
-            color: #222;
-            padding: 0.5rem 1rem;
+            padding: 8px 16px;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            text-decoration: none;
+            color: black;
         }
-        .pagination a.active {
-            background-color: #222;
-            color: #fff;
-        }
-        footer {
-            background-color: #222;
-            color: #fff;
-            text-align: center;
-            padding: 1rem;
-            margin-top: 2rem;
-        }
+
+        .pagination a.active { background: black; color: white; }
+
+        footer { background: #111; color: white; padding: 40px; text-align: center; margin-top: 50px; }
     </style>
 </head>
 <body>
+
     <header>
         <div class="logo">AOSE</div>
-        <nav>
-            <ul>
-                <li><a href="#men">Men</a></li>
-                <li><a href="#women">Women</a></li>
-                <li><a href="#hoodies">Hoodies</a></li>
-                <li><a href="#tshirts">T-Shirts</a></li>
-            </ul>
-        </nav>
-        <input type="text" class="search-bar" placeholder="Search products...">
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search for Clothing, Hair or Face products...">
+        </div>
+        <div class="nav-right">
+            <i class="fas fa-user"></i>
+            <div style="position: relative;">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cart-count" style="position:absolute; top:-10px; right:-10px; background:red; color:white; border-radius:50%; padding:2px 6px; font-size:10px;">0</span>
+            </div>
+        </div>
     </header>
 
+    <section class="hero">
+        <h1>AOSE LUXURY COLLECTION</h1>
+        <p>Style meets Care. Shop Apparel and Personal Care.</p>
+    </section>
+
     <div class="container">
-        <h2>Featured Products</h2>
-        <div class="products">
-            <!-- Example Product 1 -->
-            <div class="product">
-                <img src="https://aose.in/cdn/shop/files/AOSE_Trust_The_Timing_Artistic_Graphic_Tee_1.jpg" alt="AOSE Graphic Tee">
-                <h3>AOSE Graphic Tee</h3>
-                <p>Premium Heavy Buffalo Fabric</p>
-                <p class="price">₹1,299</p>
-                <button class="btn">Add to Cart</button>
-                <button class="btn">Buy Now</button>
+        <div class="category-nav">
+            <button onclick="filter('all')">All</button>
+            <button onclick="filter('clothing')">Clothing</button>
+            <button onclick="filter('hair')">Hair Care</button>
+            <button onclick="filter('face')">Face Care</button>
+        </div>
+
+        <div class="grid" id="product-list">
+            <div class="card" data-cat="clothing">
+                <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=500" alt="Shirt">
+                <h3>AOSE Oversized Tee</h3>
+                <p>Premium Cotton</p>
+                <p class="price">₹1,499</p>
+                <div class="btn-group">
+                    <button class="add-cart" onclick="updateCart()">Add to Cart</button>
+                    <button class="buy-now" onclick="payNow(1499, 'Oversized Tee')">Buy Now</button>
+                </div>
             </div>
-            <!-- Example Product 2 -->
-            <div class="product">
-                <img src="https://aose.in/cdn/shop/files/AOSE_Classic_Arctic_Grey_Crewneck_Sweatshirt_1.jpg" alt="AOSE Crewneck Sweatshirt">
-                <h3>AOSE Crewneck Sweatshirt</h3>
-                <p>Classic Arctic Grey</p>
-                <p class="price">₹1,799</p>
-                <button class="btn">Add to Cart</button>
-                <button class="btn">Buy Now</button>
+
+            <div class="card" data-cat="hair">
+                <img src="https://images.unsplash.com/photo-1527799822367-474857a3f447?auto=format&fit=crop&w=500" alt="Hair">
+                <h3>AOSE Hair Growth Oil</h3>
+                <p>Natural Herbs</p>
+                <p class="price">₹799</p>
+                <div class="btn-group">
+                    <button class="add-cart" onclick="updateCart()">Add to Cart</button>
+                    <button class="buy-now" onclick="payNow(799, 'Hair Oil')">Buy Now</button>
+                </div>
             </div>
-            <!-- Example Product 3 -->
-            <div class="product">
-                <img src="https://aose.in/cdn/shop/files/AOSE_Essential_Sandstone_Hoodie_1.jpg" alt="AOSE Sandstone Hoodie">
-                <h3>AOSE Sandstone Hoodie</h3>
-                <p>Essential Hoodie</p>
-                <p class="price">₹2,199</p>
-                <button class="btn">Add to Cart</button>
-                <button class="btn">Buy Now</button>
+
+            <div class="card" data-cat="face">
+                <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=500" alt="Face">
+                <h3>AOSE Face Glow Serum</h3>
+                <p>Vitamin C + E</p>
+                <p class="price">₹950</p>
+                <div class="btn-group">
+                    <button class="add-cart" onclick="updateCart()">Add to Cart</button>
+                    <button class="buy-now" onclick="payNow(950, 'Glow Serum')">Buy Now</button>
+                </div>
             </div>
-            <!-- Add more products as needed -->
         </div>
 
         <div class="pagination">
@@ -164,7 +208,51 @@
     </div>
 
     <footer>
-        &copy; 2025 AOSE. All Rights Reserved.
+        <p>&copy; 2024 AOSE (aose.in) | Designed for Elegance</p>
     </footer>
+
+    <script>
+        // CART LOGIC
+        let count = 0;
+        function updateCart() {
+            count++;
+            document.getElementById('cart-count').innerText = count;
+            alert("Added to cart!");
+        }
+
+        // RAZORPAY INTEGRATION
+        function payNow(amount, prodName) {
+            var options = {
+                "key": "YOUR_RAZORPAY_KEY_ID", // REPLACE THIS WITH YOUR KEY
+                "amount": amount * 100, // Amount in paise
+                "currency": "INR",
+                "name": "AOSE",
+                "description": "Purchase: " + prodName,
+                "image": "https://aose.in/favicon.ico",
+                "handler": function (response){
+                    alert("Payment Success! ID: " + response.razorpay_payment_id);
+                },
+                "prefill": {
+                    "name": "Customer Name",
+                    "email": "customer@aose.in"
+                },
+                "theme": { "color": "#000000" }
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+        }
+
+        // CATEGORY FILTER
+        function filter(cat) {
+            let cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                if(cat === 'all' || card.getAttribute('data-cat') === cat) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+    </script>
 </body>
 </html>
