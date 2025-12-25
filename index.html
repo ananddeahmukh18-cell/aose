@@ -3,256 +3,238 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AOSE | Premium Lifestyle & Clothing</title>
+    <title>AOSE CLOTHING | Timeless Elegance, Modern Legacy</title>
     
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <style>
-        /* CSS STYLING */
         :root {
-            --brand-black: #000000;
-            --brand-gold: #b18b5e;
-            --light-gray: #f8f8f8;
+            /* Brand Colors based on AOSE Logo */
+            --emerald: #004d3d; /* Deep emerald from logo */
+            --gold: #d4af37;    /* Elegant gold from logo */
+            --cream: #fdfbf7;   /* Background from ad/logo */
+            --navy: #1a2c4e;    /* Accent navy for contrast */
+            --white: #ffffff;
+            --text-dark: #333333;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        
-        body { background-color: #fff; color: #333; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--cream); color: var(--text-dark); overflow-x: hidden; }
 
-        /* Header & Nav */
-        header {
-            background: #fff;
+        /* --- NAVIGATION --- */
+        nav {
+            background: var(--white);
             padding: 15px 5%;
-            border-bottom: 1px solid #eee;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
+            position: sticky;
+            top: 0; z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
         }
+        .logo { font-family: 'Playfair Display', serif; font-size: 28px; letter-spacing: 3px; color: var(--emerald); cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .logo span { color: var(--gold); }
 
-        .logo { font-size: 24px; font-weight: 900; letter-spacing: 3px; cursor: pointer; }
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a { text-decoration: none; color: var(--emerald); font-weight: 600; font-size: 13px; text-transform: uppercase; transition: 0.3s; }
+        .nav-links a:hover { color: var(--gold); }
 
-        .search-bar {
-            flex-grow: 0.5;
-            display: flex;
-            align-items: center;
-            background: var(--light-gray);
-            padding: 8px 15px;
-            border-radius: 5px;
-            margin: 0 20px;
-        }
+        .nav-actions { display: flex; align-items: center; gap: 20px; }
+        .cart-trigger { cursor: pointer; font-size: 18px; position: relative; color: var(--emerald); }
+        .cart-count { position: absolute; top: -10px; right: -10px; background: var(--gold); color: white; font-size: 10px; padding: 2px 6px; border-radius: 50%; }
 
-        .search-bar input {
-            border: none;
-            background: transparent;
-            outline: none;
-            width: 100%;
-            margin-left: 10px;
-        }
+        /* --- SECTIONS --- */
+        .section { display: none; padding: 40px 5%; min-height: 80vh; }
+        .active { display: block; animation: fadeIn 0.8s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .nav-right { display: flex; gap: 20px; align-items: center; }
-
-        /* Hero */
+        /* --- HERO --- */
         .hero {
-            height: 400px;
-            background: #111;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            margin-bottom: 40px;
+            height: 75vh;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('forme 2.jpg');
+            background-size: cover; background-position: center;
+            display: flex; align-items: center; justify-content: center;
+            color: white; text-align: center; margin: -40px -5% 40px -5%;
         }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: 5rem; letter-spacing: 8px; margin-bottom: 10px; }
+        .hero p { font-size: 1.4rem; margin-bottom: 25px; font-weight: 300; font-style: italic; }
 
-        /* Tabs/Categories */
-        .category-nav {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 30px;
+        /* --- PRODUCT GRID --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        .card { background: white; border: 1px solid #f0f0f0; transition: 0.4s; text-align: center; padding-bottom: 25px; border-radius: 4px; overflow: hidden; }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); border-color: var(--gold); }
+        .card img { width: 100%; height: 350px; object-fit: cover; }
+        .card h3 { font-family: 'Playfair Display', serif; margin: 15px 0 5px; color: var(--emerald); }
+        .price { color: var(--gold); font-weight: bold; margin-bottom: 15px; font-size: 1.1rem; }
+
+        .btn { padding: 12px 20px; border: 1px solid var(--emerald); cursor: pointer; font-weight: bold; text-transform: uppercase; font-size: 11px; transition: 0.3s; letter-spacing: 1px; }
+        .btn-buy { background: var(--emerald); color: white; border: none; }
+        .btn-buy:hover { background: var(--gold); }
+        .btn-outline { background: transparent; color: var(--emerald); margin-right: 5px; }
+        .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+        /* --- SIDEBAR --- */
+        #cart-sidebar {
+            position: fixed; right: -400px; top: 0; width: 380px; height: 100%;
+            background: white; z-index: 2000; transition: 0.4s; padding: 40px;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--emerald);
         }
+        #cart-sidebar.open { right: 0; }
 
-        .category-nav button {
-            background: none;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            text-transform: uppercase;
-            padding-bottom: 5px;
-        }
-
-        .category-nav button:hover { border-bottom: 2px solid var(--brand-black); }
-
-        /* Product Grid */
-        .container { max-width: 1200px; margin: auto; padding: 0 20px; }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-
-        .card {
-            background: white;
-            border: 1px solid #f0f0f0;
-            padding: 15px;
-            transition: 0.3s;
-        }
-
-        .card:hover { box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
-
-        .card img { width: 100%; height: 300px; object-fit: cover; margin-bottom: 15px; border-radius: 4px; }
-
-        .price { font-size: 1.2rem; font-weight: bold; margin: 10px 0; }
-
-        .btn-group { display: flex; gap: 10px; }
-
-        .add-cart { flex: 1; background: #333; color: white; border: none; padding: 10px; cursor: pointer; }
-        .buy-now { flex: 1; background: var(--brand-gold); color: white; border: none; padding: 10px; cursor: pointer; }
-
-        /* Pagination */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin: 50px 0;
-            gap: 10px;
-        }
-
-        .pagination a {
-            padding: 8px 16px;
-            border: 1px solid #ddd;
-            text-decoration: none;
-            color: black;
-        }
-
-        .pagination a.active { background: black; color: white; }
-
-        footer { background: #111; color: white; padding: 40px; text-align: center; margin-top: 50px; }
+        footer { background: var(--emerald); color: white; padding: 60px 5%; text-align: center; margin-top: 50px; border-top: 5px solid var(--gold); }
+        .footer-logo { font-family: 'Playfair Display', serif; font-size: 32px; letter-spacing: 4px; margin-bottom: 15px; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">AOSE</div>
-        <div class="search-bar">
-            <i class="fas fa-search"></i>
-            <input type="text" placeholder="Search for Clothing, Hair or Face products...">
+    <nav>
+        <div class="logo" onclick="showPage('home')">AOSE <span>CLOTHING</span></div>
+        <div class="nav-links">
+            <a href="#" onclick="showPage('home')">Home</a>
+            <a href="#" onclick="showPage('shop')">Apparel</a>
+            <a href="#" onclick="showPage('face')">Face Science</a>
+            <a href="#" onclick="showPage('hair')">Hair Science</a>
         </div>
-        <div class="nav-right">
-            <i class="fas fa-user"></i>
-            <div style="position: relative;">
-                <i class="fas fa-shopping-cart"></i>
-                <span id="cart-count" style="position:absolute; top:-10px; right:-10px; background:red; color:white; border-radius:50%; padding:2px 6px; font-size:10px;">0</span>
-            </div>
+        <div class="nav-actions">
+            <div class="cart-trigger" onclick="toggleCart(true)">👜 <span class="cart-count" id="cart-count">0</span></div>
         </div>
-    </header>
+    </nav>
 
-    <section class="hero">
-        <h1>AOSE LUXURY COLLECTION</h1>
-        <p>Style meets Care. Shop Apparel and Personal Care.</p>
+    <section id="home" class="section active">
+        <header class="hero">
+            <div>
+                <h1>AOSE</h1>
+                <p>Timeless Elegance, Modern Legacy</p>
+                <button class="btn btn-buy" style="padding: 15px 40px;" onclick="showPage('shop')">Explore Collections</button>
+            </div>
+        </header>
+        <h2 style="text-align: center; font-family: 'Playfair Display'; margin-bottom: 40px; color: var(--emerald); font-size: 2.5rem;">The Signature Edit</h2>
+        <div class="grid" id="featured-grid"></div>
     </section>
 
-    <div class="container">
-        <div class="category-nav">
-            <button onclick="filter('all')">All</button>
-            <button onclick="filter('clothing')">Clothing</button>
-            <button onclick="filter('hair')">Hair Care</button>
-            <button onclick="filter('face')">Face Care</button>
-        </div>
+    <section id="shop" class="section">
+        <h2 style="text-align: center; font-family: 'Playfair Display'; margin-bottom: 40px; color: var(--emerald);">AOSE Clothing Collection</h2>
+        <div class="grid" id="full-shop-grid"></div>
+    </section>
 
-        <div class="grid" id="product-list">
-            <div class="card" data-cat="clothing">
-                <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=500" alt="Shirt">
-                <h3>AOSE Oversized Tee</h3>
-                <p>Premium Cotton</p>
-                <p class="price">₹1,499</p>
-                <div class="btn-group">
-                    <button class="add-cart" onclick="updateCart()">Add to Cart</button>
-                    <button class="buy-now" onclick="payNow(1499, 'Oversized Tee')">Buy Now</button>
-                </div>
-            </div>
+    <section id="face" class="section">
+        <h2 style="text-align: center; font-family: 'Playfair Display'; margin-bottom: 40px; color: var(--emerald);">AOSE x FORMÉ: Face Care</h2>
+        <div class="grid" id="face-grid"></div>
+    </section>
 
-            <div class="card" data-cat="hair">
-                <img src="https://images.unsplash.com/photo-1527799822367-474857a3f447?auto=format&fit=crop&w=500" alt="Hair">
-                <h3>AOSE Hair Growth Oil</h3>
-                <p>Natural Herbs</p>
-                <p class="price">₹799</p>
-                <div class="btn-group">
-                    <button class="add-cart" onclick="updateCart()">Add to Cart</button>
-                    <button class="buy-now" onclick="payNow(799, 'Hair Oil')">Buy Now</button>
-                </div>
-            </div>
+    <section id="hair" class="section">
+        <h2 style="text-align: center; font-family: 'Playfair Display'; margin-bottom: 40px; color: var(--emerald);">AOSE x FORMÉ: Hair Care</h2>
+        <div class="grid" id="hair-grid"></div>
+    </section>
 
-            <div class="card" data-cat="face">
-                <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=500" alt="Face">
-                <h3>AOSE Face Glow Serum</h3>
-                <p>Vitamin C + E</p>
-                <p class="price">₹950</p>
-                <div class="btn-group">
-                    <button class="add-cart" onclick="updateCart()">Add to Cart</button>
-                    <button class="buy-now" onclick="payNow(950, 'Glow Serum')">Buy Now</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="pagination">
-            <a href="#" class="active">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
+    <div id="cart-sidebar">
+        <h2 style="margin-bottom: 30px; display: flex; justify-content: space-between; font-family: 'Playfair Display'; color: var(--emerald);">Your Selection <span style="cursor:pointer" onclick="toggleCart(false)">✕</span></h2>
+        <div id="cart-items" style="max-height: 60vh; overflow-y: auto;"></div>
+        <div style="border-top: 1px solid #eee; margin-top: 30px; padding-top: 20px;">
+            <h3 style="margin-bottom: 20px; color: var(--emerald);">Total: ₹<span id="cart-total">0</span></h3>
+            <button class="btn btn-buy" style="width: 100%;" onclick="checkout()">Checkout with AOSE</button>
         </div>
     </div>
 
     <footer>
-        <p>&copy; 2024 AOSE (aose.in) | Designed for Elegance</p>
+        <div class="footer-logo">AOSE</div>
+        <p style="font-style: italic; opacity: 0.8; margin-bottom: 20px;">Timeless Elegance, Modern Legacy</p>
+        <p>© 2025 AOSE CLOTHING. Crafted for Perfection.</p>
     </footer>
 
     <script>
-        // CART LOGIC
-        let count = 0;
+        // --- PRODUCT DATABASE ---
+        const products = [
+            { id: 1, name: "Signature Silk Shirt", cat: "apparel", price: 3499, img: "aose website.jpg", featured: true },
+            { id: 2, name: "Nourishing Face Cream", cat: "face", price: 1250, img: "forme 1.jpg", featured: true },
+            { id: 3, name: "Premium Night Oil", cat: "face", price: 1899, img: "forme.jpg", featured: true },
+            { id: 4, name: "Legacy Wool Blazer", cat: "apparel", price: 7999, img: "aose website.jpg", featured: true },
+            { id: 5, name: "Pure Hair Serum", cat: "hair", price: 1450, img: "forme porduct line.jpg", featured: false },
+            { id: 6, name: "Gentle Face Toner", cat: "face", price: 850, img: "forme 1.jpg", featured: false }
+        ];
+
+        let cart = [];
+
+        // --- NAVIGATION ---
+        function showPage(pageId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function toggleCart(show) {
+            document.getElementById('cart-sidebar').classList.toggle('open', show);
+        }
+
+        // --- RENDERING ---
+        function renderProducts(data, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = data.map(p => `
+                <div class="card">
+                    <img src="${p.img}" alt="${p.name}">
+                    <h3>${p.name}</h3>
+                    <p class="price">₹${p.price.toLocaleString('en-IN')}</p>
+                    <button class="btn btn-outline" onclick="addToCart(${p.id})">Add to Bag</button>
+                    <button class="btn btn-buy" onclick="buyNow(${p.id})">Buy Now</button>
+                </div>
+            `).join('');
+        }
+
+        // --- CART LOGIC ---
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            cart.push(product);
+            updateCart();
+            toggleCart(true);
+        }
+
+        function buyNow(id) {
+            cart = [products.find(p => p.id === id)];
+            updateCart();
+            toggleCart(true);
+        }
+
         function updateCart() {
-            count++;
-            document.getElementById('cart-count').innerText = count;
-            alert("Added to cart!");
+            document.getElementById('cart-count').innerText = cart.length;
+            const container = document.getElementById('cart-items');
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            
+            container.innerHTML = cart.map((item, index) => `
+                <div style="display: flex; gap: 15px; margin-bottom: 20px; align-items: center;">
+                    <img src="${item.img}" style="width: 70px; height: 70px; object-fit: cover; border: 1px solid var(--gold);">
+                    <div style="flex: 1;">
+                        <p style="font-weight: 600; font-size: 14px; color: var(--emerald);">${item.name}</p>
+                        <p style="font-size: 12px; color: var(--gold);">₹${item.price.toLocaleString('en-IN')}</p>
+                    </div>
+                    <span style="cursor: pointer; color: #cc0000; font-size: 12px;" onclick="removeFromCart(${index})">✕</span>
+                </div>
+            `).join('');
+            
+            document.getElementById('cart-total').innerText = total.toLocaleString('en-IN');
         }
 
-        // RAZORPAY INTEGRATION
-        function payNow(amount, prodName) {
-            var options = {
-                "key": "YOUR_RAZORPAY_KEY_ID", // REPLACE THIS WITH YOUR KEY
-                "amount": amount * 100, // Amount in paise
-                "currency": "INR",
-                "name": "AOSE",
-                "description": "Purchase: " + prodName,
-                "image": "https://aose.in/favicon.ico",
-                "handler": function (response){
-                    alert("Payment Success! ID: " + response.razorpay_payment_id);
-                },
-                "prefill": {
-                    "name": "Customer Name",
-                    "email": "customer@aose.in"
-                },
-                "theme": { "color": "#000000" }
-            };
-            var rzp1 = new Razorpay(options);
-            rzp1.open();
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
         }
 
-        // CATEGORY FILTER
-        function filter(cat) {
-            let cards = document.querySelectorAll('.card');
-            cards.forEach(card => {
-                if(cat === 'all' || card.getAttribute('data-cat') === cat) {
-                    card.style.display = "block";
-                } else {
-                    card.style.display = "none";
-                }
-            });
+        function checkout() {
+            if(cart.length === 0) return alert("Your selection is empty!");
+            alert("Transferring to AOSE Secure Checkout...");
         }
+
+        // --- INITIALIZE ---
+        renderProducts(products.filter(p => p.featured), 'featured-grid');
+        renderProducts(products.filter(p => p.cat === 'apparel'), 'full-shop-grid');
+        renderProducts(products.filter(p => p.cat === 'hair'), 'hair-grid');
+        renderProducts(products.filter(p => p.cat === 'face'), 'face-grid');
+
     </script>
 </body>
 </html>
