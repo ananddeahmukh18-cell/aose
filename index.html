@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AOSE - Timeless Elegance, Modern Legacy</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: #222;
+            color: #fff;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .search-bar {
+            padding: 0.5rem;
+            width: 200px;
+            border-radius: 4px;
+            border: none;
+        }
+        .container {
+            padding: 2rem;
+        }
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .product {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 1rem;
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+        .product h3 {
+            margin: 0.5rem 0;
+        }
+        .product p {
+            color: #666;
+        }
+        .price {
+            font-weight: bold;
+            color: #222;
+        }
+        .btn {
+            background-color: #222;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            width: 100%;
+        }
+        .btn:hover {
+            background-color: #444;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            gap: 0.5rem;
+        }
+        .pagination a {
+            text-decoration: none;
+            color: #222;
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .pagination a.active {
+            background-color: #222;
+            color: #fff;
+        }
+        footer {
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">AOSE</div>
+        <nav>
+            <ul>
+                <li><a href="#men">Men</a></li>
+                <li><a href="#women">Women</a></li>
+                <li><a href="#hoodies">Hoodies</a></li>
+                <li><a href="#tshirts">T-Shirts</a></li>
+            </ul>
+        </nav>
+        <input type="text" class="search-bar" placeholder="Search products...">
+    </header>
+
+    <div class="container">
+        <h2>Featured Products</h2>
+        <div class="products">
+            <!-- Example Product 1 -->
+            <div class="product">
+                <img src="https://aose.in/cdn/shop/files/AOSE_Trust_The_Timing_Artistic_Graphic_Tee_1.jpg" alt="AOSE Graphic Tee">
+                <h3>AOSE Graphic Tee</h3>
+                <p>Premium Heavy Buffalo Fabric</p>
+                <p class="price">₹1,299</p>
+                <button class="btn">Add to Cart</button>
+                <button class="btn">Buy Now</button>
+            </div>
+            <!-- Example Product 2 -->
+            <div class="product">
+                <img src="https://aose.in/cdn/shop/files/AOSE_Classic_Arctic_Grey_Crewneck_Sweatshirt_1.jpg" alt="AOSE Crewneck Sweatshirt">
+                <h3>AOSE Crewneck Sweatshirt</h3>
+                <p>Classic Arctic Grey</p>
+                <p class="price">₹1,799</p>
+                <button class="btn">Add to Cart</button>
+                <button class="btn">Buy Now</button>
+            </div>
+            <!-- Example Product 3 -->
+            <div class="product">
+                <img src="https://aose.in/cdn/shop/files/AOSE_Essential_Sandstone_Hoodie_1.jpg" alt="AOSE Sandstone Hoodie">
+                <h3>AOSE Sandstone Hoodie</h3>
+                <p>Essential Hoodie</p>
+                <p class="price">₹2,199</p>
+                <button class="btn">Add to Cart</button>
+                <button class="btn">Buy Now</button>
+            </div>
+            <!-- Add more products as needed -->
+        </div>
+
+        <div class="pagination">
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 AOSE. All Rights Reserved.
+    </footer>
+</body>
+</html>
