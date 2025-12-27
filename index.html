@@ -97,8 +97,8 @@
         <div class="nav-links">
             <a href="#" onclick="showPage('home')">Home</a>
             <a href="#" onclick="showPage('shop')">Apparel</a>
-            <a href="#" onclick="showPage('face')">Face Science</a>
-            <a href="#" onclick="showPage('hair')">Hair Science</a>
+            <a href="#" onclick="showPage('Stich & Wear')">Stich & Wear</a>
+            <a href="#" onclick="showPage('Daily Wear')">Daily Wear</a>
         </div>
         <div class="nav-actions">
             <div class="cart-trigger" onclick="toggleCart(true)">👜 <span class="cart-count" id="cart-count">0</span></div>
@@ -150,12 +150,12 @@
     <script>
         // --- PRODUCT DATABASE ---
         const products = [
-            { id: 1, name: "Signature Silk Shirt", cat: "apparel", price: 3499, img: "https://github.com/ananddeahmukh18-cell/aose-2/blob/58f10a1af2396ffd3b022cb2c6b70a3d42e137c1/aose%20ad.jpg", featured: true },
-            { id: 2, name: "Nourishing Face Cream", cat: "face", price: 1250, img: "forme 1.jpg", featured: true },
-            { id: 3, name: "Premium Night Oil", cat: "face", price: 1899, img: "forme.jpg", featured: true },
-            { id: 4, name: "Legacy Wool Blazer", cat: "apparel", price: 7999, img: "aose website.jpg", featured: true },
-            { id: 5, name: "Pure Hair Serum", cat: "hair", price: 1450, img: "forme porduct line.jpg", featured: false },
-            { id: 6, name: "Gentle Face Toner", cat: "face", price: 850, img: "forme 1.jpg", featured: false }
+            { id: 1, name: "Signature Silk Shirt", cat: "apparel", price: 3499, img: "aose1.jpg", featured: true },
+            { id: 2, name: "Nourishing Face Cream", cat: "face", price: 1250, img: "propro.jpg", featured: true },
+            { id: 3, name: "Premium Night Oil", cat: "face", price: 1899, img: "propro2.jpg", featured: true },
+            { id: 4, name: "Legacy Wool Blazer", cat: "apparel", price: 7999, img: "hero-bg.jpg", featured: true },
+            { id: 5, name: "Pure Hair Serum", cat: "hair", price: 1450, img: "collection-grid.jpg", featured: false },
+            { id: 6, name: "Gentle Face Toner", cat: "face", price: 850, img: "", featured: false }
         ];
 
         let cart = [];
