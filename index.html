@@ -261,6 +261,370 @@
     const message = `New AOSE Order%0AName: ${name}%0APhone: ${phone}%0ATotal: ₹${total}`;
     window.open(`https://wa.me/917887731818?text=${message}`, '_blank');
     alert('Order placed successfully! Invoice will be shared on WhatsApp.');
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AOSE Clothing – Timeless Elegance</title>
+
+  <!-- THEME COLORS -->
+  <!-- Dark Green: #003B23 | Gold: #DEC175 | Cream: #ECDFC3 -->
+
+  <style>
+    :root {
+      --green: #003B23;
+      --gold: #DEC175;
+      --cream: #ECDFC3;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+
+    body { background: var(--cream); color: var(--green); }
+
+    /* HEADER */
+    header {
+      background: var(--green);
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header img { height: 55px; }
+
+    nav a {
+      color: var(--gold);
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    nav a:hover { text-decoration: underline; }
+
+    .search {
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(rgba(0,0,0,.4), rgba(0,0,0,.4)), url('demo.png') center/cover no-repeat;
+      height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-align: center;
+    }
+
+    .hero h1 { font-size: 3.2rem; }
+
+    .hero p { margin: 15px 0; }
+
+    /* CATEGORIES */
+    .categories {
+      padding: 60px 40px;
+      text-align: center;
+    }
+
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .cat {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.1);
+      cursor: pointer;
+    }
+
+    /* PRODUCTS */
+    .products { padding: 60px 40px; }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+    }
+
+    .product {
+      background: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,.15);
+    }
+
+    .product img { width: 100%; height: 300px; object-fit: cover; }
+
+    .product-content { padding: 20px; }
+
+    .product button {
+      background: var(--green);
+      color: var(--gold);
+      border: none;
+      padding: 10px;
+      width: 48%;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* CART */
+    .cart {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: var(--green);
+      color: #fff;
+      padding: 15px 20px;
+      border-radius: 50px;
+      cursor: pointer;
+    }
+
+    /* CHECKOUT */
+    .checkout {
+      padding: 60px 40px;
+      background: #fff;
+    }
+
+    .checkout input, .checkout textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .upi {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--green);
+      color: var(--gold);
+      padding: 40px;
+      text-align: center;
+    }
+
+    footer a { color: var(--gold); margin: 0 10px; }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <img src="aose ad.png" alt="AOSE Logo" />
+  <nav>
+    <a href="#">Home</a>
+    <a href="#products">Shop</a>
+    <a href="#checkout">Checkout</a>
+  </nav>
+  <input type="text" class="search" placeholder="Search products" />
+</header>
+
+<section class="hero">
+  <div>
+    <h1>AOSE CLOTHING</h1>
+    <p>Timeless Elegance, Modern Legacy</p>
+  </div>
+</section>
+
+<section class="categories">
+  <h2>Categories</h2>
+  <div class="cat-grid">
+    <div class="cat">Shirts</div>
+    <div class="cat">T-Shirts</div>
+    <div class="cat">Hoodies</div>
+    <div class="cat">Accessories</div>
+  </div>
+</section>
+
+<section class="products" id="products">
+  <h2>Featured Products</h2>
+  <div class="product-grid">
+
+    <div class="product">
+      <img src="propro.jpg" />
+      <div class="product-content">
+        <h3>Classic Printed Shirt</h3>
+        <p>₹1999</p>
+        <button onclick="addToCart(1999)">Add to Cart</button>
+        <button onclick="buyNow(1999)">Buy Now</button>
+      </div>
+    </div>
+
+    <div class="product">
+      <img src="propro2.jpg" />
+      <div class="product-content">
+        <h3>Premium Blue Shirt</h3>
+        <p>₹1799</p>
+        <button onclick="addToCart(1799)">Add to Cart</button>
+        <button onclick="buyNow(1799)">Buy Now</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="cart" onclick="document.getElementById('checkout').scrollIntoView()">
+  Cart Total: ₹<span id="total">0</span>
+</div>
+
+<section class="checkout" id="checkout">
+  <h2>Checkout</h2>
+
+  <input placeholder="Full Name" id="name" />
+  <input placeholder="Phone Number" id="phone" />
+  <textarea placeholder="Delivery Address"></textarea>
+
+  <div class="upi">
+    <h3>Pay via UPI</h3>
+    <p>UPI ID: <b>7887731818@ybl</b></p>
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=7887731818@ybl" />
+  </div>
+
+  <button onclick="confirmOrder()">Confirm Order</button>
+</section>
+
+<footer>
+  <p>Follow Us</p>
+  <a href="#">Instagram</a>
+  <a href="#">Facebook</a>
+  <p>© AOSE Clothing</p>
+</footer>
+
+<script>
+  let total = 0;
+
+  function addToCart(price) {
+    total += price;
+    document.getElementById('total').innerText = total;
+  }
+
+  function buyNow(price) {
+    total = price;
+    document.getElementById('total').innerText = total;
+    document.getElementById('checkout').scrollIntoView();
+  }
+
+  function confirmOrder() {
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+
+    const message = `New AOSE Order%0AName: ${name}%0APhone: ${phone}%0ATotal: ₹${total}`;
+    window.open(`https://wa.me/917887731818?text=${message}`, '_blank');
+    alert('Order placed successfully! Invoice will be shared on WhatsApp.');
+// models/User.js
+const mongoose = require("mongoose");
+
+const UserSchema = new mongoose.Schema({
+  name: String,
+  phone: { type: String, unique: true },
+  password: String
+});
+
+module.exports = mongoose.model("User", UserSchema);
+// routes/auth.js
+router.post("/register", async (req,res)=>{
+ const user = await User.create(req.body);
+ res.json(user);
+});
+
+router.post("/login", async (req,res)=>{
+ const user = await User.findOne(req.body);
+ if(!user) return res.status(401).send("Invalid");
+ res.json(user);
+});
+<input id="phone" placeholder="Phone Number">
+<input id="password" type="password">
+<button onclick="login()">Login</button>
+
+<script>
+function login(){
+ fetch('/api/login',{
+   method:'POST',
+   body:JSON.stringify({
+     phone:phone.value,
+     password:password.value
+     PLACED → PAID → SHIPPED → DELIVERED
+const message = `
+AOSE ORDER UPDATE
+Order ID: ${order._id}
+Status: ${order.status}
+Track: https://aose.in/track/${order._id}
+`;
+
+fetch(`https://wa.me/91${order.phone}?text=${encodeURIComponent(message)}`);
+doc.text("GSTIN: 27XXXXX1234Z");
+doc.text("CGST 9% | SGST 9%");
+doc.text(`Invoice No: AOSE-${Date.now()}`);
+doc.text(`Taxable Value: ₹${subtotal}`);
+doc.text(`Total GST: ₹${gst}`);
+doc.text(`Grand Total: ₹${total}`);
+<input type="radio" name="pay" value="online"> Online
+<input type="radio" name="pay" value="cod"> Cash on Delivery
+if(paymentMode === "COD"){
+ order.status = "COD - Pending Confirmation";
+}
+{
+ "name": "AOSE Clothing",
+ "short_name": "AOSE",
+ "start_url": "/",
+ "display": "standalone",
+ "background_color": "#ECDFC3",
+ "theme_color": "#003B23",
+ "icons": [
+  { "src": "/icon-192.png", "sizes": "192x192" },
+  { "src": "/icon-512.png", "sizes": "512x512" }
+ ]
+}
+self.addEventListener("install", e=>{
+ e.waitUntil(
+  caches.open("aose").then(cache=>{
+   return cache.addAll(["/","/index.html"]);
+  })
+ );
+});
+
+   })
+ })
+}
+</script>
+
+
+
+
+
+
+    
+  }
+    
+</script>
+
+</body>
+<!-- ================= ================= FULL COMMERCE EXTENSIONS =================
+This project is extended to include:
+• Customer Login / Signup
+• WhatsApp Order Tracking
+• GST Invoice
+• Cash on Delivery
+• PWA (Installable App)
+
+Backend: Node.js + MongoDB
+Frontend: HTML/CSS/JS
+============================================================
+</html>
+
   }
 </script>
 
