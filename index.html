@@ -3,19 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AOSE Clothing | Modern Legacy</title>
+    <title>AOSE Clothing | Classic Elegance</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
-        /* --- THEME CONFIGURATION (Dark Luxury) --- */
+        /* --- THEME CONFIGURATION (Classic Elegance) --- */
         :root {
-            --brand-green: #003B23;
-            --brand-gold: #DEC175;
-            --brand-cream: #ECDFC3;
-            --text-main: #ECDFC3;
-            --text-on-light: #003B23;
-            --card-bg: #F5F1E8; 
+            /* Requested Colors */
+            --navy-blue: #2E4053;  /* Primary Background */
+            --classic-gray: #BFC9CA; /* Secondary / Text Support */
+            --bright-gold: #F1C40F; /* Accents / Highlights */
+            
+            /* Functional Colors derived from theme */
+            --text-on-dark: #ECF0F1; /* Slightly lighter than gray for readability */
+            --text-on-light: #2E4053;
+            --card-bg: #FFFFFF;
             
             --font-heading: 'Cinzel', serif;
             --font-body: 'Montserrat', sans-serif;
@@ -25,56 +28,60 @@
         
         body {
             font-family: var(--font-body);
-            background-color: var(--brand-green);
-            color: var(--text-main);
+            background-color: var(--navy-blue);
+            color: var(--classic-gray);
             overflow-x: hidden;
             line-height: 1.6;
         }
 
         /* --- HEADER --- */
         header {
-            background-color: rgba(0, 59, 35, 0.95);
+            background-color: #212F3C; /* Slightly darker navy for contrast */
             padding: 1.5rem 5%;
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid var(--brand-gold);
+            border-bottom: 2px solid var(--bright-gold);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
         }
 
         .logo-text {
             font-family: var(--font-heading);
             font-size: 2.2rem;
-            color: var(--brand-gold);
+            color: var(--bright-gold);
             font-weight: 700;
             letter-spacing: 3px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            text-transform: uppercase;
         }
 
         .nav-icons {
             display: flex;
             gap: 25px;
-            color: var(--brand-gold);
+            color: var(--classic-gray);
             font-size: 1.4rem;
             cursor: pointer;
         }
+        
+        .nav-icons i:hover { color: var(--bright-gold); transition: 0.3s; }
 
         .cart-icon-wrapper {
             position: relative;
-            transition: transform 0.2s;
         }
-        
-        .cart-icon-wrapper:hover { transform: scale(1.1); }
 
         .cart-count {
             position: absolute;
             top: -5px;
             right: -8px;
-            background-color: var(--brand-cream);
-            color: var(--brand-green);
+            background-color: var(--bright-gold);
+            color: var(--navy-blue);
             font-size: 0.75rem;
             font-weight: 800;
             width: 18px;
@@ -89,24 +96,26 @@
         .hero {
             text-align: center;
             padding: 6rem 1rem;
-            background: linear-gradient(rgba(0,59,35,0.7), rgba(0,59,35,0.9)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            /* Overlay with Navy Blue tint */
+            background: linear-gradient(rgba(46, 64, 83, 0.8), rgba(46, 64, 83, 0.9)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
             background-size: cover;
             background-attachment: fixed;
             background-position: center;
-            border-bottom: 4px solid var(--brand-gold);
+            border-bottom: 1px solid var(--classic-gray);
         }
 
         .hero h1 {
             font-family: var(--font-heading);
             font-size: 4rem;
             margin-bottom: 1rem;
-            color: var(--brand-gold);
+            color: var(--bright-gold);
             text-transform: uppercase;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
         .hero p {
             font-size: 1.2rem;
-            color: var(--brand-cream);
+            color: var(--classic-gray);
             letter-spacing: 2px;
             max-width: 600px;
             margin: 0 auto;
@@ -119,38 +128,42 @@
             flex-wrap: wrap;
             gap: 20px;
             padding: 3rem 5%;
-            background: linear-gradient(to bottom, var(--brand-green), #002b19);
+            background-color: var(--navy-blue);
         }
 
         .search-bar {
             padding: 12px 20px;
-            border: 1px solid var(--brand-gold);
+            border: 2px solid var(--classic-gray);
             border-radius: 0;
             width: 300px;
             background: rgba(255,255,255,0.05);
-            color: var(--brand-gold);
+            color: var(--bright-gold);
             outline: none;
             font-family: var(--font-body);
+            transition: 0.3s;
         }
         
-        .search-bar::placeholder { color: rgba(222, 193, 117, 0.5); }
+        .search-bar:focus { border-color: var(--bright-gold); }
+        .search-bar::placeholder { color: var(--classic-gray); opacity: 0.7; }
 
         .filter-btn {
             padding: 12px 25px;
             background-color: transparent;
-            border: 1px solid var(--brand-gold);
-            color: var(--brand-gold);
+            border: 2px solid var(--classic-gray);
+            color: var(--classic-gray);
             cursor: pointer;
             text-transform: uppercase;
             font-size: 0.8rem;
             letter-spacing: 1px;
             transition: 0.4s;
+            font-weight: 600;
         }
 
         .filter-btn.active, .filter-btn:hover {
-            background-color: var(--brand-gold);
-            color: var(--brand-green);
-            box-shadow: 0 0 15px rgba(222, 193, 117, 0.3);
+            background-color: var(--bright-gold);
+            border-color: var(--bright-gold);
+            color: var(--navy-blue);
+            box-shadow: 0 0 15px rgba(241, 196, 15, 0.3);
         }
 
         /* --- PRODUCT GRID --- */
@@ -163,23 +176,25 @@
 
         .product-card {
             background: var(--card-bg);
-            border: 1px solid var(--brand-gold);
+            border: 1px solid var(--classic-gray);
             transition: transform 0.3s, box-shadow 0.3s;
             display: flex;
             flex-direction: column;
             position: relative;
+            border-radius: 4px;
         }
 
         .product-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-color: var(--bright-gold);
         }
 
         .product-img {
             width: 100%;
             height: 350px;
             object-fit: cover;
-            border-bottom: 1px solid rgba(0,59,35,0.1);
+            border-bottom: 1px solid #eee;
         }
 
         .product-info {
@@ -194,7 +209,7 @@
         .product-title {
             font-family: var(--font-heading);
             font-size: 1.3rem;
-            color: var(--brand-green);
+            color: var(--navy-blue);
             margin-bottom: 0.5rem;
             font-weight: 700;
         }
@@ -228,25 +243,24 @@
         }
 
         .btn-add {
-            background-color: var(--brand-green);
-            color: var(--brand-gold);
-            border: 1px solid var(--brand-green);
+            background-color: var(--navy-blue);
+            color: var(--bright-gold);
         }
         
         .btn-add:hover {
-            background-color: var(--brand-gold);
-            color: var(--brand-green);
+            background-color: var(--bright-gold);
+            color: var(--navy-blue);
         }
 
         .btn-enquiry {
             background-color: transparent;
-            color: var(--brand-green);
-            border: 1px solid var(--brand-green);
+            color: var(--navy-blue);
+            border: 1px solid var(--navy-blue);
             text-decoration: none;
         }
         
         .btn-enquiry:hover {
-            background-color: #e0e0e0;
+            background-color: #f0f0f0;
         }
 
         /* --- CART SIDEBAR --- */
@@ -256,9 +270,9 @@
             right: -450px;
             width: 400px;
             height: 100%;
-            background: #111;
-            color: var(--brand-cream);
-            border-left: 2px solid var(--brand-gold);
+            background: #1C2833; /* Darker navy/black */
+            color: var(--text-on-dark);
+            border-left: 2px solid var(--bright-gold);
             z-index: 2000;
             transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
@@ -272,12 +286,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #333;
+            border-bottom: 1px solid var(--classic-gray);
             padding-bottom: 20px;
             margin-bottom: 20px;
         }
 
-        .cart-header h2 { font-family: var(--font-heading); color: var(--brand-gold); }
+        .cart-header h2 { font-family: var(--font-heading); color: var(--bright-gold); }
 
         .cart-items { flex-grow: 1; overflow-y: auto; }
 
@@ -289,14 +303,15 @@
             margin-bottom: 15px;
             padding: 15px;
             border-radius: 4px;
+            border: 1px solid rgba(191, 201, 202, 0.2);
         }
 
-        .cart-footer { border-top: 1px solid #333; padding-top: 20px; }
+        .cart-footer { border-top: 1px solid var(--classic-gray); padding-top: 20px; }
 
         .total-price {
             font-family: var(--font-heading);
             font-size: 1.4rem;
-            color: var(--brand-gold);
+            color: var(--bright-gold);
             display: flex;
             justify-content: space-between;
             margin-bottom: 20px;
@@ -305,8 +320,8 @@
         .btn-checkout {
             width: 100%;
             padding: 15px;
-            background-color: var(--brand-gold);
-            color: var(--brand-green);
+            background-color: var(--bright-gold);
+            color: var(--navy-blue);
             font-weight: 800;
             border: none;
             text-transform: uppercase;
@@ -315,7 +330,7 @@
             transition: 0.3s;
         }
         
-        .btn-checkout:hover { background-color: #fff; }
+        .btn-checkout:hover { background-color: #D4AC0D; }
 
         /* --- CHECKOUT MODAL --- */
         .modal {
@@ -325,7 +340,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.85);
+            background: rgba(28, 40, 51, 0.9);
             z-index: 3000;
             justify-content: center;
             align-items: center;
@@ -333,15 +348,16 @@
         }
 
         .modal-content {
-            background: #F5F1E8;
-            color: var(--brand-green);
+            background: #F4F6F6; /* Very light gray */
+            color: var(--navy-blue);
             padding: 2.5rem;
             width: 90%;
             max-width: 550px;
-            border: 2px solid var(--brand-gold);
+            border: 2px solid var(--bright-gold);
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
+            border-radius: 8px;
         }
 
         .form-group { margin-bottom: 15px; }
@@ -349,7 +365,7 @@
         .form-group input, .form-group textarea {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ccc;
+            border: 1px solid #BDC3C7;
             background: white;
             color: #333;
             font-family: var(--font-body);
@@ -360,28 +376,31 @@
             margin: 25px 0;
             padding: 20px;
             background: white;
-            border: 2px dashed var(--brand-green);
+            border: 2px dashed var(--navy-blue);
+            border-radius: 4px;
         }
         
         .qr-img { mix-blend-mode: multiply; }
 
         /* --- FOOTER --- */
         footer {
-            background-color: #002214;
-            color: var(--brand-gold);
+            background-color: #17202A; /* Almost black */
+            color: var(--classic-gray);
             text-align: center;
             padding: 4rem 1rem;
-            border-top: 1px solid var(--brand-gold);
+            border-top: 1px solid var(--bright-gold);
         }
         
         .social-icons { margin: 2rem 0; font-size: 1.8rem; }
-        .social-icons i { margin: 0 15px; cursor: pointer; transition: 0.3s; }
-        .social-icons i:hover { color: var(--brand-cream); }
+        .social-icons i { margin: 0 15px; cursor: pointer; transition: 0.3s; color: var(--classic-gray); }
+        .social-icons i:hover { color: var(--bright-gold); }
 
         /* Responsive */
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
             .cart-sidebar { width: 100%; right: -100%; }
+            .controls { gap: 10px; }
+            .search-bar { width: 100%; }
         }
     </style>
 </head>
@@ -401,15 +420,15 @@
     </header>
 
     <section class="hero">
-        <h1>A Legacy of Style</h1>
-        <p>Exquisite craftsmanship for the modern era.</p>
+        <h1>Timeless & Classic</h1>
+        <p>Elegance redefined for the modern individual.</p>
     </section>
 
     <section class="controls">
         <input type="text" class="search-bar" id="searchInput" placeholder="Search Collection..." onkeyup="filterProducts()">
-        <button class="filter-btn active" onclick="filterCategory('all', this)">All Collection</button>
-        <button class="filter-btn" onclick="filterCategory('Men', this)">Men's</button>
-        <button class="filter-btn" onclick="filterCategory('Women', this)">Women's</button>
+        <button class="filter-btn active" onclick="filterCategory('all', this)">All</button>
+        <button class="filter-btn" onclick="filterCategory('Men', this)">Men</button>
+        <button class="filter-btn" onclick="filterCategory('Women', this)">Women</button>
         <button class="filter-btn" onclick="filterCategory('Accessories', this)">Accessories</button>
     </section>
 
@@ -418,7 +437,7 @@
 
     <footer>
         <div class="logo-text" style="font-size: 2rem;">AOSE</div>
-        <p style="margin-top:10px; color:#aaa; font-size:0.9rem;">Timeless Elegance, Modern Legacy</p>
+        <p style="margin-top:10px; color:var(--classic-gray); font-size:0.9rem;">Classic Elegance, Modern Legacy</p>
         <div class="social-icons">
             <i class="fab fa-instagram"></i>
             <i class="fab fa-facebook-f"></i>
@@ -446,8 +465,8 @@
     <div class="modal" id="checkoutModal">
         <div class="modal-content">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom:1px solid #ddd; padding-bottom:10px;">
-                <h2 style="font-family:var(--font-heading);">Confirm Order</h2>
-                <i class="fas fa-times" style="cursor:pointer; font-size:1.2rem;" onclick="closeCheckout()"></i>
+                <h2 style="font-family:var(--font-heading); color:var(--navy-blue);">Confirm Order</h2>
+                <i class="fas fa-times" style="cursor:pointer; font-size:1.2rem; color:var(--navy-blue);" onclick="closeCheckout()"></i>
             </div>
             
             <form id="checkoutForm" onsubmit="processOrder(event)">
@@ -465,7 +484,7 @@
                 </div>
 
                 <div class="qr-section">
-                    <p style="font-weight:bold; margin-bottom:10px;">Scan to Pay: <span id="payAmount" style="color:#003B23; font-size:1.2rem;">₹0</span></p>
+                    <p style="font-weight:bold; margin-bottom:10px; color:var(--navy-blue);">Scan to Pay: <span id="payAmount" style="color:var(--bright-gold); font-size:1.4rem;">₹0</span></p>
                     <img id="upiQr" src="" alt="UPI QR Code" class="qr-img" width="180">
                     <p style="font-size:0.8rem; color:#555; margin-top:5px;">UPI ID: <strong>7887731818@ybl</strong></p>
                     <div class="form-group" style="margin-top:15px;">
@@ -473,7 +492,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn-checkout" style="background-color: var(--brand-green); color: var(--brand-gold);">
+                <button type="submit" class="btn-checkout" style="background-color: var(--navy-blue); color: var(--bright-gold);">
                     <i class="fab fa-whatsapp"></i> Send Order via WhatsApp
                 </button>
             </form>
@@ -489,7 +508,7 @@
         const products = [
             {
                 id: 1,
-                name: "Royal Emerald Shirt",
+                name: "Royal Navy Shirt",
                 category: "Men",
                 price: 1499,
                 image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
@@ -503,7 +522,7 @@
             },
             {
                 id: 3,
-                name: "Signature Beige Chinos",
+                name: "Classic Grey Chinos",
                 category: "Men",
                 price: 1299,
                 image: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
@@ -517,7 +536,7 @@
             },
             {
                 id: 5,
-                name: "Heritage Green Blazer",
+                name: "Deep Blue Blazer",
                 category: "Men",
                 price: 3999,
                 image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
@@ -621,7 +640,7 @@
                 itemDiv.className = 'cart-item';
                 itemDiv.innerHTML = `
                     <div>
-                        <div style="font-weight:bold; color:var(--brand-gold);">${item.name}</div>
+                        <div style="font-weight:bold; color:var(--bright-gold);">${item.name}</div>
                         <small style="color:#aaa;">₹${item.price} x ${item.quantity}</small>
                     </div>
                     <i class="fas fa-trash" style="color:#d9534f; cursor:pointer;" onclick="removeFromCart(${item.id})"></i>
