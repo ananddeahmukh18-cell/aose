@@ -400,7 +400,7 @@
     <!-- HEADER -->
     <header>
         <div class="brand-logo-area">
-            <img src="aose-ad.jpg" alt="AOSE Logo" onerror="this.style.display='none'">
+            <img src="aose ad.png" alt="AOSE Logo" onerror="this.style.display='none'">
             <div class="logo-text">AOSE</div>
         </div>
         <div class="nav-right">
@@ -554,7 +554,7 @@
     <script>
         // 🌟 GLOBAL STATE
         let orders = JSON.parse(localStorage.getItem('aoseOrders')) || [];
-        let adminPassword = localStorage.getItem('aoseAdminPass') || 'admin123';
+        let adminPassword = localStorage.getItem('aoseAdminPass') || 'admin777777';
         let currentOrder = null;
         let cart = [];
         let selections = {};
@@ -1286,7 +1286,33 @@
             .hero { height: 70vh; }
             .hero-title { font-size: 3rem; }
             .payment-grid { grid-template-columns: 1fr; }
-            .admin-stats { grid-template-columns: repeat(2, 1fr); }
+            .admin-stats { grid-template-columns: repeat(2, 1fr); }/* 🖼️ AOSE LOGO BACKGROUND - NEW ADDITION */
+.hero { 
+    background: linear-gradient(rgba(15,61,46,0.7), rgba(198,166,100,0.3)), 
+                url('demo.png') center/cover no-repeat fixed !important;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+}
+
+.brand-logo-area {
+    background: rgba(255,255,255,0.95);
+    padding: 0.5rem 1rem;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+
+.logo-text {
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+    font-weight: 800;
+}
+
+            <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF
+
         }
     </style>
 </head>
