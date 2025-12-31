@@ -52,7 +52,6 @@
         .nav-right { display: flex; gap: 20px; align-items: center; }
         .btn-track { font-size: 0.7rem; font-weight: 600; padding: 8px 15px; border: 1px solid var(--primary); cursor: pointer; transition: 0.3s; }
         .btn-track:hover { background: var(--primary); color: white; }
-        /* HIDDEN ADMIN BUTTON - Only visible via secret method */
         .btn-admin { 
             font-size: 0.7rem; font-weight: 600; padding: 8px 15px; border: 1px solid var(--primary); 
             cursor: pointer; transition: 0.3s; display: none !important; 
@@ -162,7 +161,7 @@
 </head>
 <body>
 
-    <!-- ADMIN PANEL -->
+    <!-- ADMIN PANEL (UNCHANGED) -->
     <div class="admin-panel" id="adminPanel">
         <div class="admin-login" id="adminLogin">
             <h2 style="color: var(--primary); margin-bottom: 20px;">Admin Login</h2>
@@ -180,7 +179,6 @@
                 </div>
             </div>
             
-            <!-- CHANGE PASSWORD SECTION -->
             <div class="change-pass-section" id="changePassSection" style="display: none;">
                 <h3>Change Admin Password</h3>
                 <input type="password" id="currentPass" class="admin-input" placeholder="Current Password">
@@ -230,7 +228,6 @@
             <div class="logo-text">AOSE</div>
         </div>
         <div class="nav-right">
-            <!-- HIDDEN ADMIN BUTTON - Customers can't see this -->
             <div class="btn-admin" id="adminBtn" onclick="toggleAdmin()">ADMIN</div>
             <div class="btn-track" onclick="openModal('modal-track')">TRACK</div>
             <div class="cart-icon" onclick="toggleCart()">
@@ -240,7 +237,6 @@
         </div>
     </header>
 
-    <!-- ALL EXISTING SECTIONS REMAIN IDENTICAL -->
     <section class="hero">
         <div class="hero-overlay"></div>
         <div class="hero-text">
@@ -249,7 +245,7 @@
         </div>
     </section>
 
-    <!-- SIZE CHART -->
+    <!-- SIZE CHART (UNCHANGED) -->
     <section class="size-chart-section">
         <h2 class="size-chart-title">AOSE Size Guide</h2>
         <p class="size-chart-note">All measurements are in inches and are approximate for our signature Stich & Wear tees.</p>
@@ -301,7 +297,7 @@
 
     <div class="container" id="product-grid"></div>
 
-    <!-- ALL EXISTING MODALS & SIDEBAR (UNCHANGED) -->
+    <!-- CART SIDEBAR (UNCHANGED) -->
     <div class="overlay" id="overlay" onclick="toggleCart()"></div>
     <div class="sidebar" id="sidebar">
         <div class="cart-header">
@@ -317,41 +313,32 @@
         </div>
     </div>
 
+    <!-- SUCCESS MODAL (UNCHANGED) -->
     <div class="modal" id="modal-success">
         <div class="modal-box" style="text-align:center;">
             <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--primary); margin-bottom: 20px;"></i>
             <h2>Order Placed!</h2>
-            <p style="margin: 15px 0;">Your order ID is <b id="final-id"></b>. Redirecting to WhatsApp for final confirmation...</p>
+            <p style="margin: 15px 0;">Your order ID is <b id="final-id"></b>. Redirecting to WhatsApp...</p>
             <button class="add-btn" onclick="location.reload()">Return to Shop</button>
         </div>
     </div>
 
-    <div class="modal" id="modal-checkout">
+    <!-- NEW PAYMENT LINKS MODAL -->
+    <div class="modal" id="modal-payment-links">
         <div class="modal-box">
-            <i class="fas fa-times" onclick="closeModal('modal-checkout')" style="float:right; cursor:pointer;"></i>
-            <br>
-            <div id="step-1">
-                <h3 style="margin-bottom:20px">Shipping Details</h3>
-                <div class="input-group"><input type="text" id="c-name" placeholder="Full Name"></div>
-                <div class="input-group"><input type="tel" id="c-phone" placeholder="WhatsApp Number"></div>
-                <div class="input-group"><textarea id="c-addr" placeholder="Complete Address (House No, Area, City, PIN)" rows="3"></textarea></div>
-                <button class="add-btn" onclick="initiatePayment()">Pay ₹<span id="pay-amt"></span></button>
-            </div>
-
-            <div id="step-2" style="display:none; text-align:center;">
-                <h3>Secure Payment</h3>
-                <p style="font-size: 0.8rem; margin: 10px 0; color: #666;">Choose your app or scan the QR</p>
-                <div id="qrcode" style="display:flex; justify-content:center; margin:20px 0;"></div>
-                <div class="pay-grid">
-                    <a id="link-gpay" class="pay-link" style="border-left: 5px solid #4285F4;"><i class="fab fa-google-pay"></i> Google Pay</a>
-                    <a id="link-phonepe" class="pay-link" style="border-left: 5px solid #5f259f;"><i class="fas fa-mobile-alt"></i> PhonePe</a>
-                    <a id="link-paytm" class="pay-link" style="border-left: 5px solid #00baf2;"><i class="fas fa-wallet"></i> Paytm</a>
-                </div>
-                <button class="add-btn" onclick="finishOrder()" style="margin-top:25px; background:#25d366;"><i class="fab fa-whatsapp"></i> Confirm Payment on WhatsApp</button>
-            </div>
+            <i class="fas fa-times" onclick="closeModal('modal-payment-links')" style="float:right; cursor:pointer;"></i>
+            <h3 style="margin-bottom:20px; color: var(--primary);">Pay Instantly</h3>
+            <div id="payment-links-container"></div>
+            <p style="font-size: 0.8rem; color: #666; margin-top: 20px; text-align: center;">
+                Complete payment → Click "Order Confirmed" below
+            </p>
+            <button class="add-btn" id="confirm-payment-btn" onclick="confirmPaymentOnWhatsApp()" style="margin-top: 15px; background: #25d366;">
+                ✅ Order Confirmed - Send to WhatsApp
+            </button>
         </div>
     </div>
 
+    <!-- TRACK MODAL (UNCHANGED) -->
     <div class="modal" id="modal-track">
         <div class="modal-box">
             <i class="fas fa-times" onclick="closeModal('modal-track')" style="float:right; cursor:pointer;"></i>
@@ -375,6 +362,7 @@
         // Load stored data
         let orders = JSON.parse(localStorage.getItem('aoseOrders')) || [];
         let adminPassword = localStorage.getItem('aoseAdminPass') || 'admin123';
+        let currentOrder = null; // Store current order details
         
         const products = [
             { id: 1, name: "AOSE Signature Stich & Wear", price: 999, img: "pro.jpg" },
@@ -399,13 +387,13 @@
         let cart = [];
         let selections = {};
 
-        // SECRET ADMIN ACCESS - Customers can't see this method
+        // SECRET ADMIN ACCESS
         function showAdmin() {
             document.getElementById('adminBtn').classList.add('show');
             alert('✅ Admin button activated! (Only you know this secret)');
         }
 
-        // ADMIN FUNCTIONS
+        // ADMIN FUNCTIONS (UNCHANGED)
         function toggleAdmin() {
             document.getElementById('adminPanel').classList.toggle('active');
             document.getElementById('adminPass').value = '';
@@ -508,7 +496,7 @@
             XLSX.writeFile(wb, `AOSE_Orders_${new Date().toISOString().split('T')[0]}.xlsx`);
         }
 
-        // ALL EXISTING FUNCTIONS (IDENTICAL)
+        // PRODUCT & CART FUNCTIONS (UNCHANGED)
         function init() {
             document.getElementById('product-grid').innerHTML = products.map(p => `
                 <div class="card">
@@ -585,69 +573,80 @@
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
+        // NEW PAYMENT FLOW
         function openCheckout() {
             if(cart.length === 0) return alert("Your bag is empty.");
             toggleCart();
-            openModal('modal-checkout');
+            // Save order details before payment
+            currentOrder = {
+                name: '',
+                phone: '',
+                addr: '',
+                items: cart.map(c => `${c.name} (${c.size}) x${c.qty}`).join(", "),
+                total: document.getElementById('cart-total').innerText,
+                date: new Date().toISOString()
+            };
+            openModal('modal-payment-links');
         }
 
-        function initiatePayment() {
-            const name = document.getElementById('c-name').value;
-            const phone = document.getElementById('c-phone').value;
-            const addr = document.getElementById('c-addr').value;
-            if(!name || !phone || !addr) return alert("Please fill all delivery details.");
-
-            document.getElementById('step-1').style.display = 'none';
-            document.getElementById('step-2').style.display = 'block';
-
+        function generatePaymentLinks() {
             const upiId = "7887731818@ybl";
-            const amount = document.getElementById('pay-amt').innerText;
-            const txnNote = encodeURIComponent(`AOSE Order: ${name}`);
+            const amount = currentOrder.total;
+            const name = currentOrder.name || 'Customer';
+            const txnNote = encodeURIComponent(`AOSE Order: ${name} | Items: ${currentOrder.items}`);
 
-            const upiUrl = `upi://pay?pa=${upiId}&pn=AOSE%20CLOTHING&am=${amount}&cu=INR&tn=${txnNote}`;
-            const gpayUrl = `googlepay://pay?pa=${upiId}&pn=AOSE%20CLOTHING&am=${amount}&cu=INR&tn=${txnNote}`;
-            const phonePeUrl = `phonepe://pay?pa=${upiId}&pn=AOSE%20CLOTHING&am=${amount}&cu=INR&tn=${txnNote}`;
-            const paytmUrl = `paytmmp://pay?pa=${upiId}&pn=AOSE%20CLOTHING&am=${amount}&cu=INR&tn=${txnNote}`;
+            const links = {
+                gpay: `tez://upi/pay?pa=${upiId}&pn=AOSE%20CLOTHING&am=${amount}&cu=INR&tn=${txnNote}`,
+                phonepe: `phonepe://pay?pa=${upiId}&pn=AOSE%20CLOTHING&am=${amount}&cu=INR&tn=${txnNote}`,
+                paytm: `paytmmp://pay?pa=${upiId}&pn=AOSE%20CLOTHING&am=${amount}&cu=INR&tn=${txnNote}`
+            };
 
-            document.getElementById('qrcode').innerHTML = "";
-            new QRCode(document.getElementById("qrcode"), { text: upiUrl, width: 160, height: 160 });
-
-            const linkG = document.getElementById('link-gpay');
-            const linkP = document.getElementById('link-phonepe');
-            const linkT = document.getElementById('link-paytm');
-
-            linkG.onclick = () => { window.location.href = gpayUrl; setTimeout(() => { window.location.href = upiUrl; }, 600); };
-            linkP.onclick = () => { window.location.href = phonePeUrl; setTimeout(() => { window.location.href = upiUrl; }, 600); };
-            linkT.onclick = () => { window.location.href = paytmUrl; setTimeout(() => { window.location.href = upiUrl; }, 600); };
+            document.getElementById('payment-links-container').innerHTML = `
+                <div class="pay-grid">
+                    <a href="${links.gpay}" class="pay-link" style="border-left: 5px solid #4285F4;">
+                        <i class="fab fa-google-pay"></i> Google Pay
+                    </a>
+                    <a href="${links.phonepe}" class="pay-link" style="border-left: 5px solid #5f259f;">
+                        <i class="fas fa-mobile-alt"></i> PhonePe
+                    </a>
+                    <a href="${links.paytm}" class="pay-link" style="border-left: 5px solid #00baf2;">
+                        <i class="fas fa-wallet"></i> Paytm
+                    </a>
+                </div>
+            `;
         }
 
-        function finishOrder() {
-            const orderId = "AOSE-" + Math.random().toString(36).substring(2, 7).toUpperCase();
-            const name = document.getElementById('c-name').value;
-            const phone = document.getElementById('c-phone').value;
-            const addr = document.getElementById('c-addr').value;
-            const items = cart.map(c => `${c.name} (${c.size}) x${c.qty}`).join(", ");
-            const total = document.getElementById('pay-amt').innerText;
-            const date = new Date().toISOString();
+        function confirmPaymentOnWhatsApp() {
+            if(!currentOrder.name || !currentOrder.phone || !currentOrder.addr) {
+                alert("Please fill your shipping details first!");
+                openModal('modal-checkout'); // Fallback to old flow if needed
+                return;
+            }
 
-            const order = { id: orderId, name, phone, addr, items, total, date, status: 'Pending' };
-            orders.unshift(order);
+            // Generate order ID and save to admin
+            const orderId = "AOSE-" + Math.random().toString(36).substring(2, 7).toUpperCase();
+            currentOrder.id = orderId;
+            currentOrder.status = 'Pending';
+            
+            orders.unshift(currentOrder);
             localStorage.setItem('aoseOrders', JSON.stringify(orders));
 
-            const msg = `*AOSE NEW ORDER*%0A%0A*ID:* ${orderId}%0A*Name:* ${name}%0A*Items:* ${items}%0A*Total:* ₹${total}%0A%0A_I have completed the payment via UPI._`;
+            // WhatsApp confirmation message
+            const msg = `*🛒 AOSE NEW ORDER CONFIRMED*%0A%0A*📋 Order ID:* ${orderId}%0A*👤 Name:* ${currentOrder.name}%0A*📞 Phone:* ${currentOrder.phone}%0A*📦 Items:* ${currentOrder.items}%0A*💰 Total:* ₹${currentOrder.total}%0A*📍 Address:* ${currentOrder.addr}%0A%0A✅ Payment completed via UPI%0A⏳ Status: Pending`;
 
-            closeModal('modal-checkout');
-            document.getElementById('final-id').innerText = orderId;
+            closeModal('modal-payment-links');
             openModal('modal-success');
+            document.getElementById('final-id').innerText = orderId;
 
-            cart = [];
-            renderCart();
-
+            // IMMEDIATE WHATSAPP REDIRECT
             setTimeout(() => {
-                window.open(`https://wa.me/917887731818?text=${msg}`);
-            }, 2000);
+                window.open(`https://wa.me/917887731818?text=${msg}`, '_blank');
+                cart = [];
+                renderCart();
+            }, 1500);
         }
 
+        // ALL OTHER FUNCTIONS (UNCHANGED)
         init();
     </script>
 </body>
