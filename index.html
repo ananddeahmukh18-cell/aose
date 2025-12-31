@@ -38,6 +38,7 @@
         .status-confirmed { color: #4caf50; font-weight: 600; }
         .admin-btn { padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 4px; cursor: pointer; margin: 5px; }
         .admin-input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; }
+        .change-pass-section { background: #f9f9f9; padding: 20px; border-radius: 8px; margin-top: 20px; }
 
         header {
             position: sticky; top: 0; z-index: 1000; background: rgba(238, 224, 196, 0.98);
@@ -49,8 +50,14 @@
         .logo-text { font-family: var(--font-head); font-size: 1.8rem; color: var(--primary); letter-spacing: 2px; }
 
         .nav-right { display: flex; gap: 20px; align-items: center; }
-        .btn-track, .btn-admin { font-size: 0.7rem; font-weight: 600; padding: 8px 15px; border: 1px solid var(--primary); cursor: pointer; transition: 0.3s; }
-        .btn-track:hover, .btn-admin:hover { background: var(--primary); color: white; }
+        .btn-track { font-size: 0.7rem; font-weight: 600; padding: 8px 15px; border: 1px solid var(--primary); cursor: pointer; transition: 0.3s; }
+        .btn-track:hover { background: var(--primary); color: white; }
+        /* HIDDEN ADMIN BUTTON - Only visible via secret method */
+        .btn-admin { 
+            font-size: 0.7rem; font-weight: 600; padding: 8px 15px; border: 1px solid var(--primary); 
+            cursor: pointer; transition: 0.3s; display: none !important; 
+        }
+        .btn-admin.show { display: inline-block !important; }
 
         .cart-icon { position: relative; cursor: pointer; font-size: 1.2rem; color: var(--primary); }
         .badge { position: absolute; top: -10px; right: -10px; background: var(--primary); color: white; font-size: 10px; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
@@ -161,16 +168,28 @@
             <h2 style="color: var(--primary); margin-bottom: 20px;">Admin Login</h2>
             <input type="password" id="adminPass" class="admin-input" placeholder="Enter Password">
             <button class="admin-btn" onclick="loginAdmin()">Login</button>
-            <p style="font-size: 0.8rem; color: #666; margin-top: 15px;"></p>
+            <p style="font-size: 0.8rem; color: #666; margin-top: 15px;">Default: admin123</p>
         </div>
         <div class="admin-dashboard" id="adminDashboard" style="display: none;">
             <div class="admin-header">
                 <h2>🛒 AOSE Admin Dashboard</h2>
                 <div>
                     <button class="admin-btn" onclick="exportOrders()">📊 Export Excel</button>
+                    <button class="admin-btn" onclick="changePassword()">🔐 Change Password</button>
                     <button class="admin-btn" onclick="logoutAdmin()">Logout</button>
                 </div>
             </div>
+            
+            <!-- CHANGE PASSWORD SECTION -->
+            <div class="change-pass-section" id="changePassSection" style="display: none;">
+                <h3>Change Admin Password</h3>
+                <input type="password" id="currentPass" class="admin-input" placeholder="Current Password">
+                <input type="password" id="newPass" class="admin-input" placeholder="New Password">
+                <input type="password" id="confirmPass" class="admin-input" placeholder="Confirm New Password">
+                <button class="admin-btn" onclick="updatePassword()">Update Password</button>
+                <button class="admin-btn" onclick="toggleChangePass()" style="background: #666;">Cancel</button>
+            </div>
+
             <div class="admin-stats">
                 <div class="stat-card">
                     <h3 id="totalOrders">0</h3>
@@ -211,7 +230,8 @@
             <div class="logo-text">AOSE</div>
         </div>
         <div class="nav-right">
-            <div class="btn-admin" onclick="toggleAdmin()">ADMIN</div>
+            <!-- HIDDEN ADMIN BUTTON - Customers can't see this -->
+            <div class="btn-admin" id="adminBtn" onclick="toggleAdmin()">ADMIN</div>
             <div class="btn-track" onclick="openModal('modal-track')">TRACK</div>
             <div class="cart-icon" onclick="toggleCart()">
                 <i class="fas fa-shopping-bag"></i>
@@ -220,6 +240,7 @@
         </div>
     </header>
 
+    <!-- ALL EXISTING SECTIONS REMAIN IDENTICAL -->
     <section class="hero">
         <div class="hero-overlay"></div>
         <div class="hero-text">
@@ -280,7 +301,7 @@
 
     <div class="container" id="product-grid"></div>
 
-    <!-- All existing modals remain exactly the same -->
+    <!-- ALL EXISTING MODALS & SIDEBAR (UNCHANGED) -->
     <div class="overlay" id="overlay" onclick="toggleCart()"></div>
     <div class="sidebar" id="sidebar">
         <div class="cart-header">
@@ -351,8 +372,10 @@
     </footer>
 
     <script>
-        // Orders storage (persists across sessions)
+        // Load stored data
         let orders = JSON.parse(localStorage.getItem('aoseOrders')) || [];
+        let adminPassword = localStorage.getItem('aoseAdminPass') || 'admin123';
+        
         const products = [
             { id: 1, name: "AOSE Signature Stich & Wear", price: 999, img: "pro.jpg" },
             { id: 2, name: "AOSE Signature Stich & Wear", price: 999, img: "proo10.jpg" },
@@ -376,14 +399,21 @@
         let cart = [];
         let selections = {};
 
+        // SECRET ADMIN ACCESS - Customers can't see this method
+        function showAdmin() {
+            document.getElementById('adminBtn').classList.add('show');
+            alert('✅ Admin button activated! (Only you know this secret)');
+        }
+
         // ADMIN FUNCTIONS
         function toggleAdmin() {
             document.getElementById('adminPanel').classList.toggle('active');
+            document.getElementById('adminPass').value = '';
         }
 
         function loginAdmin() {
             const pass = document.getElementById('adminPass').value;
-            if (pass === 'admin123') {
+            if (pass === adminPassword) {
                 document.getElementById('adminLogin').style.display = 'none';
                 document.getElementById('adminDashboard').style.display = 'block';
                 renderAdminDashboard();
@@ -396,6 +426,42 @@
             document.getElementById('adminLogin').style.display = 'block';
             document.getElementById('adminDashboard').style.display = 'none';
             document.getElementById('adminPass').value = '';
+            document.getElementById('changePassSection').style.display = 'none';
+        }
+
+        function changePassword() {
+            document.getElementById('changePassSection').style.display = 'block';
+        }
+
+        function toggleChangePass() {
+            document.getElementById('changePassSection').style.display = 'none';
+        }
+
+        function updatePassword() {
+            const current = document.getElementById('currentPass').value;
+            const newPass = document.getElementById('newPass').value;
+            const confirmPass = document.getElementById('confirmPass').value;
+
+            if (current !== adminPassword) {
+                alert('❌ Current password is incorrect!');
+                return;
+            }
+            if (newPass !== confirmPass) {
+                alert('❌ New passwords do not match!');
+                return;
+            }
+            if (newPass.length < 6) {
+                alert('❌ Password must be at least 6 characters!');
+                return;
+            }
+
+            adminPassword = newPass;
+            localStorage.setItem('aoseAdminPass', adminPassword);
+            alert('✅ Password updated successfully!');
+            toggleChangePass();
+            document.getElementById('currentPass').value = '';
+            document.getElementById('newPass').value = '';
+            document.getElementById('confirmPass').value = '';
         }
 
         function renderAdminDashboard() {
@@ -442,7 +508,7 @@
             XLSX.writeFile(wb, `AOSE_Orders_${new Date().toISOString().split('T')[0]}.xlsx`);
         }
 
-        // ALL EXISTING FUNCTIONS (UNCHANGED)
+        // ALL EXISTING FUNCTIONS (IDENTICAL)
         function init() {
             document.getElementById('product-grid').innerHTML = products.map(p => `
                 <div class="card">
@@ -564,7 +630,6 @@
             const total = document.getElementById('pay-amt').innerText;
             const date = new Date().toISOString();
 
-            // SAVE ORDER TO LOCALSTORAGE
             const order = { id: orderId, name, phone, addr, items, total, date, status: 'Pending' };
             orders.unshift(order);
             localStorage.setItem('aoseOrders', JSON.stringify(orders));
@@ -575,7 +640,7 @@
             document.getElementById('final-id').innerText = orderId;
             openModal('modal-success');
 
-            cart = []; // Clear cart
+            cart = [];
             renderCart();
 
             setTimeout(() => {
