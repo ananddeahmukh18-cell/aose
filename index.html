@@ -14,6 +14,192 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <style>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<!-- INSIDE your payment modal (.modal-payment-links) -->
+<div class="payment-section">
+    <!-- CUSTOMER DETAILS FORM -->
+    <div class="customer-details">
+        <h3><i class="fas fa-user"></i> Shipping Details</h3>
+        <input type="text" id="customer-name" placeholder="Full Name *" required>
+        <input type="tel" id="customer-phone" placeholder="WhatsApp Number *" required>
+        <textarea id="customer-address" placeholder="Complete Address (House, Area, City, PIN)" rows="3" required></textarea>
+    </div>
+
+    <!-- UPI QR CODE -->
+    <div class="upi-qr-section">
+        <h3><i class="fas fa-qrcode"></i> Scan to Pay</h3>
+        <div id="upi-qr-code" style="width: 200px; height: 200px; margin: 20px auto; border: 4px solid #f0f0f0; border-radius: 15px; background: white; display: flex; align-items: center; justify-content: center;"></div>
+        <p style="text-align: center; font-size: 1.1rem; font-weight: 600; color: var(--primary); margin: 10px 0;">
+            <strong>₹<span id="payment-amount">0</span></strong>
+        </p>
+        <p style="text-align: center; color: #666; font-size: 0.9rem;">
+            Scan QR with any UPI app (GPay, PhonePe, Paytm)
+        </p>
+    </div>
+
+    <!-- DIRECT UPI BUTTONS -->
+    <div class="upi-buttons">
+        <a href="#" class="upi-btn gpay" onclick="openUpiApp('gpay')">
+            <i class="fab fa-google-pay"></i> Google Pay
+        </a>
+        <a href="#" class="upi-btn phonepe" onclick="openUpiApp('phonepe')">
+            <i class="fas fa-mobile-alt"></i> PhonePe
+        </a>
+        <a href="#" class="upi-btn paytm" onclick="openUpiApp('paytm')">
+            <i class="fas fa-wallet"></i> Paytm
+        </a>
+    </div>
+
+    <!-- CONFIRM BUTTON -->
+    <button class="confirm-btn" onclick="confirmPayment()" id="confirm-btn" disabled>
+        ✅ Payment Done - Send Order to WhatsApp
+    </button>
+</div>
+/* UPI PAYMENT STYLES */
+.payment-section { max-width: 500px; margin: 0 auto; }
+.customer-details { 
+    background: #f9f9f9; padding: 25px; border-radius: 20px; margin-bottom: 25px; 
+}
+.customer-details h3 { color: var(--primary); margin-bottom: 20px; font-size: 1.4rem; }
+.customer-details input, .customer-details textarea {
+    width: 100%; padding: 15px; margin-bottom: 15px; border: 2px solid #e0e0e0;
+    border-radius: 12px; font-size: 1rem; transition: border-color 0.3s;
+}
+.customer-details input:focus, .customer-details textarea:focus {
+    border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(15,61,46,0.1);
+}
+
+.upi-qr-section { text-align: center; margin: 30px 0; }
+.upi-qr-section h3 { color: var(--primary); margin-bottom: 15px; }
+
+.upi-buttons {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px; margin: 30px 0;
+}
+.upi-btn {
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    padding: 20px 15px; border: 3px solid #e0e0e0; border-radius: 20px;
+    text-decoration: none; font-weight: 700; font-size: 1rem; transition: all 0.3s;
+    background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+.upi-btn:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+.upi-btn i { font-size: 2.5rem; }
+.gpay { border-left: 6px solid #4285F4; } .gpay i { color: #4285F4; }
+.phonepe { border-left: 6px solid #5F259F; } .phonepe i { color: #5F259F; }
+.paytm { border-left: 6px solid #00BAF2; } .paytm i { color: #00BAF2; }
+
+.confirm-btn {
+    width: 100%; padding: 18px; background: linear-gradient(135deg, #25D366, #128C7E);
+    color: white; border: none; border-radius: 16px; font-weight: 700; font-size: 1.1rem;
+    cursor: pointer; transition: all 0.3s;
+}
+.confirm-btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(37,211,102,0.4); }
+.confirm-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+// 🤑 UPI PAYMENT FUNCTIONS
+let currentPaymentAmount = 0;
+
+function generateUpiQr() {
+    const upiId = "7887731818@ybl";
+    const amount = currentPaymentAmount;
+    const upiUrl = `upi://pay?pa=${upiId}&pn=AOSE%20Clothing&am=${amount}&cu=INR`;
+    
+    // Generate QR Code
+    document.getElementById('upi-qr-code').innerHTML = '';
+    new QRCode(document.getElementById('upi-qr-code'), {
+        text: upiUrl,
+        width: 180,
+        height: 180,
+        colorDark: "#0f3d2e",
+        colorLight: "#ffffff"
+    });
+    
+    document.getElementById('payment-amount').textContent = amount.toLocaleString();
+}
+
+function openUpiApp(app) {
+    const upiId = "7887731818@ybl";
+    const amount = currentPaymentAmount;
+    const name = document.getElementById('customer-name').value || 'Customer';
+    const note = encodeURIComponent(`AOSE Order: ${name}`);
+    
+    const upiUrls = {
+        gpay: `tez://upi/pay?pa=${upiId}&pn=AOSE%20Clothing&am=${amount}&cu=INR&tn=${note}`,
+        phonepe: `phonepe://pay?pa=${upiId}&pn=AOSE%20Clothing&am=${amount}&cu=INR&tn=${note}`,
+        paytm: `paytmmp://pay?pa=${upiId}&pn=AOSE%20Clothing&am=${amount}&cu=INR&tn=${note}`
+    };
+    
+    window.open(upiUrls[app], '_blank');
+}
+
+function updateConfirmButton() {
+    const name = document.getElementById('customer-name').value.trim();
+    const phone = document.getElementById('customer-phone').value.trim();
+    const address = document.getElementById('customer-address').value.trim();
+    
+    document.getElementById('confirm-btn').disabled = !(name && phone && address);
+}
+
+// Initialize payment section when checkout opens
+function initPaymentSection() {
+    currentPaymentAmount = parseInt(document.getElementById('cart-total').textContent) || 0;
+    generateUpiQr();
+    
+    // Add event listeners for form validation
+    ['customer-name', 'customer-phone', 'customer-address'].forEach(id => {
+        document.getElementById(id).addEventListener('input', updateConfirmButton);
+    });
+    
+    updateConfirmButton();
+}
+
+function confirmPayment() {
+    const name = document.getElementById('customer-name').value;
+    const phone = document.getElementById('customer-phone').value;
+    const address = document.getElementById('customer-address').value;
+    
+    // Create order object
+    const orderId = `AOSE-${Date.now().toString(36).toUpperCase().substring(0,6)}`;
+    const items = cart.map(item => `${item.name} (${item.size}) x${item.qty}`).join(', ');
+    
+    const orderData = {
+        id: orderId,
+        name, phone, address, items,
+        total: currentPaymentAmount,
+        date: new Date().toISOString(),
+        status: 'Pending'
+    };
+    
+    // Save to localStorage for admin
+    orders.unshift(orderData);
+    localStorage.setItem('aoseOrders', JSON.stringify(orders));
+    
+    // WhatsApp message
+    const whatsappMsg = `*🛒 AOSE NEW ORDER*%0A%0A` +
+        `*Order ID:* ${orderId}%0A` +
+        `*Customer:* ${name}%0A` +
+        `*Phone:* ${phone}%0A` +
+        `*Items:* ${items}%0A` +
+        `*Total:* ₹${currentPaymentAmount}%0A` +
+        `*Address:* ${address.replace(/\n/g, '%0A')}%0A%0A` +
+        `✅ Payment via UPI (7887731818@ybl)%0A⏳ Awaiting Confirmation`;
+    
+    // Show success + redirect to WhatsApp
+    document.getElementById('final-order-id').textContent = orderId;
+    showSuccessModal();
+    
+    setTimeout(() => {
+        window.open(`https://wa.me/917887731818?text=${whatsappMsg}`, '_blank');
+        cart = []; // Clear cart
+        renderCart();
+    }, 2000);
+}
+function openCheckout() {
+    if (cart.length === 0) return alert('Your cart is empty!');
+    toggleCart();
+    initPaymentSection(); // Initialize UPI QR + form
+    openModal('modal-payment-links');
+}
+
         :root {
             --primary: #0f3d2e;
             --accent: #c6a664;
