@@ -745,55 +745,96 @@
             border-color: var(--primary);
         }
 
-        /* Enhanced Payment Methods */
-        .payment-methods {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 1rem;
+        /* Direct Payment Buttons */
+        .payment-buttons-container {
             margin: 1.5rem 0;
         }
 
-        .payment-method {
-            padding: 1.5rem 1rem;
-            border: 2px solid var(--light-gray);
-            border-radius: 12px;
+        .payment-buttons-title {
             text-align: center;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .payment-direct-buttons {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.8rem;
+        }
+
+        .payment-direct-btn {
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: var(--white);
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
+            gap: 0.8rem;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
         }
 
-        .payment-method:hover {
+        .payment-direct-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .payment-direct-btn:hover:before {
+            left: 100%;
+        }
+
+        .payment-direct-btn.gpay {
+            background: #4285F4;
+            color: white;
+            border: 2px solid #3367D6;
+        }
+
+        .payment-direct-btn.phonepe {
+            background: #5F259F;
+            color: white;
+            border: 2px solid #4B1B8C;
+        }
+
+        .payment-direct-btn.paytm {
+            background: #00BAF2;
+            color: white;
+            border: 2px solid #00A0D4;
+        }
+
+        .payment-direct-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border-color: var(--primary);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.2);
         }
 
-        .payment-method.active {
-            border-color: var(--primary);
-            background: rgba(15, 61, 46, 0.05);
-            box-shadow: 0 5px 15px rgba(15, 61, 46, 0.1);
+        .payment-direct-btn:active {
+            transform: translateY(-1px);
         }
 
-        .payment-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
+        .payment-btn-icon {
+            font-size: 1.5rem;
         }
 
-        .payment-method.gpay .payment-icon {
-            color: #4285F4;
+        .payment-btn-text {
+            font-size: 1rem;
+            font-weight: 600;
         }
 
-        .payment-method.phonepe .payment-icon {
-            color: #5F259F;
-        }
-
-        .payment-method.paytm .payment-icon {
-            color: #00BAF2;
+        .payment-amount-note {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-top: 0.3rem;
         }
 
         .qr-container {
@@ -802,6 +843,14 @@
             background: var(--bg-light);
             border-radius: 10px;
             margin: 1.5rem 0;
+            border: 2px solid var(--light-gray);
+        }
+
+        .qr-title {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-weight: 600;
         }
 
         .qr-code {
@@ -811,48 +860,31 @@
             padding: 0.5rem;
             background: var(--white);
             border-radius: 10px;
+            border: 1px solid var(--light-gray);
         }
 
-        /* Payment Buttons */
-        .payment-direct-buttons {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 0.8rem;
-            margin: 1.5rem 0;
+        /* Payment Instructions */
+        .payment-instructions {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--primary);
         }
 
-        .payment-direct-btn {
-            padding: 0.8rem;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            font-size: 1rem;
+        .payment-instructions h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
         }
 
-        .payment-direct-btn.gpay {
-            background: #4285F4;
-            color: white;
+        .payment-instructions ul {
+            padding-left: 1.2rem;
+            margin-bottom: 0;
         }
 
-        .payment-direct-btn.phonepe {
-            background: #5F259F;
-            color: white;
-        }
-
-        .payment-direct-btn.paytm {
-            background: #00BAF2;
-            color: white;
-        }
-
-        .payment-direct-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        .payment-instructions li {
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
         }
 
         /* Admin Panel */
@@ -1050,10 +1082,6 @@
                 gap: 1.5rem;
             }
             
-            .payment-methods {
-                grid-template-columns: 1fr;
-            }
-            
             .payment-direct-buttons {
                 grid-template-columns: 1fr;
             }
@@ -1196,38 +1224,46 @@
             <div class="form-group">
                 <textarea id="customerAddress" class="form-input" placeholder="Complete Shipping Address *" rows="3" required></textarea>
             </div>
-            
-            <div class="payment-methods">
-                <div class="payment-method gpay active" onclick="selectPaymentMethod('gpay')">
-                    <i class="fab fa-google-pay payment-icon"></i>
-                    <div>Google Pay</div>
-                </div>
-                <div class="payment-method phonepe" onclick="selectPaymentMethod('phonepe')">
-                    <i class="fas fa-mobile-alt payment-icon"></i>
-                    <div>PhonePe</div>
-                </div>
-                <div class="payment-method paytm" onclick="selectPaymentMethod('paytm')">
-                    <i class="fas fa-wallet payment-icon"></i>
-                    <div>Paytm</div>
-                </div>
+
+            <!-- Payment Instructions -->
+            <div class="payment-instructions">
+                <h4>Payment Instructions:</h4>
+                <ul>
+                    <li>Fill your details above first</li>
+                    <li>Choose a payment method below</li>
+                    <li>Click the button to open the payment app</li>
+                    <li>Amount will be pre-filled automatically</li>
+                    <li>After payment, come back and click "Confirm Order"</li>
+                </ul>
             </div>
             
             <!-- Direct Payment Buttons -->
-            <div class="payment-direct-buttons" id="directPaymentButtons">
-                <!-- Buttons will be added dynamically -->
+            <div class="payment-buttons-container">
+                <div class="payment-buttons-title">Pay Directly via UPI Apps</div>
+                <div class="payment-direct-buttons" id="directPaymentButtons">
+                    <!-- Buttons will be added dynamically -->
+                </div>
             </div>
             
+            <!-- QR Code Section -->
             <div class="qr-container">
-                <h4 style="margin-bottom: 1rem;">Or Scan QR to Pay</h4>
+                <div class="qr-title">Or Scan QR Code to Pay</div>
                 <div class="qr-code" id="qrCode"></div>
                 <p style="margin-top: 1rem; color: var(--gray);">
                     Amount: <strong>₹<span id="paymentAmount">0</span></strong>
                 </p>
+                <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem;">
+                    Scan with any UPI app to pay
+                </p>
             </div>
             
             <button class="checkout-btn" id="confirmPaymentBtn" onclick="confirmPayment()" disabled>
-                <i class="fab fa-whatsapp"></i> Confirm Order
+                <i class="fab fa-whatsapp"></i> Confirm Order & Notify Store
             </button>
+            
+            <p style="text-align: center; margin-top: 1rem; font-size: 0.85rem; color: var(--gray);">
+                After making payment, please click "Confirm Order" to complete your order
+            </p>
         </div>
     </div>
 
@@ -1239,8 +1275,11 @@
             <p style="text-align: center; margin-bottom: 1rem;">
                 Your order <strong id="orderIdDisplay"></strong> has been placed successfully.
             </p>
-            <p style="text-align: center; margin-bottom: 2rem; color: var(--gray);">
+            <p style="text-align: center; margin-bottom: 1rem; color: var(--gray);">
                 A confirmation email has been sent to your email address.
+            </p>
+            <p style="text-align: center; margin-bottom: 2rem; color: var(--gray); font-size: 0.9rem;">
+                We'll contact you shortly with order updates on WhatsApp.
             </p>
             <button class="checkout-btn" onclick="closeModal('successModal')">
                 <i class="fas fa-shopping-bag"></i> Continue Shopping
@@ -1317,7 +1356,6 @@
         let cart = JSON.parse(localStorage.getItem('aose_cart')) || [];
         let orders = JSON.parse(localStorage.getItem('aose_orders')) || [];
         let adminPassword = localStorage.getItem('aose_admin_pass') || 'admin123';
-        let selectedPaymentMethod = 'gpay';
 
         // Products Data
         const products = [
@@ -1630,59 +1668,68 @@
         function updateDirectPaymentButtons(amount) {
             const buttonsContainer = document.getElementById('directPaymentButtons');
             const upiId = "7887731818@ybl";
+            const merchantName = "AOSE Clothing";
             
+            // UPI Payment URLs for different apps
             const paymentMethods = [
                 {
                     name: 'gpay',
                     displayName: 'Google Pay',
-                    icon: 'fab fa-google-pay',
+                    icon: 'fab fa-google',
                     color: '#4285F4',
-                    url: `https://pay.google.com/gp/v/u/0/app/index.html#payment/initiate?pa=${upiId}&pn=AOSE%20Clothing&am=${amount}&cu=INR&mc=`
+                    url: `https://gpay.app.goo.gl/UPI?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR&tn=Order%20Payment`
                 },
                 {
                     name: 'phonepe',
                     displayName: 'PhonePe',
                     icon: 'fas fa-mobile-alt',
                     color: '#5F259F',
-                    url: `phonepe://pay?pa=${upiId}&pn=AOSE%20Clothing&am=${amount}&cu=INR`
+                    url: `phonepe://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR&mc=`
                 },
                 {
                     name: 'paytm',
                     displayName: 'Paytm',
                     icon: 'fas fa-wallet',
                     color: '#00BAF2',
-                    url: `paytmmp://pay?pa=${upiId}&pn=AOSE%20Clothing&am=${amount}&cu=INR`
+                    url: `paytmmp://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR&mc=`
                 }
             ];
             
             buttonsContainer.innerHTML = paymentMethods.map(method => `
-                <button class="payment-direct-btn ${method.name}" onclick="openPaymentApp('${method.url}', '${method.name}')">
-                    <i class="${method.icon}"></i>
-                    Pay with ${method.displayName}
+                <button class="payment-direct-btn ${method.name}" onclick="openPaymentApp('${method.url}', '${method.name}', '${method.displayName}', ${amount})">
+                    <i class="${method.icon} payment-btn-icon"></i>
+                    <div class="payment-btn-text">
+                        <div>Pay with ${method.displayName}</div>
+                        <div class="payment-amount-note">₹${amount} will be pre-filled</div>
+                    </div>
                 </button>
             `).join('');
         }
 
         // Open Payment App
-        function openPaymentApp(url, method) {
+        function openPaymentApp(url, method, displayName, amount) {
             // First check if form is valid
             if (!validatePaymentForm()) {
                 showToast('Please fill all required fields first!', 'error');
                 return;
             }
             
-            // Open the payment app
-            window.open(url, '_blank');
+            // Show loading message
+            showToast(`Opening ${displayName} app...`, 'success');
             
-            // Show confirmation message
-            showToast(`Opening ${method === 'gpay' ? 'Google Pay' : method === 'phonepe' ? 'PhonePe' : 'Paytm'} app...`);
-        }
-
-        // Select Payment Method
-        function selectPaymentMethod(method) {
-            selectedPaymentMethod = method;
-            document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
-            document.querySelector(`.payment-method.${method}`).classList.add('active');
+            // Try to open the app
+            const timeout = setTimeout(() => {
+                // If app doesn't open, show instructions
+                if (method === 'gpay') {
+                    showToast(`If ${displayName} didn't open, please open the app manually and use UPI ID: 7887731818@ybl`, 'error');
+                }
+            }, 2000);
+            
+            // Open the payment app
+            window.location.href = url;
+            
+            // Clean up timeout
+            setTimeout(() => clearTimeout(timeout), 5000);
         }
 
         // Validate Payment Form
@@ -1717,6 +1764,7 @@
                     order_total: order.total,
                     customer_address: order.customerAddress,
                     customer_phone: order.customerPhone,
+                    from_email: 'aoseofficial77@gmail.com',
                     from_name: 'AOSE Official'
                 };
 
@@ -1733,7 +1781,7 @@
                 console.error('Email sending failed:', error);
                 // Fallback: Create mailto link
                 const subject = `Order Confirmation - ${order.id}`;
-                const body = `Dear ${order.customerName},\n\nThank you for your order!\n\nOrder ID: ${order.id}\nDate: ${new Date(order.date).toLocaleDateString()}\nItems: ${order.items}\nTotal: ₹${order.total}\n\nWe will process your order shortly.\n\nBest regards,\nAOSE Team`;
+                const body = `Dear ${order.customerName},\n\nThank you for your order!\n\nOrder ID: ${order.id}\nDate: ${new Date(order.date).toLocaleDateString()}\nItems: ${order.items}\nTotal: ₹${order.total}\n\nWe will process your order shortly.\n\nBest regards,\nAOSE Team\nEmail: aoseofficial77@gmail.com\nPhone: +91 78877 31818`;
                 const mailtoLink = `mailto:${order.customerEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
                 window.open(mailtoLink, '_blank');
                 return false;
@@ -1760,7 +1808,7 @@
                 total: totalAmount,
                 date: new Date().toISOString(),
                 status: 'Pending',
-                paymentMethod: selectedPaymentMethod
+                paymentMethod: 'UPI Payment'
             };
 
             orders.unshift(order);
@@ -1786,7 +1834,7 @@
 
             // Send WhatsApp message to business
             setTimeout(() => {
-                const message = `*NEW AOSE ORDER*%0A%0A*Order ID:* ${orderId}%0A*Customer:* ${order.customerName}%0A*Email:* ${order.customerEmail}%0A*Phone:* ${order.customerPhone}%0A*Total:* ₹${order.total}%0A*Items:* ${order.items}%0A*Address:* ${order.customerAddress}%0A*Payment Method:* ${selectedPaymentMethod}`;
+                const message = `*🛍️ NEW AOSE ORDER*%0A%0A*Order ID:* ${orderId}%0A*Customer:* ${order.customerName}%0A*Email:* ${order.customerEmail}%0A*Phone:* ${order.customerPhone}%0A*Total Amount:* ₹${order.total}%0A*Items:* ${order.items}%0A*Shipping Address:* ${order.customerAddress}%0A*Payment Method:* UPI Payment%0A*Order Date:* ${new Date(order.date).toLocaleString()}`;
                 window.open(`https://wa.me/917887731818?text=${message}`, '_blank');
             }, 1000);
         }
