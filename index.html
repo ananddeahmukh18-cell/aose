@@ -796,19 +796,19 @@
         }
 
         .payment-direct-btn.gpay {
-            background: #4285F4;
+            background: linear-gradient(135deg, #4285F4, #3367D6);
             color: white;
             border: 2px solid #3367D6;
         }
 
         .payment-direct-btn.phonepe {
-            background: #5F259F;
+            background: linear-gradient(135deg, #5F259F, #4B1B8C);
             color: white;
             border: 2px solid #4B1B8C;
         }
 
         .payment-direct-btn.paytm {
-            background: #00BAF2;
+            background: linear-gradient(135deg, #00BAF2, #00A0D4);
             color: white;
             border: 2px solid #00A0D4;
         }
@@ -1664,34 +1664,37 @@
             });
         }
 
-        // Update Direct Payment Buttons
+        // Update Direct Payment Buttons - FIXED WITH WORKING UPI LINKS
         function updateDirectPaymentButtons(amount) {
             const buttonsContainer = document.getElementById('directPaymentButtons');
             const upiId = "7887731818@ybl";
             const merchantName = "AOSE Clothing";
             
-            // UPI Payment URLs for different apps
+            // WORKING UPI Payment URLs
             const paymentMethods = [
                 {
                     name: 'gpay',
                     displayName: 'Google Pay',
                     icon: 'fab fa-google',
                     color: '#4285F4',
-                    url: `https://gpay.app.goo.gl/UPI?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR&tn=Order%20Payment`
+                    // Standard UPI link - works on all devices
+                    url: `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR&tn=Order%20Payment&tr=AOSE${Date.now()}`
                 },
                 {
                     name: 'phonepe',
                     displayName: 'PhonePe',
                     icon: 'fas fa-mobile-alt',
                     color: '#5F259F',
-                    url: `phonepe://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR&mc=`
+                    // PhonePe specific deep link
+                    url: `phonepe://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR&tn=Order%20Payment`
                 },
                 {
                     name: 'paytm',
                     displayName: 'Paytm',
                     icon: 'fas fa-wallet',
                     color: '#00BAF2',
-                    url: `paytmmp://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR&mc=`
+                    // Paytm specific deep link
+                    url: `paytmmp://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR&tn=Order%20Payment`
                 }
             ];
             
@@ -1706,7 +1709,7 @@
             `).join('');
         }
 
-        // Open Payment App
+        // Open Payment App - FIXED WITH BETTER REDIRECTION
         function openPaymentApp(url, method, displayName, amount) {
             // First check if form is valid
             if (!validatePaymentForm()) {
@@ -1715,21 +1718,24 @@
             }
             
             // Show loading message
-            showToast(`Opening ${displayName} app...`, 'success');
+            showToast(`Opening ${displayName}...`, 'success');
             
-            // Try to open the app
+            // Create a temporary link element for better compatibility
+            const link = document.createElement('a');
+            link.href = url;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            
+            // Set timeout to show fallback instructions
             const timeout = setTimeout(() => {
-                // If app doesn't open, show instructions
-                if (method === 'gpay') {
-                    showToast(`If ${displayName} didn't open, please open the app manually and use UPI ID: 7887731818@ybl`, 'error');
-                }
+                showToast(`If ${displayName} didn't open, please use UPI ID: 7887731818@ybl`, 'error');
             }, 2000);
             
-            // Open the payment app
-            window.location.href = url;
+            // Try to open the app
+            link.click();
             
             // Clean up timeout
-            setTimeout(() => clearTimeout(timeout), 5000);
+            setTimeout(() => clearTimeout(timeout), 3000);
         }
 
         // Validate Payment Form
