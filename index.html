@@ -1,217 +1,304 @@
-<body>
-    <div id="loadingScreen">
-        <div class="loading-spinner"></div>
-        <p style="color: var(--primary); font-weight: 600;">Loading AOSE...</p>
-    </div>
-
-    <div class="toast-notification" id="toastNotification">
-        <i class="fas fa-check-circle toast-icon"></i>
-        <span id="toastMessage">Product added to cart!</span>
-    </div>
-
-    <header class="header" id="mainHeader">
-        <div class="header-content">
-            <div class="logo-container">
-                <div class="logo-text">AOSE</div>
-            </div>
-            
-            <div class="nav-right">
-                <button class="cart-btn" onclick="toggleCart()">
-                    <i class="fas fa-shopping-bag"></i>
-                    <span class="cart-count" id="cartCount">0</span>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <section class="hero" id="hero">
-        <div class="hero-background"></div>
-        <div class="hero-content">
-            <span class="hero-subtitle">PREMIUM STITCH & WEAR</span>
-            <h1 class="hero-title">TIMELESS ELEGANCE</h1>
-            <p class="hero-description">Experience the perfect blend of traditional craftsmanship and modern design.</p>
-            <button class="cta-button" onclick="document.getElementById('productsSection').scrollIntoView()">
-                <span>Explore Collection</span>
-                <i class="fas fa-arrow-right"></i>
-            </button>
-        </div>
-    </section>
-
-    <section class="products-section" id="productsSection">
-        <h2 class="section-title">Premium Collection</h2>
-        <div class="products-grid" id="productsGrid">
-            </div>
-    </section>
-
-    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
-    <div class="cart-sidebar" id="cartSidebar">
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <aside class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
             <span class="cart-title">Your Bag</span>
-            <span class="cart-close" onclick="toggleCart()"><i class="fas fa-times"></i></span>
+            <i class="fas fa-times cart-close" onclick="toggleCart()"></i>
         </div>
+        
         <div class="cart-items" id="cartItems">
             <div class="cart-empty">
                 <i class="fas fa-shopping-basket"></i>
                 <p>Your bag is empty</p>
             </div>
         </div>
+
         <div class="cart-footer">
             <div class="cart-total">
                 <span>Total</span>
                 <span class="total-amount" id="cartTotal">₹0</span>
             </div>
-            <button class="checkout-btn" id="checkoutBtn" onclick="openPaymentModal()" disabled>
+            <button class="checkout-btn" id="checkoutBtn" onclick="openCheckout()" disabled>
                 PROCEED TO PAY
+            </button>
+        </div>
+    </aside>
+
+    <div class="modal" id="trackModal">
+        <div class="modal-content">
+            <i class="fas fa-times modal-close" onclick="closeModal('trackModal')"></i>
+            <h3 class="modal-title">Track Order</h3>
+            <div class="form-group">
+                <input type="text" class="form-input" placeholder="Enter Order ID (e.g., AOSE-1024)">
+            </div>
+            <button class="cta-button" style="width: 100%; justify-content: center;">
+                Track Status
             </button>
         </div>
     </div>
 
-    <div class="modal" id="paymentModal">
+    <div class="modal" id="checkoutModal">
         <div class="modal-content">
-            <span class="modal-close" onclick="closeModal('paymentModal')"><i class="fas fa-times"></i></span>
-            <h3 class="modal-title">Secure Payment</h3>
+            <i class="fas fa-times modal-close" onclick="closeModal('checkoutModal')"></i>
+            <h3 class="modal-title">Secure Checkout</h3>
             
-            <div class="form-group">
-                <input type="text" class="form-input" id="custName" placeholder="Full Name" required>
-            </div>
-            <div class="form-group">
-                <input type="tel" class="form-input" id="custPhone" placeholder="Mobile Number" required>
-            </div>
-
-            <div class="payment-instructions">
-                <h4><i class="fas fa-shield-alt"></i> Paying: <span id="payModalTotal">₹0</span></h4>
-                <p>Select your preferred app to complete payment securely.</p>
-            </div>
-
-            <div class="payment-buttons-container">
-                <div class="payment-direct-buttons">
-                    <button class="payment-direct-btn gpay" onclick="processPayment('gpay')">
-                        <i class="fab fa-google-pay payment-btn-icon"></i>
-                        <span class="payment-btn-text">Google Pay</span>
-                    </button>
-                    
-                    <button class="payment-direct-btn phonepe" onclick="processPayment('phonepe')">
-                        <i class="fas fa-rupee-sign payment-btn-icon"></i> <span class="payment-btn-text">PhonePe</span>
-                    </button>
-                    
-                    <button class="payment-direct-btn paytm" onclick="processPayment('paytm')">
-                        <i class="fas fa-wallet payment-btn-icon"></i>
-                        <span class="payment-btn-text">Paytm</span>
-                    </button>
+            <form id="checkoutForm" onsubmit="processPayment(event)">
+                <div class="form-group">
+                    <input type="text" class="form-input" id="custName" placeholder="Full Name" required>
                 </div>
-            </div>
+                <div class="form-group">
+                    <input type="tel" class="form-input" id="custPhone" placeholder="Phone Number" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-input" id="custEmail" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-input" id="custAddress" placeholder="Delivery Address" rows="2" required></textarea>
+                </div>
 
-            <div class="payment-amount-note" style="text-align: center; color: #666;">
-                Payment will be sent to: <strong>+91 7887731818</strong>
-            </div>
+                <hr style="border: 0; border-top: 1px solid var(--light-gray); margin: 1.5rem 0;">
+
+                <div class="payment-section">
+                    <div class="qr-container">
+                        <div class="qr-title">Scan to Pay</div>
+                        <div id="qrcode" class="qr-code"></div>
+                        <div class="payment-amount-note">
+                            Paying: <strong style="color: var(--primary);" id="payAmountDisplay">₹0</strong>
+                        </div>
+                    </div>
+
+                    <div class="payment-buttons-container">
+                        <div class="payment-buttons-title">OR Pay via App</div>
+                        <div class="payment-direct-buttons">
+                            <a href="#" id="btn-gpay" class="payment-direct-btn gpay">
+                                <i class="fab fa-google-pay payment-btn-icon"></i>
+                                <span class="payment-btn-text">Google Pay</span>
+                            </a>
+                            <a href="#" id="btn-phonepe" class="payment-direct-btn phonepe">
+                                <i class="fas fa-rupee-sign payment-btn-icon"></i>
+                                <span class="payment-btn-text">PhonePe / BHIM</span>
+                            </a>
+                            <a href="#" id="btn-paytm" class="payment-direct-btn paytm">
+                                <i class="fas fa-wallet payment-btn-icon"></i>
+                                <span class="payment-btn-text">Paytm</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="payment-instructions">
+                        <h4><i class="fas fa-shield-alt"></i> Payment Instructions</h4>
+                        <ul>
+                            <li>Scan QR code or select an app above.</li>
+                            <li>Complete the payment on your device.</li>
+                            <li><strong>Important:</strong> Click "Confirm Order" below after payment.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <button type="submit" class="checkout-btn" style="margin-top: 1rem;">
+                    CONFIRM ORDER <i class="fas fa-check"></i>
+                </button>
+            </form>
         </div>
     </div>
 
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>AOSE</h3>
+                <p>Timeless Elegance, Modern Legacy. Handcrafted premium clothing for the modern individual.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#hero">Home</a></li>
+                    <li><a href="#productsSection">Collection</a></li>
+                    <li><a href="#sizeGuide">Size Guide</a></li>
+                    <li><a href="#" onclick="openModal('trackModal')">Track Order</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-envelope"></i> support@aose.in</li>
+                    <li><i class="fas fa-phone"></i> +91 98765 43210</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Mumbai, India</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 AOSE Clothing. All rights reserved.</p>
+        </div>
+    </footer>
+
     <script>
-        // --- 1. CONFIGURATION & DATA ---
-        const MY_PHONE_NUMBER = "7887731818"; 
-        // Note: Generic VPA is number@upi. 
-        // If this doesn't work, replace with specific like 7887731818@okaxis (GPay) or 7887731818@ybl (PhonePe)
-        const MY_VPA = "7887731818@upi"; 
-        
+        // --- 1. CONFIGURATION (Edit this) ---
+        const UPI_ID = "yourname@upi"; // REPLACE WITH YOUR UPI ID
+        const PAYEE_NAME = "AOSE Clothing"; 
+
+        // --- 2. DUMMY DATA ---
         const products = [
             {
                 id: 1,
-                name: "Classic Linen Shirt",
-                price: 1499,
-                image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80",
-                sizes: ["S", "M", "L", "XL"]
+                name: "Classic Oxford Shirt",
+                price: 2499,
+                image: "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?q=80&w=1000&auto=format&fit=crop",
+                badge: "Bestseller"
             },
             {
                 id: 2,
-                name: "Premium Cotton Kurta",
-                price: 2499,
-                image: "https://images.unsplash.com/photo-1597983073493-88cd35cf93b0?auto=format&fit=crop&w=500&q=80",
-                sizes: ["M", "L", "XL", "XXL"]
+                name: "Royal Linen Kurta",
+                price: 3299,
+                image: "https://images.unsplash.com/photo-1597983073493-88cd35cf93b0?q=80&w=1000&auto=format&fit=crop",
+                badge: "New"
             },
             {
                 id: 3,
-                name: "Royal Silk Nehru Jacket",
-                price: 3999,
-                image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=500&q=80",
-                sizes: ["S", "M", "L"]
+                name: "Midnight Silk Blazer",
+                price: 5999,
+                image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1000&auto=format&fit=crop",
+                badge: "Premium"
+            },
+            {
+                id: 4,
+                name: "Signature Chinos",
+                price: 1899,
+                image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?q=80&w=1000&auto=format&fit=crop",
+                badge: ""
             }
         ];
 
         let cart = [];
-
-        // --- 2. INITIALIZATION ---
+        
+        // --- 3. INITIALIZATION ---
         window.addEventListener('load', () => {
-            // Hide loader
             setTimeout(() => {
                 document.getElementById('loadingScreen').style.opacity = '0';
                 setTimeout(() => {
                     document.getElementById('loadingScreen').style.display = 'none';
                 }, 500);
-            }, 1000);
-
+            }, 1500);
+            
             renderProducts();
         });
 
-        // --- 3. PRODUCT LOGIC ---
+        // --- 4. RENDER FUNCTIONS ---
         function renderProducts() {
             const grid = document.getElementById('productsGrid');
             grid.innerHTML = products.map(product => `
                 <div class="product-card">
                     <div class="product-image">
+                        ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
                         <img src="${product.image}" alt="${product.name}">
-                        <span class="product-badge">New Arrival</span>
                     </div>
                     <div class="product-info">
                         <h3 class="product-name">${product.name}</h3>
                         <div class="product-price">₹${product.price}</div>
-                        
-                        <div class="size-selector" id="sizes-${product.id}">
-                            ${product.sizes.map(size => 
-                                `<button class="size-btn" onclick="selectSize(${product.id}, '${size}', this)">${size}</button>`
+                        <div class="size-selector">
+                            ${['S', 'M', 'L', 'XL'].map(size => 
+                                `<button class="size-btn" onclick="selectSize(this)">${size}</button>`
                             ).join('')}
                         </div>
-
-                        <button class="add-to-cart-btn" onclick="addToCart(${product.id})">
-                            <i class="fas fa-shopping-bag"></i> Add to Cart
+                        <button class="add-to-cart-btn" onclick="addToCart(${product.id}, this)">
+                            <i class="fas fa-shopping-bag"></i> Add to Bag
                         </button>
                     </div>
                 </div>
             `).join('');
         }
 
-        let selectedSizes = {};
-
-        function selectSize(productId, size, btnElement) {
-            // Remove active class from other buttons
-            const parent = document.getElementById(`sizes-${productId}`);
-            Array.from(parent.children).forEach(btn => btn.classList.remove('active'));
-            
-            // Add active to clicked
-            btnElement.classList.add('active');
-            selectedSizes[productId] = size;
+        // --- 5. CART LOGIC ---
+        function selectSize(btn) {
+            const parent = btn.parentElement;
+            parent.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
         }
 
-        // --- 4. CART LOGIC ---
-        function addToCart(productId) {
-            const size = selectedSizes[productId];
-            if (!size) {
-                showToast("Please select a size first", true);
+        function addToCart(productId, btnElement) {
+            const sizeBtn = btnElement.parentElement.querySelector('.size-btn.active');
+            if (!sizeBtn) {
+                alert("Please select a size first");
                 return;
             }
 
             const product = products.find(p => p.id === productId);
-            const existingItem = cart.find(item => item.id === productId && item.size === size);
+            const size = sizeBtn.innerText;
+            
+            // Animation
+            const originalText = btnElement.innerHTML;
+            btnElement.innerHTML = '<i class="fas fa-check"></i> Added';
+            btnElement.style.background = 'var(--success)';
+            setTimeout(() => {
+                btnElement.innerHTML = originalText;
+                btnElement.style.background = 'var(--primary)';
+            }, 1500);
 
+            // Toast
+            showToast(`${product.name} added to bag`);
+
+            // Add to state
+            const existingItem = cart.find(item => item.id === productId && item.size === size);
             if (existingItem) {
                 existingItem.quantity++;
             } else {
                 cart.push({ ...product, size, quantity: 1 });
             }
-
+            
             updateCartUI();
-            toggleCart(true); // Open cart
-            showToast("Added to bag!");
+        }
+
+        function updateCartUI() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const cartCount = document.getElementById('cartCount');
+            const cartTotal = document.getElementById('cartTotal');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+
+            const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.innerText = totalQuantity;
+
+            // Product Added Animation trigger on cart icon
+            document.querySelector('.cart-btn').classList.add('product-added-animation');
+            setTimeout(() => document.querySelector('.cart-btn').classList.remove('product-added-animation'), 500);
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="cart-empty">
+                        <i class="fas fa-shopping-basket"></i>
+                        <p>Your bag is empty</p>
+                    </div>`;
+                cartTotal.innerText = '₹0';
+                checkoutBtn.disabled = true;
+                return;
+            }
+
+            checkoutBtn.disabled = false;
+            let total = 0;
+
+            cartItemsContainer.innerHTML = cart.map((item, index) => {
+                total += item.price * item.quantity;
+                return `
+                <div class="cart-item">
+                    <img src="${item.image}" class="cart-item-image" alt="${item.name}">
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-size">Size: ${item.size}</div>
+                        <div class="cart-item-controls">
+                            <button class="quantity-btn" onclick="updateQuantity(${index}, -1)">-</button>
+                            <span class="cart-item-quantity">${item.quantity}</span>
+                            <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">+</button>
+                            <div class="cart-item-price">₹${item.price * item.quantity}</div>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            cartTotal.innerText = `₹${total}`;
         }
 
         function updateQuantity(index, change) {
@@ -222,161 +309,98 @@
             updateCartUI();
         }
 
-        function updateCartUI() {
-            const cartContainer = document.getElementById('cartItems');
-            const cartCount = document.getElementById('cartCount');
-            const cartTotal = document.getElementById('cartTotal');
-            const checkoutBtn = document.getElementById('checkoutBtn');
-
-            // Update count
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            cartCount.innerText = totalItems;
-
-            // Calculate total
-            const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            cartTotal.innerText = '₹' + totalAmount;
-
-            // Update checkout button state
-            checkoutBtn.disabled = cart.length === 0;
-
-            // Render items
-            if (cart.length === 0) {
-                cartContainer.innerHTML = `
-                    <div class="cart-empty">
-                        <i class="fas fa-shopping-basket"></i>
-                        <p>Your bag is empty</p>
-                    </div>`;
-            } else {
-                cartContainer.innerHTML = cart.map((item, index) => `
-                    <div class="cart-item">
-                        <img src="${item.image}" alt="${item.name}" class="cart-item-image">
-                        <div class="cart-item-info">
-                            <div class="cart-item-name">${item.name}</div>
-                            <div class="cart-item-size">Size: ${item.size}</div>
-                            <div class="cart-item-controls">
-                                <button class="quantity-btn" onclick="updateQuantity(${index}, -1)">-</button>
-                                <span class="cart-item-quantity">${item.quantity}</span>
-                                <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">+</button>
-                            </div>
-                        </div>
-                        <div class="cart-item-price">₹${item.price * item.quantity}</div>
-                    </div>
-                `).join('');
-            }
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('open');
+            document.getElementById('cartOverlay').classList.toggle('active');
         }
 
-        function toggleCart(forceOpen = null) {
-            const sidebar = document.getElementById('cartSidebar');
-            const overlay = document.getElementById('cartOverlay');
-            
-            if (forceOpen === true) {
-                sidebar.classList.add('open');
-                overlay.classList.add('active');
-            } else if (forceOpen === false) {
-                sidebar.classList.remove('open');
-                overlay.classList.remove('active');
-            } else {
-                sidebar.classList.toggle('open');
-                overlay.classList.toggle('active');
-            }
+        // --- 6. CHECKOUT & PAYMENT LOGIC ---
+        function openCheckout() {
+            toggleCart(); // Close sidebar
+            openModal('checkoutModal');
+            generatePaymentDetails();
         }
 
-        // --- 5. PAYMENT GATEWAY LOGIC (CRITICAL SECTION) ---
-
-        function openPaymentModal() {
-            // Close cart
-            toggleCart(false);
-            
-            // Calculate Amount
-            const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            document.getElementById('payModalTotal').innerText = '₹' + totalAmount;
-            
-            // Show Modal
-            document.getElementById('paymentModal').classList.add('active');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-        }
-
-        function processPayment(appType) {
-            const name = document.getElementById('custName').value;
-            const phone = document.getElementById('custPhone').value;
-            
-            if(!name || !phone) {
-                alert("Please enter Name and Phone number first.");
-                return;
-            }
-
+        function generatePaymentDetails() {
             const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             
-            // Construct UPI Link
-            // pa = Payee Address (VPA)
-            // pn = Payee Name (Merchant Name)
-            // am = Amount
-            // tr = Transaction Ref ID (Random timestamp)
-            // tn = Transaction Note
-            const orderId = "ORD" + Date.now();
-            
-            let upiLink = "";
-            
-            // Standard UPI Parameter String
-            const params = `pa=${MY_VPA}&pn=AOSE_Fashion&am=${totalAmount}&cu=INR&tn=Order_${orderId}`;
+            document.getElementById('payAmountDisplay').innerText = `₹${totalAmount}`;
 
-            // APP SPECIFIC REDIRECTION LOGIC
-            // Note: On mobile web, standard upi:// works best to trigger the Intent Picker.
-            // However, we can try to target specific schemes if supported by the OS.
-            
-            if (isMobileDevice()) {
-                if (appType === 'gpay') {
-                    // Google Pay scheme
-                    upiLink = `upi://pay?${params}`; 
-                    // Note: tez:// is deprecated, standard upi:// is preferred for GPay now
-                } else if (appType === 'phonepe') {
-                    // PhonePe scheme
-                    upiLink = `phonepe://pay?${params}`;
-                } else if (appType === 'paytm') {
-                    // Paytm scheme
-                    upiLink = `paytmmp://pay?${params}`;
-                } else {
-                    upiLink = `upi://pay?${params}`;
-                }
+            // Generate UPI String
+            // format: upi://pay?pa=ADDRESS&pn=NAME&am=AMOUNT&cu=INR
+            const upiString = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${totalAmount}&cu=INR`;
 
-                // Fallback mechanism: If specific scheme fails, the browser usually does nothing.
-                // It is safer to use the standard link for all, but since you asked for specific buttons:
-                
-                window.location.href = upiLink;
-                
-                // Set a timeout to check if the user stayed on the page (meaning app didn't open)
-                setTimeout(function() {
-                    // If 2 seconds pass and we are still here, try the standard UPI link
-                    if(appType !== 'gpay') { // GPay usually works with standard link anyway
-                        window.location.href = `upi://pay?${params}`;
-                    }
-                }, 2000);
-            } else {
-                alert("This payment method is supported on Mobile devices. For desktop, scan a QR code (Feature coming soon).");
-            }
+            // 1. Generate QR Code
+            const qrContainer = document.getElementById("qrcode");
+            qrContainer.innerHTML = ""; // Clear previous
+            new QRCode(qrContainer, {
+                text: upiString,
+                width: 180,
+                height: 180,
+                colorDark : "#0f3d2e",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+
+            // 2. Update Direct App Links
+            document.getElementById('btn-gpay').href = upiString;
+            document.getElementById('btn-phonepe').href = upiString;
+            document.getElementById('btn-paytm').href = upiString;
         }
 
-        // Helper to check if mobile
-        function isMobileDevice() {
-            return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
-        };
-
-        // UI Helpers
-        function showToast(msg, isError = false) {
-            const toast = document.getElementById('toastNotification');
-            const msgEl = document.getElementById('toastMessage');
+        function processPayment(e) {
+            e.preventDefault();
             
-            msgEl.innerText = msg;
-            toast.className = isError ? 'toast-notification error' : 'toast-notification';
-            toast.classList.add('show');
+            // Simulate processing
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            btn.disabled = true;
 
             setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+                // Success State
+                closeModal('checkoutModal');
+                cart = []; // Clear cart
+                updateCartUI();
+                
+                // Show Success Message
+                alert("Order Placed Successfully! We have received your payment request. You will receive an email shortly.");
+                
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                e.target.reset();
+            }, 2000);
         }
+
+        // --- 7. UTILS ---
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastNotification');
+            document.getElementById('toastMessage').innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function scrollToProducts() {
+            document.getElementById('productsSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Header Scroll Effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('mainHeader');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
     </script>
 </body>
 </html>
