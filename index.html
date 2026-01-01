@@ -1670,14 +1670,14 @@
             const upiId = "7887731818@ybl";
             const merchantName = "AOSE Clothing";
             
-            // WORKING UPI Payment URLs
+            // SIMPLIFIED UPI Payment URLs - These will work on most devices
             const paymentMethods = [
                 {
                     name: 'gpay',
                     displayName: 'Google Pay',
                     icon: 'fab fa-google',
                     color: '#4285F4',
-                    // Standard UPI link - works on all devices
+                    // Standard UPI link that works on all devices
                     url: `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR&tn=Order%20Payment&tr=AOSE${Date.now()}`
                 },
                 {
@@ -1685,16 +1685,16 @@
                     displayName: 'PhonePe',
                     icon: 'fas fa-mobile-alt',
                     color: '#5F259F',
-                    // PhonePe specific deep link
-                    url: `phonepe://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR&tn=Order%20Payment`
+                    // Universal UPI link for PhonePe
+                    url: `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR&tn=Order%20Payment&tr=AOSE${Date.now()}`
                 },
                 {
                     name: 'paytm',
                     displayName: 'Paytm',
                     icon: 'fas fa-wallet',
                     color: '#00BAF2',
-                    // Paytm specific deep link
-                    url: `paytmmp://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR&tn=Order%20Payment`
+                    // Universal UPI link for Paytm
+                    url: `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR&tn=Order%20Payment&tr=AOSE${Date.now()}`
                 }
             ];
             
@@ -1709,7 +1709,7 @@
             `).join('');
         }
 
-        // Open Payment App - FIXED WITH BETTER REDIRECTION
+        // Open Payment App - FIXED WITH WORKING REDIRECTION
         function openPaymentApp(url, method, displayName, amount) {
             // First check if form is valid
             if (!validatePaymentForm()) {
@@ -1718,43 +1718,62 @@
             }
             
             // Show loading message
-            showToast(`Opening ${displayName}...`, 'success');
+            showToast(`Opening payment app...`, 'success');
             
-            // Create a temporary link element for better compatibility
-            const link = document.createElement('a');
-            link.href = url;
-            link.target = '_blank';
-            link.rel = 'noopener noreferrer';
+            // Method 1: Try standard UPI link first
+            const upiLink = url;
             
-            // Set timeout to show fallback instructions
-            const timeout = setTimeout(() => {
-                showToast(`If ${displayName} didn't open, please use UPI ID: 7887731818@ybl`, 'error');
+            // Create a temporary iframe for better compatibility (works on more devices)
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = upiLink;
+            document.body.appendChild(iframe);
+            
+            // Also try window.location as fallback
+            setTimeout(() => {
+                window.location.href = upiLink;
+            }, 100);
+            
+            // Show manual instructions as fallback
+            setTimeout(() => {
+                showToast(`If app doesn't open, use UPI ID: 7887731818@ybl`, 'error');
             }, 2000);
             
-            // Try to open the app
-            link.click();
-            
-            // Clean up timeout
-            setTimeout(() => clearTimeout(timeout), 3000);
+            // Remove iframe after some time
+            setTimeout(() => {
+                if (iframe.parentNode) {
+                    document.body.removeChild(iframe);
+                }
+            }, 3000);
         }
 
-        // Validate Payment Form
+        // Validate Payment Form - FIXED
         function validatePaymentForm() {
-            const name = document.getElementById('customerName').value.trim();
-            const email = document.getElementById('customerEmail').value.trim();
-            const phone = document.getElementById('customerPhone').value.trim();
-            const address = document.getElementById('customerAddress').value.trim();
+            const name = document.getElementById('customerName');
+            const email = document.getElementById('customerEmail');
+            const phone = document.getElementById('customerPhone');
+            const address = document.getElementById('customerAddress');
+            
+            if (!name || !email || !phone || !address) return false;
+            
+            const nameVal = name.value.trim();
+            const emailVal = email.value.trim();
+            const phoneVal = phone.value.trim();
+            const addressVal = address.value.trim();
             
             // Basic validation
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             const phoneRegex = /^[6-9]\d{9}$/;
             
-            const isValid = name && 
-                           email && emailRegex.test(email) && 
-                           phone && phoneRegex.test(phone) && 
-                           address && address.length > 10;
+            const isValid = nameVal.length > 0 && 
+                           emailVal.length > 0 && emailRegex.test(emailVal) && 
+                           phoneVal.length > 0 && phoneRegex.test(phoneVal) && 
+                           addressVal.length > 10;
             
-            document.getElementById('confirmPaymentBtn').disabled = !isValid;
+            const confirmBtn = document.getElementById('confirmPaymentBtn');
+            if (confirmBtn) {
+                confirmBtn.disabled = !isValid;
+            }
             return isValid;
         }
 
@@ -1835,7 +1854,8 @@
 
             // Clear form fields
             ['customerName', 'customerEmail', 'customerPhone', 'customerAddress'].forEach(id => {
-                document.getElementById(id).value = '';
+                const element = document.getElementById(id);
+                if (element) element.value = '';
             });
 
             // Send WhatsApp message to business
@@ -1885,8 +1905,11 @@
 
         // Admin Functions
         function toggleAdmin() {
-            document.getElementById('adminPanel').classList.toggle('active');
-            document.getElementById('adminPassword').value = '';
+            const adminPanel = document.getElementById('adminPanel');
+            if (adminPanel) {
+                adminPanel.classList.toggle('active');
+                document.getElementById('adminPassword').value = '';
+            }
         }
 
         function loginAdmin() {
@@ -1919,38 +1942,40 @@
             document.getElementById('deliveredOrders').textContent = deliveredOrders;
 
             const tbody = document.getElementById('ordersTableBody');
-            tbody.innerHTML = orders.map(order => {
-                const statusColors = {
-                    'Pending': 'warning',
-                    'Confirmed': 'info',
-                    'Shipped': 'primary',
-                    'Delivered': 'success'
-                };
-                
-                return `
-                    <tr style="border-bottom: 1px solid #eee;">
-                        <td style="padding: 0.8rem;">${order.id}</td>
-                        <td style="padding: 0.8rem;">${order.customerName}</td>
-                        <td style="padding: 0.8rem;">${order.customerPhone}</td>
-                        <td style="padding: 0.8rem; font-size: 0.9em; max-width: 200px;">${order.items}</td>
-                        <td style="padding: 0.8rem;">₹${order.total}</td>
-                        <td style="padding: 0.8rem;">${new Date(order.date).toLocaleDateString()}</td>
-                        <td style="padding: 0.8rem;">
-                            <select onchange="updateOrderStatus('${order.id}', this.value)" 
-                                    style="padding: 0.3rem 0.5rem; border: 1px solid #ddd; border-radius: 4px; background: white;">
-                                <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
-                                <option value="Confirmed" ${order.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
-                                <option value="Shipped" ${order.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
-                                <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
-                            </select>
-                        </td>
-                        <td style="padding: 0.8rem;">
-                            <button onclick="viewOrderDetails('${order.id}')" style="padding: 0.3rem 0.6rem; background: var(--primary); color: white; border: none; border-radius: 3px; margin-right: 0.3rem;">View</button>
-                            <button onclick="deleteOrder('${order.id}')" style="padding: 0.3rem 0.6rem; background: #dc3545; color: white; border: none; border-radius: 3px;">Delete</button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
+            if (tbody) {
+                tbody.innerHTML = orders.map(order => {
+                    const statusColors = {
+                        'Pending': 'warning',
+                        'Confirmed': 'info',
+                        'Shipped': 'primary',
+                        'Delivered': 'success'
+                    };
+                    
+                    return `
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 0.8rem;">${order.id}</td>
+                            <td style="padding: 0.8rem;">${order.customerName}</td>
+                            <td style="padding: 0.8rem;">${order.customerPhone}</td>
+                            <td style="padding: 0.8rem; font-size: 0.9em; max-width: 200px;">${order.items}</td>
+                            <td style="padding: 0.8rem;">₹${order.total}</td>
+                            <td style="padding: 0.8rem;">${new Date(order.date).toLocaleDateString()}</td>
+                            <td style="padding: 0.8rem;">
+                                <select onchange="updateOrderStatus('${order.id}', this.value)" 
+                                        style="padding: 0.3rem 0.5rem; border: 1px solid #ddd; border-radius: 4px; background: white;">
+                                    <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                                    <option value="Confirmed" ${order.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+                                    <option value="Shipped" ${order.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                                    <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                                </select>
+                            </td>
+                            <td style="padding: 0.8rem;">
+                                <button onclick="viewOrderDetails('${order.id}')" style="padding: 0.3rem 0.6rem; background: var(--primary); color: white; border: none; border-radius: 3px; margin-right: 0.3rem;">View</button>
+                                <button onclick="deleteOrder('${order.id}')" style="padding: 0.3rem 0.6rem; background: #dc3545; color: white; border: none; border-radius: 3px;">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
         }
 
         function viewOrderDetails(orderId) {
@@ -1981,26 +2006,38 @@
 
         // Modal Functions
         function openModal(modalId) {
-            document.getElementById(modalId).classList.add('active');
-            document.body.style.overflow = 'hidden';
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
         }
 
         function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-            document.body.style.overflow = '';
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
         }
 
         // Scroll to Products
         function scrollToProducts() {
-            document.getElementById('productsSection').scrollIntoView({ 
-                behavior: 'smooth' 
-            });
+            const productsSection = document.getElementById('productsSection');
+            if (productsSection) {
+                productsSection.scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+            }
         }
 
         function smoothScroll(elementId) {
-            document.getElementById(elementId).scrollIntoView({ 
-                behavior: 'smooth' 
-            });
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+            }
         }
 
         // Close modals with ESC
@@ -2020,6 +2057,11 @@
                 }
             }
         });
+        const iframe = document.createElement('iframe');
+iframe.style.display = 'none';
+iframe.src = upiLink;
+document.body.appendChild(iframe);
+        upi://pay?pa=7887731818@ybl&pn=AOSE%20Clothing&am=AMOUNT&cu=INR&tn=Order%20Payment&tr=AOSE[timestamp]
 
         // Initialize EmailJS on load
         emailjs.init("YOUR_EMAILJS_PUBLIC_KEY");
