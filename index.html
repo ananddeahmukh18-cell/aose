@@ -3,155 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AOSE Premium | Secure Checkout</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-    <style>
-        :root {
-            --primary: #0f3d2e;
-            --accent-gold: #c6a664;
-            --bg-cream: #f8f4ec;
-            --white: #ffffff;
-        }
-
-        body { font-family: 'Montserrat', sans-serif; background: var(--bg-cream); margin: 0; padding: 20px; color: #333; }
-        
-        /* Layout */
-        .container { max-width: 500px; margin: 0 auto; background: var(--white); padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .logo { font-family: 'Playfair Display', serif; font-size: 2.5rem; text-align: center; color: var(--primary); margin-bottom: 10px; }
-        
-        /* Cart Summary */
-        .order-summary { background: #f9f9f9; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px dashed var(--primary); }
-        .total-row { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.2rem; color: var(--primary); margin-top: 10px; border-top: 1px solid #ddd; padding-top: 10px; }
-
-        /* Form Inputs */
-        .form-input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-
-        /* Payment Buttons */
-        .payment-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 20px; }
-        .pay-btn { 
-            padding: 15px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; 
-            display: flex; align-items: center; justify-content: center; gap: 12px; color: white; transition: 0.3s;
-        }
-        .pay-btn:hover { transform: translateY(-2px); opacity: 0.9; }
-        
-        .gpay { background: #1a73e8; }
-        .phonepe { background: #5f259f; }
-        .paytm { background: #00b9f5; }
-        .upi-generic { background: var(--primary); }
-
-        /* QR Section */
-        .qr-section { text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee; }
-        #qrcode { display: flex; justify-content: center; margin-top: 10px; }
-        .qr-hint { font-size: 0.8rem; color: #666; margin-top: 8px; }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <div class="logo">AOSE</div>
-    <p style="text-align: center; margin-top: 0;">Timeless Elegance</p>
-
-    <div class="order-summary">
-        <div id="itemList">
-            <div style="display:flex; justify-content:space-between;">
-                <span>Signature Stitch Shirt (L)</span>
-                <span>₹1499</span>
-            </div>
-        </div>
-        <div class="total-row">
-            <span>Total Amount</span>
-            <span>₹<span id="finalAmount">1499</span></span>
-        </div>
-    </div>
-
-    <input type="text" id="custName" class="form-input" placeholder="Full Name">
-    <input type="text" id="custAddr" class="form-input" placeholder="Shipping Address & PIN">
-
-    <div class="payment-grid">
-        <button class="pay-btn gpay" onclick="triggerPayment('gpay')">
-            <i class="fab fa-google-pay" style="font-size:1.5rem;"></i> Google Pay
-        </button>
-        <button class="pay-btn phonepe" onclick="triggerPayment('phonepe')">
-            <i class="fas fa-mobile-alt"></i> PhonePe
-        </button>
-        <button class="pay-btn paytm" onclick="triggerPayment('paytm')">
-            <i class="fas fa-wallet"></i> Paytm
-        </button>
-        <button class="pay-btn upi-generic" onclick="triggerPayment('upi')">
-            <i class="fas fa-rupee-sign"></i> Any UPI App
-        </button>
-    </div>
-
-    <div class="qr-section">
-        <span style="font-weight: 600; color: var(--primary);">Scan to Pay (Desktop)</span>
-        <div id="qrcode"></div>
-        <p class="qr-hint">Accepts Google Pay, PhonePe, Paytm, and more.</p>
-    </div>
-</div>
-
-<script>
-    // --- SETTINGS ---
-    const CONFIG = {
-        upiId: "7887731818@ybl", // Your UPI ID
-        merchantName: "AOSE Clothing",
-        whatsapp: "917887731818" // For order confirmation
-    };
-
-    let amount = 1499; // Dynamic amount from your cart
-
-    // Initialize QR Code on Load
-    window.onload = () => {
-        const upiString = `upi://pay?pa=${CONFIG.upiId}&pn=${encodeURIComponent(CONFIG.merchantName)}&am=${amount}&cu=INR`;
-        new QRCode(document.getElementById("qrcode"), {
-            text: upiString,
-            width: 140,
-            height: 140
-        });
-    };
-
-    function triggerPayment(app) {
-        const name = document.getElementById('custName').value;
-        const addr = document.getElementById('custAddr').value;
-
-        if(!name || !addr) {
-            alert("Please fill in your name and address first.");
-            return;
-        }
-
-        const note = encodeURIComponent(`Order for ${name}`);
-        const upiParams = `pa=${CONFIG.upiId}&pn=${encodeURIComponent(CONFIG.merchantName)}&am=${amount}&cu=INR&tn=${note}`;
-
-        let deepLink = "";
-        
-        // Deep Link mapping
-        if (app === 'gpay') deepLink = `tez://upi/pay?${upiParams}`;
-        else if (app === 'phonepe') deepLink = `phonepe://pay?${upiParams}`;
-        else if (app === 'paytm') deepLink = `paytmmp://pay?${upiParams}`;
-        else deepLink = `upi://pay?${upiParams}`;
-
-        // Attempt to open the app
-        window.location.href = deepLink;
-
-        // Confirmation via WhatsApp (Since we have no backend)
-        setTimeout(() => {
-            if(confirm("Once you finish the payment in the app, click OK to send your address to our WhatsApp.")) {
-                const msg = `*NEW ORDER*%0A*Name:* ${name}%0A*Address:* ${addr}%0A*Amount:* ₹${amount}%0A*Status:* Payment Initiated`;
-                window.open(`https://wa.me/${CONFIG.whatsapp}?text=${msg}`, '_blank');
-            }
-        }, 4000);
-    }
-</script>
-
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="AOSE - Premium Stitch & Wear Clothing. Timeless Elegance, Modern Legacy.">
     <meta name="keywords" content="AOSE, clothing, fashion, stitch and wear, premium, India">
     <title>AOSE | Timeless Elegance, Modern Legacy</title>
@@ -2149,7 +2000,140 @@
                 }
             }
         });
+<style>
+        :root {
+            --primary: #0f3d2e;
+            --accent-gold: #c6a664;
+            --bg-cream: #f8f4ec;
+            --white: #ffffff;
+        }
 
+        body { font-family: 'Montserrat', sans-serif; background: var(--bg-cream); margin: 0; padding: 20px; color: #333; }
+        
+        /* Layout */
+        .container { max-width: 500px; margin: 0 auto; background: var(--white); padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .logo { font-family: 'Playfair Display', serif; font-size: 2.5rem; text-align: center; color: var(--primary); margin-bottom: 10px; }
+        
+        /* Cart Summary */
+        .order-summary { background: #f9f9f9; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px dashed var(--primary); }
+        .total-row { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.2rem; color: var(--primary); margin-top: 10px; border-top: 1px solid #ddd; padding-top: 10px; }
+
+        /* Form Inputs */
+        .form-input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+
+        /* Payment Buttons */
+        .payment-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 20px; }
+        .pay-btn { 
+            padding: 15px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; 
+            display: flex; align-items: center; justify-content: center; gap: 12px; color: white; transition: 0.3s;
+        }
+        .pay-btn:hover { transform: translateY(-2px); opacity: 0.9; }
+        
+        .gpay { background: #1a73e8; }
+        .phonepe { background: #5f259f; }
+        .paytm { background: #00b9f5; }
+        .upi-generic { background: var(--primary); }
+
+        /* QR Section */
+        .qr-section { text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee; }
+        #qrcode { display: flex; justify-content: center; margin-top: 10px; }
+        .qr-hint { font-size: 0.8rem; color: #666; margin-top: 8px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="logo">AOSE</div>
+    <p style="text-align: center; margin-top: 0;">Timeless Elegance</p>
+
+    <div class="order-summary">
+        <div id="itemList">
+            <div style="display:flex; justify-content:space-between;">
+                <span>Signature Stitch Shirt (L)</span>
+                <span>₹1499</span>
+            </div>
+        </div>
+        <div class="total-row">
+            <span>Total Amount</span>
+            <span>₹<span id="finalAmount">1499</span></span>
+        </div>
+    </div>
+
+    <input type="text" id="custName" class="form-input" placeholder="Full Name">
+    <input type="text" id="custAddr" class="form-input" placeholder="Shipping Address & PIN">
+
+    <div class="payment-grid">
+        <button class="pay-btn gpay" onclick="triggerPayment('gpay')">
+            <i class="fab fa-google-pay" style="font-size:1.5rem;"></i> Google Pay
+        </button>
+        <button class="pay-btn phonepe" onclick="triggerPayment('phonepe')">
+            <i class="fas fa-mobile-alt"></i> PhonePe
+        </button>
+        <button class="pay-btn paytm" onclick="triggerPayment('paytm')">
+            <i class="fas fa-wallet"></i> Paytm
+        </button>
+        <button class="pay-btn upi-generic" onclick="triggerPayment('upi')">
+            <i class="fas fa-rupee-sign"></i> Any UPI App
+        </button>
+    </div>
+
+    <div class="qr-section">
+        <span style="font-weight: 600; color: var(--primary);">Scan to Pay (Desktop)</span>
+        <div id="qrcode"></div>
+        <p class="qr-hint">Accepts Google Pay, PhonePe, Paytm, and more.</p>
+    </div>
+</div>
+
+<script>
+    // --- SETTINGS ---
+    const CONFIG = {
+        upiId: "7887731818@ybl", // Your UPI ID
+        merchantName: "AOSE Clothing",
+        whatsapp: "917887731818" // For order confirmation
+    };
+
+    let amount = 1499; // Dynamic amount from your cart
+
+    // Initialize QR Code on Load
+    window.onload = () => {
+        const upiString = `upi://pay?pa=${CONFIG.upiId}&pn=${encodeURIComponent(CONFIG.merchantName)}&am=${amount}&cu=INR`;
+        new QRCode(document.getElementById("qrcode"), {
+            text: upiString,
+            width: 140,
+            height: 140
+        });
+    };
+
+    function triggerPayment(app) {
+        const name = document.getElementById('custName').value;
+        const addr = document.getElementById('custAddr').value;
+
+        if(!name || !addr) {
+            alert("Please fill in your name and address first.");
+            return;
+        }
+
+        const note = encodeURIComponent(`Order for ${name}`);
+        const upiParams = `pa=${CONFIG.upiId}&pn=${encodeURIComponent(CONFIG.merchantName)}&am=${amount}&cu=INR&tn=${note}`;
+
+        let deepLink = "";
+        
+        // Deep Link mapping
+        if (app === 'gpay') deepLink = `tez://upi/pay?${upiParams}`;
+        else if (app === 'phonepe') deepLink = `phonepe://pay?${upiParams}`;
+        else if (app === 'paytm') deepLink = `paytmmp://pay?${upiParams}`;
+        else deepLink = `upi://pay?${upiParams}`;
+
+        // Attempt to open the app
+        window.location.href = deepLink;
+
+        // Confirmation via WhatsApp (Since we have no backend)
+        setTimeout(() => {
+            if(confirm("Once you finish the payment in the app, click OK to send your address to our WhatsApp.")) {
+                const msg = `*NEW ORDER*%0A*Name:* ${name}%0A*Address:* ${addr}%0A*Amount:* ₹${amount}%0A*Status:* Payment Initiated`;
+                window.open(`https://wa.me/${CONFIG.whatsapp}?text=${msg}`, '_blank');
+            }
+        }, 4000);
         // Initialize EmailJS on load
         emailjs.init("YOUR_EMAILJS_PUBLIC_KEY");
     </script>
