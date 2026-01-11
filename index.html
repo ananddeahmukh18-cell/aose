@@ -17,6 +17,32 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
     <style>
+        /* Add logo styling */
+        .brand-logo {
+            height: 45px;
+            width: auto;
+            object-fit: contain;
+            transition: all 0.3s ease;
+        }
+        
+        .header.scrolled .brand-logo {
+            height: 35px;
+        }
+        
+        /* Update brand styling */
+        .brand {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        @media (max-width: 768px) {
+            .brand-logo {
+                height: 35px;
+            }
+        }
+
+        /* Rest of the CSS remains exactly the same */
         :root {
             --primary: #0F3D2E; /* Deep Emerald */
             --primary-light: #1a5c45;
@@ -109,7 +135,7 @@
         .header.scrolled { padding: 0.8rem 0; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
         
         .nav-content { display: flex; justify-content: space-between; align-items: center; }
-        .brand { font-family: var(--font-serif); font-size: 1.8rem; letter-spacing: 2px; color: var(--primary); text-decoration: none; font-weight: 700; }
+        /* Brand styling updated above */
         
         .menu-desktop { display: flex; gap: 2rem; }
         .menu-link { text-decoration: none; color: var(--text); font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; font-weight: 500; position: relative; }
@@ -434,7 +460,10 @@
     <!-- Header -->
     <header class="header" id="mainHeader">
         <div class="container nav-content">
-            <a href="#" class="brand">AOSE</a>
+            <a href="#" class="brand">
+                <!-- AOSE Brand Logo -->
+                <img src="https://i.imgur.com/g8u9Z8V.png" alt="AOSE Logo" class="brand-logo">
+            </a>
             <nav class="menu-desktop">
                 <a href="#hero" class="menu-link">Home</a>
                 <a href="#collection" class="menu-link">Collection</a>
