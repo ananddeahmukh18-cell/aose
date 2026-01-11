@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="AOSE - Premium Stitch & Wear, Shirts, and T-Shirts. Timeless Elegance.">
-    <meta name="keywords" content="AOSE, clothing, fashion, stitch and wear, shirts, t-shirts, India">
-    <title>AOSE | Timeless Elegance, Modern Legacy</title>
+    <meta name="description" content="AOSE - Premium Stitch & Wear. Timeless Elegance.">
+    <title>AOSE | Timeless Elegance</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -18,458 +16,420 @@
 
     <style>
         :root {
-            --primary: #0f3d2e;
-            --primary-dark: #0a291e;
-            --accent: #c6a664;
-            --bg: #f8f4ec;
-            --white: #ffffff;
-            --text: #1a1a1a;
-            --gray: #666;
-            --light-gray: #f1f1f1;
-            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --primary: #0F3D2E; /* Deep Emerald */
+            --primary-dark: #051F16;
+            --gold: #C6A664;
+            --gold-light: #E5D5A8;
+            --bg: #FAFAF9; /* Off-white */
+            --white: #FFFFFF;
+            --text: #1A1A1A;
+            --gray: #777777;
+            --border: #E5E5E5;
             --font-main: 'Montserrat', sans-serif;
-            --font-display: 'Playfair Display', serif;
+            --font-serif: 'Playfair Display', serif;
+            --shadow-card: 0 10px 40px rgba(0,0,0,0.05);
         }
 
         /* --- Base & Reset --- */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        html { scroll-behavior: smooth; overflow-x: hidden; }
-        body { font-family: var(--font-main); background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
-        img { max-width: 100%; display: block; }
-        button { cursor: pointer; font-family: inherit; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: var(--font-main); background: var(--bg); color: var(--text); line-height: 1.7; overflow-x: hidden; }
         
-        /* --- Animations --- */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 400; color: var(--primary); }
+        button { cursor: pointer; border: none; background: none; font-family: inherit; transition: all 0.3s ease; }
+        img { width: 100%; display: block; object-fit: cover; }
 
-        /* --- Loader --- */
+        /* --- Utility Classes --- */
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
+        .section-padding { padding: 6rem 0; }
+        .text-center { text-align: center; }
+        .flex-center { display: flex; align-items: center; justify-content: center; }
+        .fade-up { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        /* --- Loading Screen --- */
         #loader {
-            position: fixed; inset: 0; background: var(--bg); z-index: 9999;
-            display: flex; justify-content: center; align-items: center; flex-direction: column;
-            transition: opacity 0.5s ease;
+            position: fixed; inset: 0; background: var(--white); z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 0.5s;
         }
-        .spinner {
-            width: 50px; height: 50px; border: 3px solid rgba(15, 61, 46, 0.2);
-            border-top-color: var(--primary); border-radius: 50%; animation: spin 1s infinite linear;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .logo-loader { font-family: var(--font-serif); font-size: 3rem; color: var(--primary); letter-spacing: 5px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
         /* --- Header --- */
         .header {
             position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
-            padding: 0.8rem 5%; box-shadow: 0 2px 15px rgba(0,0,0,0.05);
-            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 0; transition: all 0.4s ease;
+            background: rgba(250, 250, 249, 0.85); backdrop-filter: blur(12px);
+            border-bottom: 1px solid transparent;
         }
+        .header.scrolled { padding: 1rem 0; border-color: rgba(0,0,0,0.05); background: rgba(255,255,255,0.95); }
         
-        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--primary); }
-        .logo img { height: 40px; border-radius: 6px; }
-        .logo span { font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; letter-spacing: 1px; }
+        .nav-content { display: flex; justify-content: space-between; align-items: center; }
+        .brand { font-family: var(--font-serif); font-size: 1.8rem; letter-spacing: 2px; color: var(--primary); text-decoration: none; font-weight: 700; }
+        
+        .menu-desktop { display: flex; gap: 3rem; }
+        .menu-link { text-decoration: none; color: var(--text); font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; font-weight: 500; position: relative; }
+        .menu-link::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 1px; background: var(--gold); transition: width 0.3s; }
+        .menu-link:hover::after { width: 100%; }
 
-        .nav-desktop { display: flex; gap: 2rem; }
-        .nav-link { text-decoration: none; color: var(--text); font-weight: 500; font-size: 0.9rem; text-transform: uppercase; transition: color 0.3s; }
-        .nav-link:hover { color: var(--accent); }
-
-        .nav-icons { display: flex; align-items: center; gap: 1.5rem; }
-        .icon-btn { background: none; border: none; font-size: 1.2rem; color: var(--primary); position: relative; transition: transform 0.2s; }
-        .icon-btn:hover { transform: scale(1.1); color: var(--accent); }
-        .cart-count { 
-            position: absolute; top: -8px; right: -8px; background: #d32f2f; color: white;
-            font-size: 0.7rem; font-weight: 700; width: 18px; height: 18px; 
-            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+        .nav-icons { display: flex; gap: 1.5rem; color: var(--primary); }
+        .icon-btn { font-size: 1.2rem; position: relative; color: var(--primary); }
+        .cart-badge { 
+            position: absolute; top: -5px; right: -8px; background: var(--gold); color: white;
+            font-size: 0.6rem; width: 16px; height: 16px; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center;
         }
-
-        .hamburger { display: none; font-size: 1.5rem; color: var(--primary); cursor: pointer; }
-
-        /* --- Mobile Sidebar --- */
-        .sidebar {
-            position: fixed; top: 0; left: -100%; width: 280px; height: 100%;
-            background: var(--white); z-index: 1001; padding: 2rem;
-            transition: 0.4s ease; box-shadow: 5px 0 15px rgba(0,0,0,0.1);
-            display: flex; flex-direction: column; gap: 1.5rem;
-        }
-        .sidebar.active { left: 0; }
-        .sidebar-link { font-size: 1.1rem; text-decoration: none; color: var(--text); font-weight: 600; border-bottom: 1px solid var(--light-gray); padding-bottom: 10px; }
-        .overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000;
-            display: none; opacity: 0; transition: opacity 0.3s;
-        }
-        .overlay.active { display: block; opacity: 1; }
 
         /* --- Hero --- */
         .hero {
-            height: 85vh; min-height: 500px; margin-top: 60px;
-            background: linear-gradient(rgba(15,61,46,0.5), rgba(15,61,46,0.3)),
-                        url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop') center/cover;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; color: var(--white); padding: 0 5%;
+            height: 100vh; position: relative; display: flex; align-items: center; justify-content: center;
+            overflow: hidden; text-align: center; color: var(--white);
         }
-        .hero h1 { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4.5rem); margin-bottom: 1rem; line-height: 1.1; }
-        .hero p { font-size: 1.1rem; max-width: 600px; margin-bottom: 2rem; opacity: 0.9; }
-        .btn {
-            padding: 1rem 2.5rem; background: var(--primary); color: white; border: none;
-            border-radius: 50px; font-weight: 600; font-size: 1rem; transition: 0.3s;
-            display: inline-flex; align-items: center; gap: 10px;
+        .hero-bg {
+            position: absolute; inset: 0; z-index: -1;
+            background: linear-gradient(rgba(15,61,46,0.4), rgba(15,61,46,0.3)),
+                        url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover; background-position: center;
+            animation: zoomSlow 20s infinite alternate;
         }
-        .btn:hover { background: var(--accent); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-
-        /* --- Categories Visual --- */
-        .categories-visual { padding: 4rem 5%; }
-        .section-title { text-align: center; margin-bottom: 3rem; }
-        .section-title h2 { font-family: var(--font-display); font-size: 2.5rem; color: var(--primary); }
+        @keyframes zoomSlow { from { transform: scale(1); } to { transform: scale(1.1); } }
         
-        .cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; }
-        .cat-card { 
-            height: 350px; position: relative; border-radius: 15px; overflow: hidden; cursor: pointer;
-            box-shadow: var(--shadow);
+        .hero h1 { font-size: clamp(3rem, 6vw, 6rem); margin-bottom: 1rem; color: white; line-height: 1; }
+        .hero p { font-size: 1.1rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 2.5rem; }
+        .btn-luxury {
+            padding: 1rem 3rem; border: 1px solid var(--white); color: var(--white);
+            font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase;
+            transition: all 0.4s; position: relative; overflow: hidden; z-index: 1;
         }
-        .cat-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .cat-card:hover img { transform: scale(1.1); }
-        .cat-info {
-            position: absolute; bottom: 0; left: 0; width: 100%;
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
-            padding: 2rem 1.5rem 1rem; color: white;
+        .btn-luxury::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 0; height: 100%;
+            background: var(--white); z-index: -1; transition: width 0.4s;
         }
+        .btn-luxury:hover { color: var(--primary); }
+        .btn-luxury:hover::before { width: 100%; }
 
         /* --- Products Section --- */
-        .products-area { padding: 4rem 5%; background: var(--white); }
-        
-        /* Tabs */
-        .tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem; }
-        .tab-btn {
-            padding: 0.6rem 1.5rem; background: transparent; border: 1px solid var(--primary);
-            border-radius: 30px; color: var(--primary); font-weight: 600; transition: 0.3s;
+        .filters { display: flex; justify-content: center; gap: 2rem; margin-bottom: 4rem; flex-wrap: wrap; }
+        .filter-btn { 
+            font-family: var(--font-serif); font-size: 1.2rem; color: var(--gray); 
+            padding-bottom: 5px; border-bottom: 2px solid transparent;
         }
-        .tab-btn.active, .tab-btn:hover { background: var(--primary); color: white; }
+        .filter-btn.active { color: var(--primary); border-color: var(--gold); }
 
-        /* Grid */
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2.5rem; max-width: 1300px; margin: 0 auto; }
-        
-        .product-card { background: var(--white); border-radius: 10px; transition: 0.3s; }
-        .product-card:hover { transform: translateY(-10px); }
-        
-        .p-image { height: 300px; position: relative; overflow: hidden; border-radius: 10px; background: #f0f0f0; }
-        .p-image img { width: 100%; height: 100%; object-fit: cover; }
-        .badge { position: absolute; top: 10px; left: 10px; background: var(--accent); color: white; padding: 4px 10px; font-size: 0.8rem; border-radius: 4px; }
-        
-        .p-info { padding: 1.2rem 0; }
-        .p-cat { font-size: 0.8rem; color: var(--gray); text-transform: uppercase; }
-        .p-name { font-family: var(--font-display); font-size: 1.2rem; margin: 5px 0; color: var(--primary); }
-        .p-price { font-weight: 700; font-size: 1.1rem; color: var(--text); }
-        
-        .size-list { display: flex; gap: 5px; margin: 10px 0; }
-        .size-btn { 
-            width: 32px; height: 32px; border: 1px solid #ddd; border-radius: 4px; 
-            display: flex; align-items: center; justify-content: center; font-size: 0.8rem; cursor: pointer;
+        .product-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 3rem;
         }
-        .size-btn.selected { background: var(--primary); color: white; border-color: var(--primary); }
 
-        .add-cart { width: 100%; padding: 0.8rem; background: var(--white); border: 1px solid var(--primary); color: var(--primary); font-weight: 600; border-radius: 6px; transition: 0.2s; }
-        .add-cart:hover { background: var(--primary); color: white; }
+        .product-card { group; cursor: pointer; }
+        .product-img-box {
+            position: relative; overflow: hidden; aspect-ratio: 3/4; margin-bottom: 1.5rem;
+            background: #f0f0f0;
+        }
+        .product-img-box img { width: 100%; height: 100%; transition: transform 0.6s ease; }
+        .product-card:hover .product-img-box img { transform: scale(1.08); }
+        
+        .quick-view-btn {
+            position: absolute; bottom: -50px; left: 0; width: 100%;
+            background: rgba(255,255,255,0.9); color: var(--primary);
+            padding: 1rem; text-align: center; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;
+            transition: bottom 0.3s;
+        }
+        .product-card:hover .quick-view-btn { bottom: 0; }
 
-        /* --- Testimonials --- */
-        .testimonials { padding: 4rem 5%; background: var(--bg); text-align: center; }
-        .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem; }
-        .testi-card { background: white; padding: 2rem; border-radius: 10px; box-shadow: var(--shadow); }
-        .stars { color: var(--accent); margin-bottom: 10px; }
+        .product-info h3 { font-size: 1.1rem; margin-bottom: 0.5rem; font-family: var(--font-main); text-transform: uppercase; letter-spacing: 1px; }
+        .product-info p { color: var(--gray); font-size: 0.9rem; }
+        .product-price { color: var(--primary); font-weight: 600; margin-top: 0.5rem; }
 
-        /* --- Footer --- */
-        footer { background: var(--primary-dark); color: white; padding: 4rem 5% 2rem; }
-        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 3rem; max-width: 1200px; margin: 0 auto; }
-        .footer h3 { font-family: var(--font-display); color: var(--accent); margin-bottom: 1.5rem; }
-        .footer a { display: block; color: #ccc; text-decoration: none; margin-bottom: 0.8rem; transition: 0.2s; }
-        .footer a:hover { color: white; padding-left: 5px; }
+        /* --- Product Modal (New Feature) --- */
+        .modal-full {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1100;
+            display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px);
+        }
+        .modal-full.active { display: flex; }
+        .p-modal-content {
+            background: var(--white); width: 90%; max-width: 1000px; height: 80vh;
+            display: grid; grid-template-columns: 1fr 1fr; overflow: hidden;
+            box-shadow: var(--shadow-card); position: relative;
+        }
+        .p-modal-img { height: 100%; }
+        .p-modal-img img { height: 100%; width: 100%; object-fit: cover; }
+        .p-modal-details { padding: 3rem; overflow-y: auto; display: flex; flex-direction: column; justify-content: center; }
+        
+        .p-badge { background: var(--gold-light); color: var(--primary); padding: 5px 10px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 1rem; width: fit-content; }
+        .size-grid { display: flex; gap: 10px; margin: 1.5rem 0; }
+        .size-option { 
+            width: 40px; height: 40px; border: 1px solid var(--border); display: flex; 
+            align-items: center; justify-content: center; font-size: 0.9rem; transition: 0.2s; 
+        }
+        .size-option:hover, .size-option.selected { border-color: var(--primary); background: var(--primary); color: white; }
+
+        .add-btn {
+            background: var(--primary); color: white; padding: 1rem; width: 100%;
+            text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; margin-top: 2rem;
+        }
+        .add-btn:hover { background: var(--gold); }
 
         /* --- Cart Sidebar --- */
         .cart-sidebar {
-            position: fixed; top: 0; right: -400px; width: 400px; height: 100vh;
-            background: white; z-index: 1100; transition: right 0.3s ease;
-            box-shadow: -5px 0 30px rgba(0,0,0,0.1); display: flex; flex-direction: column;
+            position: fixed; top: 0; right: -450px; width: 450px; height: 100vh;
+            background: var(--white); z-index: 1200; transition: right 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex; flex-direction: column; box-shadow: -10px 0 40px rgba(0,0,0,0.1);
         }
         .cart-sidebar.open { right: 0; }
+        .cart-header { padding: 2rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .cart-body { flex: 1; padding: 2rem; overflow-y: auto; }
+        .cart-item { display: flex; gap: 1.5rem; margin-bottom: 2rem; }
+        .cart-img { width: 80px; aspect-ratio: 3/4; object-fit: cover; }
         
-        .cart-header { padding: 1.5rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-        .cart-items { flex: 1; overflow-y: auto; padding: 1.5rem; }
-        .cart-footer { padding: 1.5rem; border-top: 1px solid #eee; background: #fafafa; }
-        
-        .c-item { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
-        .c-img { width: 70px; height: 90px; object-fit: cover; border-radius: 5px; }
-        
-        /* --- Modal --- */
-        .modal { 
-            position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1200; 
+        /* --- Mobile Menu --- */
+        .mobile-nav { 
+            position: fixed; bottom: 0; left: 0; width: 100%; background: var(--white); 
+            border-top: 1px solid var(--border); padding: 1rem; z-index: 999;
+            display: none; justify-content: space-around;
+        }
+        .mobile-link { display: flex; flex-direction: column; align-items: center; font-size: 0.7rem; color: var(--gray); gap: 5px; text-decoration: none; }
+
+        /* --- Checkout Modal --- */
+        .modal-small {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1300;
             display: none; align-items: center; justify-content: center; padding: 1rem;
         }
-        .modal.active { display: flex; }
-        .modal-content { 
-            background: white; width: 100%; max-width: 450px; padding: 2rem; 
-            border-radius: 12px; position: relative; max-height: 90vh; overflow-y: auto;
+        .modal-small.active { display: flex; }
+        .checkout-box { background: white; width: 100%; max-width: 450px; padding: 2rem; position: relative; }
+        .form-input { 
+            width: 100%; padding: 1rem; border: 1px solid var(--border); 
+            margin-bottom: 1rem; font-family: inherit; font-size: 0.95rem; 
         }
-        .close-modal { position: absolute; top: 1rem; right: 1rem; font-size: 1.2rem; cursor: pointer; }
-        
-        .form-group { margin-bottom: 1rem; }
-        .form-input { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px; font-family: inherit; }
+        .form-input:focus { outline: none; border-color: var(--primary); }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .nav-desktop { display: none; }
-            .hamburger { display: block; }
-            .hero h1 { font-size: 2.5rem; }
-            .cart-sidebar { width: 100%; right: -100%; }
+            .menu-desktop { display: none; }
+            .mobile-nav { display: flex; }
+            .cart-sidebar { width: 100%; }
+            .p-modal-content { grid-template-columns: 1fr; height: 100vh; width: 100%; overflow-y: auto; }
+            .p-modal-img { height: 40vh; }
+            .filters { gap: 1rem; }
+            .filter-btn { font-size: 1rem; }
         }
     </style>
 </head>
 <body>
 
     <div id="loader">
-        <div class="spinner"></div>
-        <p style="margin-top:10px; color:var(--primary); font-weight:600;">Loading AOSE...</p>
+        <div class="logo-loader">AOSE</div>
+    </div>
+
+    <div id="toast" style="position: fixed; top: 100px; right: 20px; background: var(--primary); color: white; padding: 1rem 2rem; transform: translateX(200%); transition: 0.4s; z-index: 2000;">
+        Item added to bag
     </div>
 
     <header class="header" id="header">
-        <div class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
-        
-        <a href="#" class="logo">
-            <img src="aose ad.png" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%230f3d2e%22 rx=%2210%22/><text x=%2250%22 y=%2260%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2235%22>A</text></svg>'" alt="Logo">
-            <span>AOSE</span>
-        </a>
+        <div class="container nav-content">
+            <a href="#" class="brand">AOSE</a>
+            
+            <nav class="menu-desktop">
+                <a href="#hero" class="menu-link">Home</a>
+                <a href="#collection" class="menu-link">Collection</a>
+                <a href="#about" class="menu-link">Legacy</a>
+                <a href="#contact" class="menu-link">Contact</a>
+            </nav>
 
-        <nav class="nav-desktop">
-            <a href="#hero" class="nav-link">Home</a>
-            <a href="#categories" class="nav-link">Collections</a>
-            <a href="#products" class="nav-link">Shop</a>
-            <a href="#footer" class="nav-link">Contact</a>
-        </nav>
-
-        <div class="nav-icons">
-            <button class="icon-btn" onclick="openModal('trackModal')"><i class="fas fa-truck"></i></button>
-            <button class="icon-btn" onclick="toggleCart()">
-                <i class="fas fa-shopping-bag"></i>
-                <span class="cart-count" id="cartCount">0</span>
-            </button>
+            <div class="nav-icons">
+                <button class="icon-btn" onclick="openModal('trackModal')"><i class="fas fa-search"></i></button>
+                <button class="icon-btn admin-trigger" onclick="toggleAdmin()" style="display:none;"><i class="fas fa-cog"></i></button>
+                <button class="icon-btn" onclick="toggleCart()">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-badge" id="cartCount">0</span>
+                </button>
+            </div>
         </div>
     </header>
 
-    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
-    <div class="sidebar" id="sidebar">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h3>Menu</h3>
-            <i class="fas fa-times" onclick="toggleMenu()" style="font-size:1.2rem; cursor:pointer;"></i>
+    <section class="hero" id="hero">
+        <div class="hero-bg"></div>
+        <div class="container fade-up">
+            <p>Premium Stitch & Wear</p>
+            <h1>TIMELESS<br>ELEGANCE</h1>
+            <button class="btn-luxury" onclick="scrollToId('collection')">Discover Collection</button>
         </div>
-        <hr style="border:0; border-top:1px solid #eee;">
-        <a href="#hero" class="sidebar-link" onclick="toggleMenu()">Home</a>
-        <a href="#products" class="sidebar-link" onclick="filterCategory('tshirt'); toggleMenu()">T-Shirts</a>
-        <a href="#products" class="sidebar-link" onclick="filterCategory('shirt'); toggleMenu()">Shirts</a>
-        <a href="#products" class="sidebar-link" onclick="filterCategory('stitch'); toggleMenu()">Stitch & Wear</a>
-        <a href="#products" class="sidebar-link" onclick="filterCategory('trousers'); toggleMenu()">Trousers</a>
-        <a href="#footer" class="sidebar-link" onclick="toggleMenu()">Contact Us</a>
+    </section>
+
+    <section class="section-padding" id="collection">
+        <div class="container">
+            <div class="text-center fade-up" style="margin-bottom: 3rem;">
+                <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">The Collection</h2>
+                <p style="color: var(--gray); max-width: 600px; margin: 0 auto;">Handcrafted with precision, designed for the modern individual who values tradition and luxury.</p>
+            </div>
+
+            <div class="filters fade-up">
+                <button class="filter-btn active" onclick="filterProducts('all', this)">All View</button>
+                <button class="filter-btn" onclick="filterProducts('stitch_wear', this)">Stitch & Wear</button>
+                <button class="filter-btn" onclick="filterProducts('shirts', this)">Shirts</button>
+                <button class="filter-btn" onclick="filterProducts('tshirts', this)">T-Shirts</button>
+            </div>
+
+            <div class="product-grid" id="productGrid">
+                </div>
+        </div>
+    </section>
+
+    <div class="modal-full" id="productModal">
+        <div class="p-modal-content">
+            <button style="position:absolute; top:20px; right:20px; z-index:10; font-size:1.5rem;" onclick="closeModal('productModal')">&times;</button>
+            <div class="p-modal-img">
+                <img id="pmImg" src="" alt="">
+            </div>
+            <div class="p-modal-details">
+                <span id="pmCat" class="p-badge">Collection</span>
+                <h2 id="pmName" style="font-size:2rem; margin-bottom:0.5rem;">Product Name</h2>
+                <h3 id="pmPrice" style="color:var(--primary); font-size:1.5rem; margin-bottom:1.5rem;">₹0</h3>
+                <p id="pmDesc" style="color:var(--gray); margin-bottom:2rem; line-height:1.8;">Description goes here.</p>
+                
+                <div style="margin-bottom: 1rem;">
+                    <strong style="text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">Select Size</strong>
+                    <div class="size-grid" id="pmSizes">
+                        <button class="size-option" onclick="selectSize(this)">S</button>
+                        <button class="size-option" onclick="selectSize(this)">M</button>
+                        <button class="size-option" onclick="selectSize(this)">L</button>
+                        <button class="size-option" onclick="selectSize(this)">XL</button>
+                        <button class="size-option" onclick="selectSize(this)">XXL</button>
+                    </div>
+                </div>
+
+                <button class="add-btn" id="pmAddBtn">Add to Cart</button>
+                
+                <div style="margin-top: 2rem; font-size: 0.8rem; color: var(--gray);">
+                    <p><i class="fas fa-truck"></i> Free shipping on all orders</p>
+                    <p><i class="fas fa-shield-alt"></i> Authentic Premium Quality</p>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <section class="hero" id="hero">
-        <div class="reveal">
-            <h1>ELEGANCE REDEFINED</h1>
-            <p>Experience the perfect blend of traditional craftsmanship and modern design. Premium Stitch & Wear, Shirts and more.</p>
-            <button class="btn" onclick="scrollToId('products')">Explore Collection <i class="fas fa-arrow-right"></i></button>
-        </div>
-    </section>
-
-    <section class="categories-visual" id="categories">
-        <div class="section-title reveal">
-            <h2>Shop by Category</h2>
-            <p>Curated styles for every occasion</p>
-        </div>
-        <div class="cat-grid">
-            <div class="cat-card reveal" onclick="filterCategory('stitch')">
-                <img src="https://images.unsplash.com/photo-1598532163257-ae3c6b2524b6?w=600&q=80" alt="Stitch & Wear" loading="lazy">
-                <div class="cat-info">
-                    <h3>Stitch & Wear</h3>
-                    <p>Premium Fabrics</p>
-                </div>
-            </div>
-            <div class="cat-card reveal" onclick="filterCategory('shirt')">
-                <img src="https://images.unsplash.com/photo-1620799140408-ed5341cd2431?w=600&q=80" alt="Shirts" loading="lazy">
-                <div class="cat-info">
-                    <h3>Formal Shirts</h3>
-                    <p>Executive Look</p>
-                </div>
-            </div>
-            <div class="cat-card reveal" onclick="filterCategory('tshirt')">
-                <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&q=80" alt="T-Shirts" loading="lazy">
-                <div class="cat-info">
-                    <h3>Casual T-Shirts</h3>
-                    <p>Everyday Comfort</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="products-area" id="products">
-        <div class="section-title reveal">
-            <h2>New Arrivals</h2>
-        </div>
-
-        <div class="tabs reveal">
-            <button class="tab-btn active" onclick="filterCategory('all', this)">All</button>
-            <button class="tab-btn" onclick="filterCategory('stitch', this)">Stitch & Wear</button>
-            <button class="tab-btn" onclick="filterCategory('shirt', this)">Shirts</button>
-            <button class="tab-btn" onclick="filterCategory('tshirt', this)">T-Shirts</button>
-            <button class="tab-btn" onclick="filterCategory('trousers', this)">Trousers</button>
-        </div>
-
-        <div class="product-grid" id="productGrid">
-            </div>
-    </section>
-
-    <section class="testimonials">
-        <div class="section-title reveal">
-            <h2>Customer Stories</h2>
-        </div>
-        <div class="testi-grid">
-            <div class="testi-card reveal">
-                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                <p>"The fabric quality of the Stitch & Wear collection is unmatched. Fits perfectly!"</p>
-                <h4 style="margin-top:10px;">- Rahul S.</h4>
-            </div>
-            <div class="testi-card reveal">
-                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
-                <p>"Love the shirts. Elegant packaging and very fast delivery. Highly recommended."</p>
-                <h4 style="margin-top:10px;">- Aditya M.</h4>
-            </div>
-            <div class="testi-card reveal">
-                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                <p>"Best place for formal wear. The designs are unique and very classy."</p>
-                <h4 style="margin-top:10px;">- Vikram P.</h4>
-            </div>
-        </div>
-    </section>
-
-    <section style="background: var(--primary); color: white; padding: 4rem 5%; text-align: center;">
-        <h2 style="font-family: var(--font-display); margin-bottom: 1rem;">Join the AOSE Family</h2>
-        <p style="margin-bottom: 2rem;">Subscribe to get exclusive offers and updates.</p>
-        <div style="max-width: 500px; margin: 0 auto; display: flex; gap: 10px;">
-            <input type="email" placeholder="Your Email Address" style="flex: 1; padding: 1rem; border: none; border-radius: 5px;">
-            <button style="padding: 1rem 2rem; background: var(--accent); border: none; border-radius: 5px; color: white; font-weight: bold;">Join</button>
-        </div>
-    </section>
-
-    <footer id="footer">
-        <div class="footer-grid">
+    <footer id="contact" style="background: var(--primary-dark); color: white; padding: 5rem 5% 2rem;">
+        <div class="container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem;">
             <div>
-                <h3>AOSE</h3>
-                <p style="opacity: 0.8; font-size: 0.9rem;">Timeless Elegance, Modern Legacy.<br>Premium clothing crafted with care.</p>
-                <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
-                    <a href="https://wa.me/917887731818" style="font-size: 1.5rem;"><i class="fab fa-whatsapp"></i></a>
-                    <a href="#" style="font-size: 1.5rem;"><i class="fab fa-instagram"></i></a>
-                    <a href="#" style="font-size: 1.5rem;"><i class="fas fa-envelope"></i></a>
-                </div>
+                <h3 style="color: var(--gold); margin-bottom: 1.5rem;">AOSE</h3>
+                <p style="opacity: 0.7;">Redefining luxury through craftsmanship and modern design philosophy.</p>
             </div>
             <div>
-                <h3>Links</h3>
-                <a href="#hero">Home</a>
-                <a href="#products">Collection</a>
-                <a href="#" onclick="openModal('trackModal')">Track Order</a>
-                <a href="#">Size Guide</a>
+                <h4 style="color: white; margin-bottom: 1.5rem; font-size: 1rem; letter-spacing: 1px;">CONTACT</h4>
+                <p style="opacity: 0.7; margin-bottom: 0.5rem;">+91 78877 31818</p>
+                <p style="opacity: 0.7; margin-bottom: 0.5rem;">aoseofficial77@gmail.com</p>
+                <p style="opacity: 0.7;">Rashin, Maharashtra, India</p>
             </div>
             <div>
-                <h3>Contact</h3>
-                <p><i class="fas fa-phone"></i> +91 78877 31818</p>
-                <p><i class="fas fa-envelope"></i> aoseofficial77@gmail.com</p>
-                <p><i class="fas fa-map-marker-alt"></i> Rashin, Maharashtra</p>
+                <h4 style="color: white; margin-bottom: 1.5rem; font-size: 1rem; letter-spacing: 1px;">SOCIAL</h4>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="https://wa.me/917887731818" style="color: white; font-size: 1.5rem;"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" style="color: white; font-size: 1.5rem;"><i class="fab fa-instagram"></i></a>
+                </div>
             </div>
         </div>
-        <div style="text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; margin-top: 3rem; font-size: 0.8rem; opacity: 0.7;">
-            &copy; 2024 AOSE Clothing Company. All Rights Reserved.
+        <div class="text-center" style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; opacity: 0.5;">
+            &copy; 2024 AOSE Clothing. All Rights Reserved.
         </div>
     </footer>
 
-    <div class="overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="mobile-nav">
+        <a href="#hero" class="mobile-link"><i class="fas fa-home"></i> Home</a>
+        <a href="#collection" class="mobile-link"><i class="fas fa-layer-group"></i> Shop</a>
+        <a href="#" onclick="toggleCart()" class="mobile-link"><i class="fas fa-shopping-bag"></i> Cart</a>
+    </div>
+
+    <div id="cartOverlay" onclick="toggleCart()" style="position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1150; display:none;"></div>
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
-            <h3>Your Bag</h3>
-            <i class="fas fa-times" onclick="toggleCart()" style="cursor: pointer; font-size: 1.2rem;"></i>
+            <h3>Shopping Bag</h3>
+            <button onclick="toggleCart()"><i class="fas fa-times"></i></button>
         </div>
-        <div class="cart-items" id="cartItemsContainer">
+        <div class="cart-body" id="cartItems">
             </div>
-        <div class="cart-footer">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; font-weight: 700;">
-                <span>Total</span>
-                <span id="cartTotalDisplay">₹0</span>
+        <div style="padding: 2rem; background: #fafafa; border-top: 1px solid var(--border);">
+            <div style="display:flex; justify-content:space-between; margin-bottom:1rem; font-weight:700;">
+                <span>Subtotal</span>
+                <span>₹<span id="cartTotal">0</span></span>
             </div>
-            <button class="btn" style="width: 100%; justify-content: center;" onclick="openCheckout()">Checkout</button>
+            <button class="add-btn" onclick="openCheckout()">Checkout Now</button>
         </div>
     </div>
 
-    <div class="modal" id="checkoutModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('checkoutModal')">&times;</span>
-            <h3 style="text-align: center; margin-bottom: 1.5rem; color: var(--primary);">Secure Checkout</h3>
+    <div class="modal-small" id="checkoutModal">
+        <div class="checkout-box">
+            <button style="position:absolute; top:1rem; right:1rem;" onclick="closeModal('checkoutModal')">&times;</button>
+            <h3 class="text-center" style="margin-bottom: 1.5rem;">Secure Checkout</h3>
             
-            <div class="form-group"><input type="text" id="cName" class="form-input" placeholder="Full Name"></div>
-            <div class="form-group"><input type="tel" id="cPhone" class="form-input" placeholder="WhatsApp Number"></div>
-            <div class="form-group"><input type="email" id="cEmail" class="form-input" placeholder="Email Address"></div>
-            <div class="form-group"><textarea id="cAddress" class="form-input" placeholder="Shipping Address" rows="3"></textarea></div>
+            <input type="text" id="cName" class="form-input" placeholder="Full Name">
+            <input type="tel" id="cPhone" class="form-input" placeholder="WhatsApp Number">
+            <input type="email" id="cEmail" class="form-input" placeholder="Email Address">
+            <textarea id="cAddress" class="form-input" rows="3" placeholder="Shipping Address"></textarea>
 
-            <div style="background: #f9f9f9; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>Payment (UPI)</strong></p>
-                <div id="qrcode" style="display: flex; justify-content: center; margin: 10px 0;"></div>
-                <p style="text-align: center; font-size: 0.9rem;">Scan or use buttons below to pay <strong>₹<span id="payAmount">0</span></strong></p>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;">
-                    <button onclick="payUPI('gpay')" class="btn" style="padding: 0.5rem; font-size: 0.8rem; background: #2DA94F;">GPay</button>
-                    <button onclick="payUPI('phonepe')" class="btn" style="padding: 0.5rem; font-size: 0.8rem; background: #5f259f;">PhonePe</button>
-                    <button onclick="payUPI('paytm')" class="btn" style="padding: 0.5rem; font-size: 0.8rem; background: #00b9f5;">Paytm</button>
-                    <button onclick="payUPI('upi')" class="btn" style="padding: 0.5rem; font-size: 0.8rem;">Other</button>
+            <div style="background: #f4f4f4; padding: 1rem; margin-bottom: 1rem; text-align: center;">
+                <p style="font-size: 0.9rem; margin-bottom: 10px;">Scan to Pay: ₹<span id="payAmount">0</span></p>
+                <div id="qrcode" style="display:flex; justify-content:center;"></div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+                    <button onclick="payApp('gpay')" style="background:#fff; border:1px solid #ddd; padding:5px;">GPay</button>
+                    <button onclick="payApp('phonepe')" style="background:#fff; border:1px solid #ddd; padding:5px;">PhonePe</button>
                 </div>
             </div>
 
-            <button class="btn" style="width: 100%; justify-content: center;" onclick="confirmOrder()">
-                <i class="fab fa-whatsapp"></i> Confirm & Send Order
-            </button>
+            <button class="add-btn" onclick="confirmOrder()">Confirm Order</button>
         </div>
     </div>
 
-    <div class="modal" id="trackModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('trackModal')">&times;</span>
+    <div class="modal-small" id="trackModal">
+        <div class="checkout-box">
+            <button style="position:absolute; top:1rem; right:1rem;" onclick="closeModal('trackModal')">&times;</button>
             <h3>Track Order</h3>
-            <div class="form-group" style="margin-top: 1rem;">
-                <input type="text" id="trackId" class="form-input" placeholder="Order ID (e.g., AOSE-1234)">
-            </div>
-            <button class="btn" onclick="trackOrder()">Track</button>
-            <div id="trackResult" style="margin-top: 1rem; padding: 1rem; background: #f0f0f0; border-radius: 5px; display: none;"></div>
+            <input type="text" id="trackInput" class="form-input" placeholder="Order ID (AOSE-XXXX)" style="margin-top:1rem;">
+            <button class="add-btn" onclick="trackOrder()">Track</button>
+            <div id="trackRes" style="margin-top:1rem; color:var(--primary);"></div>
         </div>
     </div>
 
     <script>
-        // --- CONFIGURATION ---
-        const CONFIG = {
-            upi_id: "7887731818@ybl",
-            wa_number: "917887731818" // No + symbol
-        };
-
+        // --- CONFIG ---
+        const UPI_ID = "7887731818@ybl";
+        const WA = "917887731818";
+        
         // --- DATA ---
         const products = [
             // Stitch & Wear
-            { id: 1, name: "Signature Fabric", cat: "stitch", price: 1499, img: "https://images.unsplash.com/photo-1614213567116-c1f964a2c5a0?w=500", badge: "Premium" },
-            { id: 2, name: "Royal Blue Unstitched", cat: "stitch", price: 1299, img: "https://images.unsplash.com/photo-1598532163257-ae3c6b2524b6?w=500", badge: "New" },
-            { id: 3, name: "Charcoal Texture", cat: "stitch", price: 1399, img: "https://images.unsplash.com/photo-1620799140408-ed5341cd2431?w=500", badge: "" },
-            
+            { 
+                id: 101, category: "stitch_wear", name: "Imperial Emerald Fabric", price: 1499, 
+                image: "https://images.unsplash.com/photo-1614213567116-c1f964a2c5a0?w=600",
+                desc: "Premium unstitched fabric with a rich emerald hue. Perfect for bespoke tailoring." 
+            },
+            { 
+                id: 102, category: "stitch_wear", name: "Royal Navy Texture", price: 1699, 
+                image: "https://images.unsplash.com/photo-1598532163257-ae3c6b2524b6?w=600",
+                desc: "Textured premium cotton blend. Breathable and elegant." 
+            },
             // Shirts
-            { id: 4, name: "Classic White Shirt", cat: "shirt", price: 999, img: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=500", badge: "Best Seller" },
-            { id: 5, name: "Navy Slim Fit", cat: "shirt", price: 1099, img: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500", badge: "Trending" },
-            { id: 6, name: "Satin Party Wear", cat: "shirt", price: 1499, img: "https://images.unsplash.com/photo-1621072118058-2e8f5ca5d022?w=500", badge: "Party" },
-
+            { 
+                id: 201, category: "shirts", name: "Classic White Oxford", price: 1299, 
+                image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600",
+                desc: "The quintessential white shirt. Wrinkle-resistant finish for the busy professional." 
+            },
+            { 
+                id: 202, category: "shirts", name: "Midnight Satin Shirt", price: 1899, 
+                image: "https://images.unsplash.com/photo-1621072118058-2e8f5ca5d022?w=600",
+                desc: "Luxurious satin finish shirt in deep black. Ideal for evening wear." 
+            },
             // T-Shirts
-            { id: 7, name: "Essential Black Tee", cat: "tshirt", price: 499, img: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=500", badge: "Basic" },
-            { id: 8, name: "Urban Oversized", cat: "tshirt", price: 799, img: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=500", badge: "Hot" },
-            { id: 9, name: "Polo Classic", cat: "tshirt", price: 899, img: "https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?w=500", badge: "Polo" },
-
-            // Trousers
-            { id: 10, name: "Formal Grey Trousers", cat: "trousers", price: 1299, img: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=500", badge: "Formal" },
+            { 
+                id: 301, category: "tshirts", name: "Supima Cotton Tee", price: 799, 
+                image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600",
+                desc: "100% Supima cotton. Soft, durable, and effortlessly stylish." 
+            },
+            { 
+                id: 302, category: "tshirts", name: "Urban Polo Green", price: 999, 
+                image: "https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?w=600",
+                desc: "Classic polo cut with modern fitting. Deep green dye." 
+            }
         ];
 
         let cart = JSON.parse(localStorage.getItem('aose_cart')) || [];
@@ -477,240 +437,216 @@
 
         // --- INIT ---
         window.addEventListener('load', () => {
-            // Remove Loader
-            setTimeout(() => {
-                document.getElementById('loader').style.opacity = '0';
-                setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
-            }, 800);
-            
+            document.getElementById('loader').style.opacity = '0';
+            setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
             renderProducts('all');
-            updateCart();
-            setupAnimations();
+            updateCartUI();
+            
+            // Scroll Animation
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            });
+            document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+            
+            // Header Scroll
+            window.addEventListener('scroll', () => {
+                const header = document.getElementById('header');
+                window.scrollY > 50 ? header.classList.add('scrolled') : header.classList.remove('scrolled');
+            });
+
+             // Admin Trigger
+             window.enableAdmin = () => {
+                document.querySelector('.admin-trigger').style.display = 'inline-block';
+                alert("Admin Button Enabled");
+            };
         });
 
         // --- FUNCTIONS ---
 
-        // 1. Navigation & UI
-        function toggleMenu() {
-            document.getElementById('sidebar').classList.toggle('active');
-            document.getElementById('overlay').classList.toggle('active');
-        }
-
-        function scrollToId(id) {
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function setupAnimations() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) entry.target.classList.add('active');
-                });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-        }
-
-        // 2. Products
-        function filterCategory(cat, btn) {
-            // Scroll to products if needed
-            if(window.scrollY < document.getElementById('products').offsetTop - 100) {
-                scrollToId('products');
-            }
-
-            // Update Tabs
-            if (btn) {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        function filterProducts(cat, btn) {
+            if(btn) {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
             }
-
             renderProducts(cat);
         }
 
         function renderProducts(filter) {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
-
-            const filtered = filter === 'all' ? products : products.filter(p => p.cat === filter);
-
-            if (filtered.length === 0) {
-                grid.innerHTML = '<p style="grid-column:1/-1; text-align:center;">No products found.</p>';
-                return;
-            }
-
-            filtered.forEach(p => {
-                const el = document.createElement('div');
-                el.className = 'product-card reveal';
-                el.innerHTML = `
-                    <div class="p-image">
-                        <img src="${p.img}" loading="lazy" alt="${p.name}">
-                        ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
-                    </div>
-                    <div class="p-info">
-                        <div class="p-cat">${p.cat.toUpperCase()}</div>
-                        <h3 class="p-name">${p.name}</h3>
-                        <div class="p-price">₹${p.price}</div>
-                        <div class="size-list" id="size-${p.id}">
-                            ${['S','M','L','XL','XXL'].map(s => `<div class="size-btn" onclick="selectSize(this)">${s}</div>`).join('')}
-                        </div>
-                        <button class="add-cart" onclick="addToCart(${p.id})">ADD TO BAG</button>
-                    </div>
-                `;
-                grid.appendChild(el);
-            });
             
-            // Re-trigger animation observer for new elements
-            setupAnimations();
+            const list = filter === 'all' ? products : products.filter(p => p.category === filter);
+            
+            list.forEach(p => {
+                grid.innerHTML += `
+                <div class="product-card fade-up visible">
+                    <div class="product-img-box">
+                        <img src="${p.image}" loading="lazy" alt="${p.name}">
+                        <button class="quick-view-btn" onclick="openProductModal(${p.id})">Quick View</button>
+                    </div>
+                    <div class="product-info">
+                        <h3>${p.name}</h3>
+                        <p>${p.category.replace('_', ' & ')}</p>
+                        <div class="product-price">₹${p.price}</div>
+                    </div>
+                </div>`;
+            });
+        }
+
+        // --- MODAL LOGIC ---
+        function openProductModal(id) {
+            const p = products.find(i => i.id === id);
+            document.getElementById('pmImg').src = p.image;
+            document.getElementById('pmCat').innerText = p.category.replace('_', ' & ');
+            document.getElementById('pmName').innerText = p.name;
+            document.getElementById('pmPrice').innerText = `₹${p.price}`;
+            document.getElementById('pmDesc').innerText = p.desc;
+            
+            // Reset Size
+            document.querySelectorAll('.size-option').forEach(b => b.classList.remove('selected'));
+            
+            // Setup Add Button
+            const btn = document.getElementById('pmAddBtn');
+            btn.onclick = () => addToCart(id);
+            btn.innerHTML = "Add to Cart";
+            
+            document.getElementById('productModal').classList.add('active');
         }
 
         function selectSize(btn) {
-            const parent = btn.parentElement;
-            parent.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+            document.querySelectorAll('.size-option').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
         }
 
-        // 3. Cart Logic
+        // --- CART LOGIC ---
         function addToCart(id) {
-            const sizeEl = document.querySelector(`#size-${id} .selected`);
-            if (!sizeEl) return alert('Please select a size first');
-
-            const size = sizeEl.textContent;
-            const product = products.find(p => p.id === id);
+            const sizeEl = document.querySelector('.size-option.selected');
+            if(!sizeEl) return alert("Please select a size");
             
-            const existing = cart.find(i => i.id === id && i.size === size);
-            if (existing) existing.qty++;
-            else cart.push({ ...product, size, qty: 1, key: Date.now() });
-
+            const size = sizeEl.innerText;
+            const p = products.find(i => i.id === id);
+            
+            const exist = cart.find(i => i.id === id && i.size === size);
+            if(exist) exist.qty++;
+            else cart.push({...p, size, qty: 1});
+            
             saveCart();
-            updateCart();
+            updateCartUI();
+            closeModal('productModal');
+            showToast();
             toggleCart();
         }
 
-        function updateCart() {
-            const container = document.getElementById('cartItemsContainer');
-            const totalDisplay = document.getElementById('cartTotalDisplay');
-            const countDisplay = document.getElementById('cartCount');
-            
-            container.innerHTML = '';
+        function updateCartUI() {
+            const el = document.getElementById('cartItems');
+            el.innerHTML = '';
             let total = 0;
             let count = 0;
-
-            if (cart.length === 0) {
-                container.innerHTML = '<p style="text-align:center; color:#888;">Your bag is empty.</p>';
-            } else {
-                cart.forEach((item, idx) => {
-                    total += item.price * item.qty;
-                    count += item.qty;
-                    container.innerHTML += `
-                        <div class="c-item">
-                            <img src="${item.img}" class="c-img">
-                            <div style="flex:1">
-                                <h4>${item.name}</h4>
-                                <p style="font-size:0.8rem; color:#666;">Size: ${item.size} | ₹${item.price}</p>
-                                <div style="display:flex; align-items:center; gap:10px; margin-top:5px;">
-                                    <button onclick="changeQty(${idx}, -1)" style="width:25px;">-</button>
-                                    <span>${item.qty}</span>
-                                    <button onclick="changeQty(${idx}, 1)" style="width:25px;">+</button>
-                                </div>
-                            </div>
-                            <div style="font-weight:600">₹${item.price * item.qty}</div>
+            
+            cart.forEach((item, idx) => {
+                total += item.price * item.qty;
+                count += item.qty;
+                el.innerHTML += `
+                <div class="cart-item">
+                    <img src="${item.image}" class="cart-img">
+                    <div style="flex:1;">
+                        <h4 style="font-size:0.9rem;">${item.name}</h4>
+                        <p style="font-size:0.8rem; color:#888;">${item.size} | ₹${item.price}</p>
+                        <div style="margin-top:5px;">
+                            <button onclick="modQty(${idx}, -1)">-</button> 
+                            <span style="margin:0 10px;">${item.qty}</span> 
+                            <button onclick="modQty(${idx}, 1)">+</button>
                         </div>
-                    `;
-                });
-            }
-
-            totalDisplay.textContent = '₹' + total;
-            countDisplay.textContent = count;
+                    </div>
+                </div>`;
+            });
+            
+            document.getElementById('cartTotal').innerText = total;
+            document.getElementById('cartCount').innerText = count;
+            if(cart.length === 0) el.innerHTML = "<p class='text-center'>Bag is empty.</p>";
         }
 
-        function changeQty(idx, delta) {
-            cart[idx].qty += delta;
-            if (cart[idx].qty <= 0) cart.splice(idx, 1);
+        function modQty(idx, val) {
+            cart[idx].qty += val;
+            if(cart[idx].qty <= 0) cart.splice(idx, 1);
             saveCart();
-            updateCart();
+            updateCartUI();
         }
 
         function saveCart() { localStorage.setItem('aose_cart', JSON.stringify(cart)); }
         
         function toggleCart() {
             document.getElementById('cartSidebar').classList.toggle('open');
-            document.getElementById('cartOverlay').classList.toggle('active');
+            const overlay = document.getElementById('cartOverlay');
+            overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
         }
 
-        // 4. Checkout
-        function openCheckout() {
-            if (cart.length === 0) return alert('Cart is empty');
-            toggleCart();
-            const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
-            document.getElementById('payAmount').textContent = total;
-            
-            // QR Code
-            const qrContainer = document.getElementById('qrcode');
-            qrContainer.innerHTML = '';
-            const upiUrl = `upi://pay?pa=${CONFIG.upi_id}&pn=AOSEClothing&am=${total}&cu=INR`;
-            new QRCode(qrContainer, { text: upiUrl, width: 128, height: 128 });
+        function showToast() {
+            const t = document.getElementById('toast');
+            t.style.transform = "translateX(0)";
+            setTimeout(() => t.style.transform = "translateX(200%)", 3000);
+        }
 
+        // --- CHECKOUT ---
+        function openCheckout() {
+            if(cart.length === 0) return alert("Cart empty");
+            toggleCart();
+            const total = cart.reduce((a,b) => a + (b.price*b.qty), 0);
+            document.getElementById('payAmount').innerText = total;
+            
+            // QR
+            document.getElementById('qrcode').innerHTML = "";
+            new QRCode(document.getElementById('qrcode'), {
+                text: `upi://pay?pa=${UPI_ID}&pn=AOSE&am=${total}&cu=INR`,
+                width: 100, height: 100
+            });
+            
             openModal('checkoutModal');
         }
 
-        function payUPI(app) {
-            const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
-            const params = `pa=${CONFIG.upi_id}&pn=AOSE&am=${total}&cu=INR`;
-            let url = `upi://pay?${params}`;
-            
-            if (app === 'gpay') url = `tez://upi/pay?${params}`;
-            if (app === 'phonepe') url = `phonepe://pay?${params}`;
-            if (app === 'paytm') url = `paytmmp://pay?${params}`;
-            
-            window.location.href = url;
+        function payApp(app) {
+            const total = cart.reduce((a,b) => a + (b.price*b.qty), 0);
+            const name = document.getElementById('cName').value || 'User';
+            const url = `upi://pay?pa=${UPI_ID}&pn=AOSE&am=${total}&cu=INR&tn=Order_${name}`;
+            window.location.href = app === 'gpay' ? url.replace('upi', 'tez') : url.replace('upi', 'phonepe');
         }
 
         function confirmOrder() {
             const name = document.getElementById('cName').value;
             const phone = document.getElementById('cPhone').value;
             const address = document.getElementById('cAddress').value;
-
-            if (!name || !phone || !address) return alert('Please fill all details');
-
-            const orderId = 'AOSE-' + Date.now().toString().slice(-6);
-            const itemsList = cart.map(i => `${i.name} (${i.size}) x${i.qty}`).join(', ');
-            const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
-
-            // Save Order
-            const order = { id: orderId, name, phone, items: itemsList, total, status: 'Pending', date: new Date().toISOString() };
-            orders.unshift(order);
-            localStorage.setItem('aose_orders', JSON.stringify(orders));
-
-            // WhatsApp
-            const msg = `*NEW ORDER ${orderId}*%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Address:* ${address}%0A*Items:* ${itemsList}%0A*Total:* ₹${total}%0A*Payment:* UPI`;
-            window.open(`https://wa.me/${CONFIG.wa_number}?text=${msg}`, '_blank');
-
-            // Reset
-            cart = [];
-            saveCart();
-            updateCart();
-            closeModal('checkoutModal');
-            alert('Order Placed Successfully!');
-        }
-
-        // 5. Tracking
-        function trackOrder() {
-            const id = document.getElementById('trackId').value.trim();
-            const order = orders.find(o => o.id === id);
-            const res = document.getElementById('trackResult');
             
-            res.style.display = 'block';
-            if (order) {
-                res.innerHTML = `<strong>Status:</strong> ${order.status}<br><strong>Items:</strong> ${order.items}<br><strong>Total:</strong> ₹${order.total}`;
-                res.style.color = 'var(--primary)';
-            } else {
-                res.innerHTML = "Order not found.";
-                res.style.color = 'red';
-            }
+            if(!name || !phone || !address) return alert("Fill all details");
+            
+            const total = cart.reduce((a,b) => a + (b.price*b.qty), 0);
+            const items = cart.map(i => `${i.name} (${i.size}) x${i.qty}`).join(', ');
+            const oid = 'AOSE-' + Date.now().toString().slice(-5);
+            
+            // Save
+            orders.unshift({id: oid, name, phone, items, total, status: 'Pending'});
+            localStorage.setItem('aose_orders', JSON.stringify(orders));
+            
+            // WA
+            const msg = `*NEW LUXURY ORDER ${oid}*%0AName: ${name}%0APhone: ${phone}%0AItems: ${items}%0ATotal: ₹${total}`;
+            window.open(`https://wa.me/${WA}?text=${msg}`, '_blank');
+            
+            cart = []; saveCart(); updateCartUI(); closeModal('checkoutModal');
+        }
+        
+        // --- TRACKING ---
+        function trackOrder() {
+            const id = document.getElementById('trackInput').value;
+            const o = orders.find(x => x.id === id);
+            const r = document.getElementById('trackRes');
+            r.innerText = o ? `Status: ${o.status} | Total: ₹${o.total}` : "Order not found";
         }
 
-        // Helpers
+        // Utils
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+        function scrollToId(id) { document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
     </script>
 </body>
 </html>
