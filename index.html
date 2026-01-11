@@ -25,6 +25,8 @@
             --text: #1A1A1A;
             --gray: #777777;
             --border: #E5E5E5;
+            --error: #dc3545;
+            --success: #28a745;
             --font-main: 'Montserrat', sans-serif;
             --font-serif: 'Playfair Display', serif;
             --shadow-card: 0 10px 40px rgba(0,0,0,0.05);
@@ -38,14 +40,15 @@
         h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 400; color: var(--primary); }
         button { cursor: pointer; border: none; background: none; font-family: inherit; transition: all 0.3s ease; }
         img { width: 100%; display: block; object-fit: cover; }
+        input, textarea, select { font-family: inherit; }
 
         /* --- Utility Classes --- */
         .container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
         .section-padding { padding: 6rem 0; }
         .text-center { text-align: center; }
-        .flex-center { display: flex; align-items: center; justify-content: center; }
         .fade-up { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
         .fade-up.visible { opacity: 1; transform: translateY(0); }
+        .hidden { display: none !important; }
 
         /* --- Loading Screen --- */
         #loader {
@@ -59,22 +62,23 @@
         /* --- Header --- */
         .header {
             position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-            padding: 1.5rem 0; transition: all 0.4s ease;
-            background: rgba(250, 250, 249, 0.85); backdrop-filter: blur(12px);
-            border-bottom: 1px solid transparent;
+            padding: 1.2rem 0; transition: all 0.4s ease;
+            background: rgba(250, 250, 249, 0.90); backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-        .header.scrolled { padding: 1rem 0; border-color: rgba(0,0,0,0.05); background: rgba(255,255,255,0.95); }
+        .header.scrolled { padding: 0.8rem 0; background: rgba(255,255,255,0.98); box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
         
         .nav-content { display: flex; justify-content: space-between; align-items: center; }
         .brand { font-family: var(--font-serif); font-size: 1.8rem; letter-spacing: 2px; color: var(--primary); text-decoration: none; font-weight: 700; }
         
-        .menu-desktop { display: flex; gap: 3rem; }
+        .menu-desktop { display: flex; gap: 2.5rem; }
         .menu-link { text-decoration: none; color: var(--text); font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; font-weight: 500; position: relative; }
         .menu-link::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 1px; background: var(--gold); transition: width 0.3s; }
         .menu-link:hover::after { width: 100%; }
 
-        .nav-icons { display: flex; gap: 1.5rem; color: var(--primary); }
+        .nav-icons { display: flex; gap: 1.2rem; color: var(--primary); align-items: center; }
         .icon-btn { font-size: 1.2rem; position: relative; color: var(--primary); }
+        .icon-btn:hover { color: var(--gold); }
         .cart-badge { 
             position: absolute; top: -5px; right: -8px; background: var(--gold); color: white;
             font-size: 0.6rem; width: 16px; height: 16px; border-radius: 50%; 
@@ -112,62 +116,69 @@
         /* --- Products Section --- */
         .filters { display: flex; justify-content: center; gap: 2rem; margin-bottom: 4rem; flex-wrap: wrap; }
         .filter-btn { 
-            font-family: var(--font-serif); font-size: 1.2rem; color: var(--gray); 
+            font-family: var(--font-serif); font-size: 1.1rem; color: var(--gray); 
             padding-bottom: 5px; border-bottom: 2px solid transparent;
         }
         .filter-btn.active { color: var(--primary); border-color: var(--gold); }
 
         .product-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 3rem;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2.5rem;
         }
 
-        .product-card { group; cursor: pointer; }
+        .product-card { group; cursor: pointer; transition: 0.3s; }
+        .product-card:hover { transform: translateY(-5px); }
         .product-img-box {
-            position: relative; overflow: hidden; aspect-ratio: 3/4; margin-bottom: 1.5rem;
-            background: #f0f0f0;
+            position: relative; overflow: hidden; aspect-ratio: 3/4; margin-bottom: 1rem;
+            background: #f0f0f0; border-radius: 4px;
         }
         .product-img-box img { width: 100%; height: 100%; transition: transform 0.6s ease; }
         .product-card:hover .product-img-box img { transform: scale(1.08); }
         
+        .product-badge {
+            position: absolute; top: 10px; right: 10px; background: var(--gold); color: white;
+            padding: 0.2rem 0.6rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;
+        }
+
         .quick-view-btn {
             position: absolute; bottom: -50px; left: 0; width: 100%;
-            background: rgba(255,255,255,0.9); color: var(--primary);
+            background: rgba(255,255,255,0.95); color: var(--primary);
             padding: 1rem; text-align: center; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;
-            transition: bottom 0.3s;
+            transition: bottom 0.3s; border-top: 1px solid rgba(0,0,0,0.05);
         }
         .product-card:hover .quick-view-btn { bottom: 0; }
 
-        .product-info h3 { font-size: 1.1rem; margin-bottom: 0.5rem; font-family: var(--font-main); text-transform: uppercase; letter-spacing: 1px; }
-        .product-info p { color: var(--gray); font-size: 0.9rem; }
-        .product-price { color: var(--primary); font-weight: 600; margin-top: 0.5rem; }
+        .product-info h3 { font-size: 1rem; margin-bottom: 0.3rem; font-family: var(--font-main); text-transform: uppercase; letter-spacing: 1px; color: var(--primary); }
+        .product-info p { color: var(--gray); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.3rem; }
+        .product-price { color: var(--primary); font-weight: 700; font-size: 1.1rem; }
 
-        /* --- Product Modal (New Feature) --- */
+        /* --- Product Modal (Detailed) --- */
         .modal-full {
             position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1100;
             display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px);
         }
         .modal-full.active { display: flex; }
         .p-modal-content {
-            background: var(--white); width: 90%; max-width: 1000px; height: 80vh;
+            background: var(--white); width: 95%; max-width: 1000px; height: 85vh;
             display: grid; grid-template-columns: 1fr 1fr; overflow: hidden;
-            box-shadow: var(--shadow-card); position: relative;
+            box-shadow: var(--shadow-card); position: relative; border-radius: 8px;
         }
-        .p-modal-img { height: 100%; }
+        .p-modal-img { height: 100%; background: #f9f9f9; }
         .p-modal-img img { height: 100%; width: 100%; object-fit: cover; }
         .p-modal-details { padding: 3rem; overflow-y: auto; display: flex; flex-direction: column; justify-content: center; }
         
-        .p-badge { background: var(--gold-light); color: var(--primary); padding: 5px 10px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 1rem; width: fit-content; }
-        .size-grid { display: flex; gap: 10px; margin: 1.5rem 0; }
+        .p-cat-badge { background: var(--bg); color: var(--gray); padding: 5px 10px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 1rem; width: fit-content; }
+        .size-grid { display: flex; gap: 10px; margin: 1.5rem 0; flex-wrap: wrap; }
         .size-option { 
-            width: 40px; height: 40px; border: 1px solid var(--border); display: flex; 
-            align-items: center; justify-content: center; font-size: 0.9rem; transition: 0.2s; 
+            width: 45px; height: 45px; border: 1px solid var(--border); display: flex; 
+            align-items: center; justify-content: center; font-size: 0.9rem; transition: 0.2s; cursor: pointer;
         }
         .size-option:hover, .size-option.selected { border-color: var(--primary); background: var(--primary); color: white; }
 
         .add-btn {
-            background: var(--primary); color: white; padding: 1rem; width: 100%;
-            text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; margin-top: 2rem;
+            background: var(--primary); color: white; padding: 1.2rem; width: 100%;
+            text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; margin-top: 1rem;
+            transition: 0.3s;
         }
         .add-btn:hover { background: var(--gold); }
 
@@ -178,10 +189,10 @@
             display: flex; flex-direction: column; box-shadow: -10px 0 40px rgba(0,0,0,0.1);
         }
         .cart-sidebar.open { right: 0; }
-        .cart-header { padding: 2rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .cart-header { padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         .cart-body { flex: 1; padding: 2rem; overflow-y: auto; }
-        .cart-item { display: flex; gap: 1.5rem; margin-bottom: 2rem; }
-        .cart-img { width: 80px; aspect-ratio: 3/4; object-fit: cover; }
+        .cart-item { display: flex; gap: 1.5rem; margin-bottom: 2rem; border-bottom: 1px solid var(--bg); padding-bottom: 1rem; }
+        .cart-img { width: 70px; aspect-ratio: 3/4; object-fit: cover; border-radius: 4px; }
         
         /* --- Mobile Menu --- */
         .mobile-nav { 
@@ -191,28 +202,37 @@
         }
         .mobile-link { display: flex; flex-direction: column; align-items: center; font-size: 0.7rem; color: var(--gray); gap: 5px; text-decoration: none; }
 
-        /* --- Checkout Modal --- */
+        /* --- Modal Generic (Checkout/Admin) --- */
         .modal-small {
             position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1300;
             display: none; align-items: center; justify-content: center; padding: 1rem;
         }
         .modal-small.active { display: flex; }
-        .checkout-box { background: white; width: 100%; max-width: 450px; padding: 2rem; position: relative; }
+        .modal-box { background: white; width: 100%; max-width: 500px; padding: 2rem; position: relative; border-radius: 8px; max-height: 90vh; overflow-y: auto; }
         .form-input { 
             width: 100%; padding: 1rem; border: 1px solid var(--border); 
-            margin-bottom: 1rem; font-family: inherit; font-size: 0.95rem; 
+            margin-bottom: 1rem; font-family: inherit; font-size: 0.95rem; border-radius: 4px;
         }
         .form-input:focus { outline: none; border-color: var(--primary); }
+
+        /* --- Admin --- */
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.9rem; }
+        .admin-table th { text-align: left; padding: 10px; background: var(--bg); color: var(--primary); }
+        .admin-table td { padding: 10px; border-bottom: 1px solid var(--border); }
+        .status-badge { padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; background: var(--bg); }
 
         /* Responsive */
         @media (max-width: 768px) {
             .menu-desktop { display: none; }
             .mobile-nav { display: flex; }
             .cart-sidebar { width: 100%; }
-            .p-modal-content { grid-template-columns: 1fr; height: 100vh; width: 100%; overflow-y: auto; }
-            .p-modal-img { height: 40vh; }
+            .p-modal-content { grid-template-columns: 1fr; height: 100vh; width: 100%; border-radius: 0; }
+            .p-modal-img { height: 35vh; }
             .filters { gap: 1rem; }
-            .filter-btn { font-size: 1rem; }
+            .filter-btn { font-size: 0.9rem; }
+            .product-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+            .product-info h3 { font-size: 0.8rem; }
+            .admin-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
         }
     </style>
 </head>
@@ -222,8 +242,8 @@
         <div class="logo-loader">AOSE</div>
     </div>
 
-    <div id="toast" style="position: fixed; top: 100px; right: 20px; background: var(--primary); color: white; padding: 1rem 2rem; transform: translateX(200%); transition: 0.4s; z-index: 2000;">
-        Item added to bag
+    <div id="toast" style="position: fixed; top: 100px; right: 20px; background: var(--primary); color: white; padding: 1rem 2rem; border-radius: 4px; transform: translateX(200%); transition: 0.4s; z-index: 2000; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+        <i class="fas fa-check-circle"></i> &nbsp; <span id="toastMsg">Action Successful</span>
     </div>
 
     <header class="header" id="header">
@@ -233,13 +253,13 @@
             <nav class="menu-desktop">
                 <a href="#hero" class="menu-link">Home</a>
                 <a href="#collection" class="menu-link">Collection</a>
-                <a href="#about" class="menu-link">Legacy</a>
+                <a href="#sizeGuide" class="menu-link">Size Guide</a>
                 <a href="#contact" class="menu-link">Contact</a>
             </nav>
 
             <div class="nav-icons">
-                <button class="icon-btn" onclick="openModal('trackModal')"><i class="fas fa-search"></i></button>
-                <button class="icon-btn admin-trigger" onclick="toggleAdmin()" style="display:none;"><i class="fas fa-cog"></i></button>
+                <button class="icon-btn" onclick="openModal('trackModal')"><i class="fas fa-truck"></i></button>
+                <button class="icon-btn admin-trigger" onclick="toggleAdmin()"><i class="fas fa-search"></i></button>
                 <button class="icon-btn" onclick="toggleCart()">
                     <i class="fas fa-shopping-bag"></i>
                     <span class="cart-badge" id="cartCount">0</span>
@@ -253,6 +273,7 @@
         <div class="container fade-up">
             <p>Premium Stitch & Wear</p>
             <h1>TIMELESS<br>ELEGANCE</h1>
+            <p style="font-size: 0.9rem; margin-top: -1rem; opacity: 0.8; margin-bottom: 2rem;">Shirts • T-Shirts • Stitch & Wear</p>
             <button class="btn-luxury" onclick="scrollToId('collection')">Discover Collection</button>
         </div>
     </section>
@@ -267,12 +288,36 @@
             <div class="filters fade-up">
                 <button class="filter-btn active" onclick="filterProducts('all', this)">All View</button>
                 <button class="filter-btn" onclick="filterProducts('stitch_wear', this)">Stitch & Wear</button>
-                <button class="filter-btn" onclick="filterProducts('shirts', this)">Shirts</button>
-                <button class="filter-btn" onclick="filterProducts('tshirts', this)">T-Shirts</button>
+                <button class="filter-btn" onclick="filterProducts('shirt', this)">Shirts</button>
+                <button class="filter-btn" onclick="filterProducts('tshirt', this)">T-Shirts</button>
+                <button class="filter-btn" onclick="filterProducts('collections', this)">Luxury Sets</button>
             </div>
 
             <div class="product-grid" id="productGrid">
                 </div>
+        </div>
+    </section>
+
+    <section class="section-padding" id="sizeGuide" style="background: var(--white);">
+        <div class="container" style="max-width: 800px;">
+            <div class="text-center" style="margin-bottom: 3rem;">
+                <h2>Perfect Fit Guide</h2>
+                <p style="color: var(--gray);">Measurements in inches</p>
+            </div>
+            <div style="overflow-x:auto;">
+                <table style="width:100%; border-collapse: collapse; text-align:center;">
+                    <thead style="background:var(--primary); color:white;">
+                        <tr><th style="padding:1rem;">Size</th><th>Chest</th><th>Length</th><th>Shoulder</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom:1px solid #eee; color: var(--gray);"><td style="padding:1rem; font-weight:bold; color:var(--primary);">S</td><td>36-38"</td><td>26"</td><td>16.5"</td></tr>
+                        <tr style="border-bottom:1px solid #eee; color: var(--gray);"><td style="padding:1rem; font-weight:bold; color:var(--primary);">M</td><td>38-40"</td><td>27"</td><td>17.5"</td></tr>
+                        <tr style="border-bottom:1px solid #eee; color: var(--gray);"><td style="padding:1rem; font-weight:bold; color:var(--primary);">L</td><td>40-42"</td><td>28"</td><td>18.5"</td></tr>
+                        <tr style="border-bottom:1px solid #eee; color: var(--gray);"><td style="padding:1rem; font-weight:bold; color:var(--primary);">XL</td><td>42-44"</td><td>29"</td><td>19.5"</td></tr>
+                        <tr style="border-bottom:1px solid #eee; color: var(--gray);"><td style="padding:1rem; font-weight:bold; color:var(--primary);">XXL</td><td>44-46"</td><td>30"</td><td>20.5"</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </section>
 
@@ -283,10 +328,12 @@
                 <img id="pmImg" src="" alt="">
             </div>
             <div class="p-modal-details">
-                <span id="pmCat" class="p-badge">Collection</span>
+                <span id="pmCat" class="p-cat-badge">Collection</span>
                 <h2 id="pmName" style="font-size:2rem; margin-bottom:0.5rem;">Product Name</h2>
                 <h3 id="pmPrice" style="color:var(--primary); font-size:1.5rem; margin-bottom:1.5rem;">₹0</h3>
-                <p id="pmDesc" style="color:var(--gray); margin-bottom:2rem; line-height:1.8;">Description goes here.</p>
+                <p style="color:var(--gray); margin-bottom:2rem; line-height:1.8;">
+                    Experience the finest fabric crafted for comfort and style. This piece from AOSE represents our commitment to timeless elegance.
+                </p>
                 
                 <div style="margin-bottom: 1rem;">
                     <strong style="text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">Select Size</strong>
@@ -301,9 +348,10 @@
 
                 <button class="add-btn" id="pmAddBtn">Add to Cart</button>
                 
-                <div style="margin-top: 2rem; font-size: 0.8rem; color: var(--gray);">
+                <div style="margin-top: 2rem; font-size: 0.8rem; color: var(--gray); border-top: 1px solid var(--border); padding-top: 1rem;">
                     <p><i class="fas fa-truck"></i> Free shipping on all orders</p>
                     <p><i class="fas fa-shield-alt"></i> Authentic Premium Quality</p>
+                    <p><i class="fas fa-undo"></i> Easy Returns Policy</p>
                 </div>
             </div>
         </div>
@@ -325,7 +373,8 @@
                 <h4 style="color: white; margin-bottom: 1.5rem; font-size: 1rem; letter-spacing: 1px;">SOCIAL</h4>
                 <div style="display: flex; gap: 1rem;">
                     <a href="https://wa.me/917887731818" style="color: white; font-size: 1.5rem;"><i class="fab fa-whatsapp"></i></a>
-                    <a href="#" style="color: white; font-size: 1.5rem;"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.instagram.com/official_aose" style="color: white; font-size: 1.5rem;"><i class="fab fa-instagram"></i></a>
+                    <a href="mailto:aoseofficial77@gmail.com" style="color: white; font-size: 1.5rem;"><i class="fas fa-envelope"></i></a>
                 </div>
             </div>
         </div>
@@ -358,96 +407,126 @@
     </div>
 
     <div class="modal-small" id="checkoutModal">
-        <div class="checkout-box">
+        <div class="modal-box">
             <button style="position:absolute; top:1rem; right:1rem;" onclick="closeModal('checkoutModal')">&times;</button>
             <h3 class="text-center" style="margin-bottom: 1.5rem;">Secure Checkout</h3>
             
-            <input type="text" id="cName" class="form-input" placeholder="Full Name">
-            <input type="tel" id="cPhone" class="form-input" placeholder="WhatsApp Number">
-            <input type="email" id="cEmail" class="form-input" placeholder="Email Address">
-            <textarea id="cAddress" class="form-input" rows="3" placeholder="Shipping Address"></textarea>
+            <input type="text" id="cName" class="form-input" placeholder="Full Name *">
+            <input type="tel" id="cPhone" class="form-input" placeholder="WhatsApp Number *">
+            <input type="email" id="cEmail" class="form-input" placeholder="Email Address *">
+            <textarea id="cAddress" class="form-input" rows="3" placeholder="Shipping Address *"></textarea>
 
-            <div style="background: #f4f4f4; padding: 1rem; margin-bottom: 1rem; text-align: center;">
-                <p style="font-size: 0.9rem; margin-bottom: 10px;">Scan to Pay: ₹<span id="payAmount">0</span></p>
-                <div id="qrcode" style="display:flex; justify-content:center;"></div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
-                    <button onclick="payApp('gpay')" style="background:#fff; border:1px solid #ddd; padding:5px;">GPay</button>
-                    <button onclick="payApp('phonepe')" style="background:#fff; border:1px solid #ddd; padding:5px;">PhonePe</button>
+            <div style="background: #f4f4f4; padding: 1rem; margin-bottom: 1rem; text-align: center; border-radius: 4px;">
+                <p style="font-size: 0.9rem; margin-bottom: 10px;"><strong>Scan to Pay: ₹<span id="payAmount">0</span></strong></p>
+                <div id="qrcode" style="display:flex; justify-content:center; margin-bottom: 10px;"></div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                    <button onclick="payApp('gpay')" style="background:#fff; border:1px solid #ddd; padding:8px; border-radius:4px;">GPay</button>
+                    <button onclick="payApp('phonepe')" style="background:#fff; border:1px solid #ddd; padding:8px; border-radius:4px;">PhonePe</button>
                 </div>
             </div>
 
-            <button class="add-btn" onclick="confirmOrder()">Confirm Order</button>
+            <button class="add-btn" onclick="confirmOrder()"><i class="fab fa-whatsapp"></i> Confirm Order</button>
         </div>
     </div>
 
     <div class="modal-small" id="trackModal">
-        <div class="checkout-box">
+        <div class="modal-box">
             <button style="position:absolute; top:1rem; right:1rem;" onclick="closeModal('trackModal')">&times;</button>
             <h3>Track Order</h3>
             <input type="text" id="trackInput" class="form-input" placeholder="Order ID (AOSE-XXXX)" style="margin-top:1rem;">
             <button class="add-btn" onclick="trackOrder()">Track</button>
-            <div id="trackRes" style="margin-top:1rem; color:var(--primary);"></div>
+            <div id="trackRes" style="margin-top:1rem; color:var(--primary); background: #f9f9f9; padding: 10px; border-radius: 4px; display: none;"></div>
+        </div>
+    </div>
+
+    <div class="modal-small" id="adminModal">
+        <div class="modal-box" style="max-width: 800px;">
+            <button style="position:absolute; top:1rem; right:1rem;" onclick="closeModal('adminModal')">&times;</button>
+            <div id="adminLoginView">
+                <h3 class="text-center">Admin Login</h3>
+                <input type="password" id="adminPass" class="form-input" placeholder="Enter Password" style="margin-top: 1rem;">
+                <button class="add-btn" onclick="loginAdmin()">Login</button>
+            </div>
+            <div id="adminDashView" class="hidden">
+                <div class="admin-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                    <h3>Dashboard</h3>
+                    <button onclick="logoutAdmin()" style="color:red; font-size:0.9rem;">Logout</button>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+                    <div style="background:var(--primary); color:white; padding:1rem; border-radius:4px; text-align:center;">
+                        <div style="font-size:2rem; font-weight:700;" id="admTotalOrders">0</div>
+                        <div style="font-size:0.8rem;">Total Orders</div>
+                    </div>
+                    <div style="background:var(--gold); color:white; padding:1rem; border-radius:4px; text-align:center;">
+                        <div style="font-size:2rem; font-weight:700;" id="admRevenue">0</div>
+                        <div style="font-size:0.8rem;">Revenue</div>
+                    </div>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table class="admin-table">
+                        <thead><tr><th>ID</th><th>Name</th><th>Total</th><th>Status</th><th>Action</th></tr></thead>
+                        <tbody id="adminTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // --- CONFIG ---
-        const UPI_ID = "7887731818@ybl";
-        const WA = "917887731818";
+        // --- CONFIG & INIT ---
+        const CONFIG = {
+            upi_id: "7887731818@ybl",
+            wa_number: "917887731818",
+            admin_pass: "admin123"
+        };
         
-        // --- DATA ---
+        // Initialize EmailJS
+        (function() { emailjs.init("YOUR_EMAILJS_PUBLIC_KEY"); })();
+
+        // --- PRODUCT DATABASE (Merged) ---
+        // Using images from Unsplash for Luxury feel, but names/prices from Source 2
         const products = [
             // Stitch & Wear
-            { 
-                id: 101, category: "stitch_wear", name: "Imperial Emerald Fabric", price: 1499, 
-                image: "https://images.unsplash.com/photo-1614213567116-c1f964a2c5a0?w=600",
-                desc: "Premium unstitched fabric with a rich emerald hue. Perfect for bespoke tailoring." 
-            },
-            { 
-                id: 102, category: "stitch_wear", name: "Royal Navy Texture", price: 1699, 
-                image: "https://images.unsplash.com/photo-1598532163257-ae3c6b2524b6?w=600",
-                desc: "Textured premium cotton blend. Breathable and elegant." 
-            },
-            // Shirts
-            { 
-                id: 201, category: "shirts", name: "Classic White Oxford", price: 1299, 
-                image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600",
-                desc: "The quintessential white shirt. Wrinkle-resistant finish for the busy professional." 
-            },
-            { 
-                id: 202, category: "shirts", name: "Midnight Satin Shirt", price: 1899, 
-                image: "https://images.unsplash.com/photo-1621072118058-2e8f5ca5d022?w=600",
-                desc: "Luxurious satin finish shirt in deep black. Ideal for evening wear." 
-            },
-            // T-Shirts
-            { 
-                id: 301, category: "tshirts", name: "Supima Cotton Tee", price: 799, 
-                image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600",
-                desc: "100% Supima cotton. Soft, durable, and effortlessly stylish." 
-            },
-            { 
-                id: 302, category: "tshirts", name: "Urban Polo Green", price: 999, 
-                image: "https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?w=600",
-                desc: "Classic polo cut with modern fitting. Deep green dye." 
-            }
+            { id: 1, name: "Signature Stitch & Wear", category: "stitch_wear", price: 999, badge: "Best Seller", image: "https://images.unsplash.com/photo-1594938298603-c8148c47e356?w=600" },
+            { id: 2, name: "Classic Stitch & Wear", category: "stitch_wear", price: 999, badge: "New", image: "https://images.unsplash.com/photo-1614213567116-c1f964a2c5a0?w=600" },
+            { id: 3, name: "Premium Stitch & Wear", category: "stitch_wear", price: 1299, badge: "Limited", image: "https://images.unsplash.com/photo-1598532163257-ae3c6b2524b6?w=600" },
+            { id: 4, name: "Elegant Stitch & Wear", category: "stitch_wear", price: 1099, badge: "", image: "https://images.unsplash.com/photo-1620799140408-ed5341cd2431?w=600" },
+            
+            // Collections (Luxury Sets)
+            { id: 11, name: "Classic Collection", category: "collections", price: 1499, badge: "Classic", image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=600" },
+            { id: 12, name: "Onyx Collection", category: "collections", price: 1599, badge: "Dark", image: "https://images.unsplash.com/photo-1621072118058-2e8f5ca5d022?w=600" },
+            { id: 16, name: "Monarch Collection", category: "collections", price: 1999, badge: "Royal", image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600" },
+
+            // Shirts (New Category)
+            { id: 201, name: "White Oxford Shirt", category: "shirt", price: 1299, badge: "Essential", image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600" },
+            { id: 202, name: "Satin Evening Shirt", category: "shirt", price: 1699, badge: "Party", image: "https://images.unsplash.com/photo-1589363359675-9922f3e795ef?w=600" },
+            
+            // T-Shirts (New Category)
+            { id: 301, name: "Supima Cotton Tee", category: "tshirt", price: 799, badge: "Soft", image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600" },
+            { id: 302, name: "Urban Polo", category: "tshirt", price: 999, badge: "Polo", image: "https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?w=600" }
         ];
 
         let cart = JSON.parse(localStorage.getItem('aose_cart')) || [];
         let orders = JSON.parse(localStorage.getItem('aose_orders')) || [];
+        let adminClicks = 0;
 
-        // --- INIT ---
+        // --- LIFECYCLE ---
         window.addEventListener('load', () => {
-            document.getElementById('loader').style.opacity = '0';
-            setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
+            // Remove Loader
+            setTimeout(() => {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
+            }, 800);
+            
             renderProducts('all');
             updateCartUI();
             
-            // Scroll Animation
+            // Animation Observer
             const observer = new IntersectionObserver(entries => {
                 entries.forEach(entry => {
                     if(entry.isIntersecting) entry.target.classList.add('visible');
                 });
-            });
+            }, {threshold: 0.1});
             document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
             
             // Header Scroll
@@ -455,15 +534,9 @@
                 const header = document.getElementById('header');
                 window.scrollY > 50 ? header.classList.add('scrolled') : header.classList.remove('scrolled');
             });
-
-             // Admin Trigger
-             window.enableAdmin = () => {
-                document.querySelector('.admin-trigger').style.display = 'inline-block';
-                alert("Admin Button Enabled");
-            };
         });
 
-        // --- FUNCTIONS ---
+        // --- CORE LOGIC ---
 
         function filterProducts(cat, btn) {
             if(btn) {
@@ -479,40 +552,48 @@
             
             const list = filter === 'all' ? products : products.filter(p => p.category === filter);
             
+            if(list.length === 0) {
+                grid.innerHTML = `<div class="text-center" style="grid-column:1/-1; padding:3rem;">No products found in this category.</div>`;
+                return;
+            }
+
             list.forEach(p => {
-                grid.innerHTML += `
-                <div class="product-card fade-up visible">
+                const card = document.createElement('div');
+                card.className = "product-card fade-up visible";
+                card.innerHTML = `
                     <div class="product-img-box">
                         <img src="${p.image}" loading="lazy" alt="${p.name}">
+                        ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
                         <button class="quick-view-btn" onclick="openProductModal(${p.id})">Quick View</button>
                     </div>
                     <div class="product-info">
                         <h3>${p.name}</h3>
                         <p>${p.category.replace('_', ' & ')}</p>
                         <div class="product-price">₹${p.price}</div>
-                    </div>
-                </div>`;
+                    </div>`;
+                grid.appendChild(card);
             });
         }
 
-        // --- MODAL LOGIC ---
+        // --- MODAL & CART ---
         function openProductModal(id) {
             const p = products.find(i => i.id === id);
+            if(!p) return;
+            
             document.getElementById('pmImg').src = p.image;
             document.getElementById('pmCat').innerText = p.category.replace('_', ' & ');
             document.getElementById('pmName').innerText = p.name;
             document.getElementById('pmPrice').innerText = `₹${p.price}`;
-            document.getElementById('pmDesc').innerText = p.desc;
             
             // Reset Size
             document.querySelectorAll('.size-option').forEach(b => b.classList.remove('selected'));
             
-            // Setup Add Button
+            // Bind Add Button
             const btn = document.getElementById('pmAddBtn');
             btn.onclick = () => addToCart(id);
             btn.innerHTML = "Add to Cart";
             
-            document.getElementById('productModal').classList.add('active');
+            openModal('productModal');
         }
 
         function selectSize(btn) {
@@ -520,22 +601,24 @@
             btn.classList.add('selected');
         }
 
-        // --- CART LOGIC ---
         function addToCart(id) {
             const sizeEl = document.querySelector('.size-option.selected');
-            if(!sizeEl) return alert("Please select a size");
+            if(!sizeEl) {
+                showToast("Please select a size", "error");
+                return;
+            }
             
             const size = sizeEl.innerText;
             const p = products.find(i => i.id === id);
             
             const exist = cart.find(i => i.id === id && i.size === size);
             if(exist) exist.qty++;
-            else cart.push({...p, size, qty: 1});
+            else cart.push({...p, size, qty: 1, cartId: Date.now()});
             
             saveCart();
             updateCartUI();
             closeModal('productModal');
-            showToast();
+            showToast("Added to Bag");
             toggleCart();
         }
 
@@ -554,18 +637,19 @@
                     <div style="flex:1;">
                         <h4 style="font-size:0.9rem;">${item.name}</h4>
                         <p style="font-size:0.8rem; color:#888;">${item.size} | ₹${item.price}</p>
-                        <div style="margin-top:5px;">
-                            <button onclick="modQty(${idx}, -1)">-</button> 
-                            <span style="margin:0 10px;">${item.qty}</span> 
-                            <button onclick="modQty(${idx}, 1)">+</button>
+                        <div style="margin-top:5px; display:flex; gap:10px;">
+                            <button onclick="modQty(${idx}, -1)" style="border:1px solid #ddd; width:25px;">-</button> 
+                            <span>${item.qty}</span> 
+                            <button onclick="modQty(${idx}, 1)" style="border:1px solid #ddd; width:25px;">+</button>
                         </div>
                     </div>
+                    <div style="font-weight:600;">₹${item.price * item.qty}</div>
                 </div>`;
             });
             
             document.getElementById('cartTotal').innerText = total;
             document.getElementById('cartCount').innerText = count;
-            if(cart.length === 0) el.innerHTML = "<p class='text-center'>Bag is empty.</p>";
+            if(cart.length === 0) el.innerHTML = "<p class='text-center' style='color:#999;'>Your bag is empty.</p>";
         }
 
         function modQty(idx, val) {
@@ -578,29 +662,25 @@
         function saveCart() { localStorage.setItem('aose_cart', JSON.stringify(cart)); }
         
         function toggleCart() {
-            document.getElementById('cartSidebar').classList.toggle('open');
-            const overlay = document.getElementById('cartOverlay');
-            overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
+            const sb = document.getElementById('cartSidebar');
+            const ov = document.getElementById('cartOverlay');
+            sb.classList.toggle('open');
+            ov.style.display = sb.classList.contains('open') ? 'block' : 'none';
         }
 
-        function showToast() {
-            const t = document.getElementById('toast');
-            t.style.transform = "translateX(0)";
-            setTimeout(() => t.style.transform = "translateX(200%)", 3000);
-        }
-
-        // --- CHECKOUT ---
+        // --- CHECKOUT & PAYMENT ---
         function openCheckout() {
-            if(cart.length === 0) return alert("Cart empty");
+            if(cart.length === 0) return showToast("Cart is empty", "error");
             toggleCart();
+            
             const total = cart.reduce((a,b) => a + (b.price*b.qty), 0);
             document.getElementById('payAmount').innerText = total;
             
-            // QR
+            // Generate QR
             document.getElementById('qrcode').innerHTML = "";
             new QRCode(document.getElementById('qrcode'), {
-                text: `upi://pay?pa=${UPI_ID}&pn=AOSE&am=${total}&cu=INR`,
-                width: 100, height: 100
+                text: `upi://pay?pa=${CONFIG.upi_id}&pn=AOSE&am=${total}&cu=INR`,
+                width: 120, height: 120
             });
             
             openModal('checkoutModal');
@@ -609,44 +689,129 @@
         function payApp(app) {
             const total = cart.reduce((a,b) => a + (b.price*b.qty), 0);
             const name = document.getElementById('cName').value || 'User';
-            const url = `upi://pay?pa=${UPI_ID}&pn=AOSE&am=${total}&cu=INR&tn=Order_${name}`;
+            const url = `upi://pay?pa=${CONFIG.upi_id}&pn=AOSE&am=${total}&cu=INR&tn=Order_${name}`;
             window.location.href = app === 'gpay' ? url.replace('upi', 'tez') : url.replace('upi', 'phonepe');
         }
 
-        function confirmOrder() {
+        async function confirmOrder() {
             const name = document.getElementById('cName').value;
             const phone = document.getElementById('cPhone').value;
+            const email = document.getElementById('cEmail').value;
             const address = document.getElementById('cAddress').value;
             
-            if(!name || !phone || !address) return alert("Fill all details");
+            if(!name || !phone || !email || !address) return showToast("Please fill all fields", "error");
             
             const total = cart.reduce((a,b) => a + (b.price*b.qty), 0);
             const items = cart.map(i => `${i.name} (${i.size}) x${i.qty}`).join(', ');
             const oid = 'AOSE-' + Date.now().toString().slice(-5);
+            const date = new Date().toISOString();
             
-            // Save
-            orders.unshift({id: oid, name, phone, items, total, status: 'Pending'});
+            // 1. Save Local
+            const order = {id: oid, customerName: name, customerPhone: phone, customerEmail: email, items, total, status: 'Pending', date};
+            orders.unshift(order);
             localStorage.setItem('aose_orders', JSON.stringify(orders));
             
-            // WA
-            const msg = `*NEW LUXURY ORDER ${oid}*%0AName: ${name}%0APhone: ${phone}%0AItems: ${items}%0ATotal: ₹${total}`;
-            window.open(`https://wa.me/${WA}?text=${msg}`, '_blank');
+            // 2. EmailJS (Try/Catch)
+            try {
+                await emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+                    to_email: email, to_name: name, order_id: oid, order_items: items, order_total: total
+                });
+            } catch(e) { console.log("Email skipped (config needed)"); }
             
-            cart = []; saveCart(); updateCartUI(); closeModal('checkoutModal');
-        }
-        
-        // --- TRACKING ---
-        function trackOrder() {
-            const id = document.getElementById('trackInput').value;
-            const o = orders.find(x => x.id === id);
-            const r = document.getElementById('trackRes');
-            r.innerText = o ? `Status: ${o.status} | Total: ₹${o.total}` : "Order not found";
+            // 3. WhatsApp
+            const msg = `*NEW LUXURY ORDER ${oid}*%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Items:* ${items}%0A*Total:* ₹${total}%0A*Address:* ${address}`;
+            window.open(`https://wa.me/${CONFIG.wa_number}?text=${msg}`, '_blank');
+            
+            // 4. Cleanup
+            cart = []; saveCart(); updateCartUI(); 
+            closeModal('checkoutModal');
+            showToast("Order Placed Successfully!");
         }
 
-        // Utils
+        // --- TRACKING & ADMIN ---
+        function trackOrder() {
+            const id = document.getElementById('trackInput').value.trim();
+            const o = orders.find(x => x.id === id);
+            const r = document.getElementById('trackRes');
+            
+            if(o) {
+                r.innerHTML = `<strong>Status:</strong> <span class="status-badge">${o.status}</span><br><strong>Items:</strong> ${o.items}<br><strong>Total:</strong> ₹${o.total}`;
+                r.style.display = 'block';
+            } else {
+                r.innerHTML = "Order not found";
+                r.style.display = 'block';
+            }
+        }
+
+        // Admin
+        function toggleAdmin() {
+            // Secret admin trigger logic could go here
+            openModal('adminModal');
+        }
+
+        function loginAdmin() {
+            if(document.getElementById('adminPass').value === CONFIG.admin_pass) {
+                document.getElementById('adminLoginView').classList.add('hidden');
+                document.getElementById('adminDashView').classList.remove('hidden');
+                renderAdmin();
+            } else {
+                showToast("Wrong Password", "error");
+            }
+        }
+
+        function logoutAdmin() {
+            document.getElementById('adminLoginView').classList.remove('hidden');
+            document.getElementById('adminDashView').classList.add('hidden');
+            document.getElementById('adminPass').value = '';
+            closeModal('adminModal');
+        }
+
+        function renderAdmin() {
+            document.getElementById('admTotalOrders').innerText = orders.length;
+            document.getElementById('admRevenue').innerText = '₹' + orders.reduce((s,o) => s + o.total, 0);
+            
+            const tb = document.getElementById('adminTableBody');
+            tb.innerHTML = orders.map(o => `
+                <tr>
+                    <td>${o.id}</td>
+                    <td>${o.customerName}</td>
+                    <td>₹${o.total}</td>
+                    <td>
+                        <select onchange="updateStatus('${o.id}', this.value)" style="padding:2px;">
+                            <option value="Pending" ${o.status==='Pending'?'selected':''}>Pending</option>
+                            <option value="Shipped" ${o.status==='Shipped'?'selected':''}>Shipped</option>
+                            <option value="Delivered" ${o.status==='Delivered'?'selected':''}>Delivered</option>
+                        </select>
+                    </td>
+                    <td><button onclick="delOrder('${o.id}')" style="color:red;">&times;</button></td>
+                </tr>
+            `).join('');
+        }
+
+        function updateStatus(id, stat) {
+            const o = orders.find(x => x.id === id);
+            if(o) { o.status = stat; localStorage.setItem('aose_orders', JSON.stringify(orders)); showToast("Status Updated"); }
+        }
+
+        function delOrder(id) {
+            if(confirm("Delete this order?")) {
+                orders = orders.filter(x => x.id !== id);
+                localStorage.setItem('aose_orders', JSON.stringify(orders));
+                renderAdmin();
+            }
+        }
+
+        // --- UTILS ---
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
         function scrollToId(id) { document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+        function showToast(msg, type="success") {
+            const t = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg || "Success";
+            t.style.background = type === "error" ? "var(--error)" : "var(--primary)";
+            t.style.transform = "translateX(0)";
+            setTimeout(() => t.style.transform = "translateX(200%)", 3000);
+        }
     </script>
 </body>
 </html>
