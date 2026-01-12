@@ -7,11 +7,9 @@
     <meta name="keywords" content="AOSE, clothing, fashion, stitch and wear, premium, India">
     <title>AOSE | Timeless Elegance, Modern Legacy</title>
     
-    <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- Essential Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -176,6 +174,23 @@
         .size-chart { width: 100%; border-collapse: collapse; }
         .size-chart th { background: var(--primary); color: var(--white); padding: 1.2rem; font-weight: 600; }
         .size-chart td { padding: 1rem; text-align: center; border-bottom: 1px solid var(--light-gray); }
+
+        /* --- Size Cam Styles --- */
+        .cam-trigger-container { text-align: center; margin-top: 2rem; }
+        .cam-btn {
+            background: var(--white); color: var(--primary); border: 1px solid var(--primary);
+            padding: 1rem 2rem; border-radius: 5px; font-weight: 600; font-size: 0.9rem;
+            display: inline-flex; align-items: center; gap: 10px; transition: all 0.3s ease;
+        }
+        .cam-btn:hover { background: var(--primary); color: white; }
+        
+        .cam-modal-content { max-width: 800px !important; text-align: center; }
+        #camContainer { position: relative; width: 100%; max-width: 600px; margin: 0 auto; background: #000; border-radius: 8px; overflow: hidden; min-height: 300px; display: flex; align-items: center; justify-content: center; }
+        #camera { width: 100%; height: auto; display: none; }
+        #canvas { width: 100%; max-width: 100%; border: 1px solid #ccc; display: none; }
+        .cam-controls { margin-top: 1.5rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+        .cam-instructions { text-align: left; background: var(--bg-light); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--gray); border-left: 3px solid var(--gold); }
+        .cam-result { margin-top: 1rem; font-size: 1.2rem; font-weight: 700; color: var(--primary); }
 
         /* --- Products --- */
         .filters { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
@@ -445,23 +460,19 @@
 </head>
 <body>
 
-    <!-- Loading Screen -->
     <div id="loadingScreen">
         <div class="loading-spinner"></div>
         <p style="color: var(--primary); font-weight: 600;">Loading AOSE...</p>
     </div>
 
-    <!-- Toast Notification -->
     <div class="toast-notification" id="toastNotification">
         <i class="fas fa-check-circle toast-icon"></i>
         <span id="toastMessage">Product added to cart!</span>
     </div>
 
-    <!-- Header -->
     <header class="header" id="mainHeader">
         <div class="container nav-content">
             <a href="#" class="brand">
-                <!-- AOSE Brand Logo -->
                 <img src="aose ad.png" alt="AOSE Logo" class="brand-logo">
             </a>
             <nav class="menu-desktop">
@@ -481,7 +492,6 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero" id="hero">
         <div class="hero-bg"></div>
         <div class="hero-content fade-up">
@@ -491,7 +501,6 @@
         </div>
     </section>
 
-    <!-- Size Guide -->
     <section class="size-guide" id="sizeGuide">
         <div class="container">
             <h2 class="section-title">Size Guide</h2>
@@ -515,10 +524,16 @@
                     </tbody>
                 </table>
             </div>
+            
+            <div class="cam-trigger-container">
+                <p style="color:var(--gray); margin-bottom:1rem; font-size:0.9rem;">Unsure about your shoulder width?</p>
+                <button class="cam-btn" onclick="openCamModal()">
+                    <i class="fas fa-camera"></i> Try AI Size Measurement
+                </button>
+            </div>
         </div>
     </section>
 
-    <!-- Products Section -->
     <section class="section-padding" id="collection">
         <div class="container">
             <div class="text-center fade-up" style="margin-bottom: 3rem;">
@@ -534,12 +549,10 @@
             </div>
 
             <div class="products-grid" id="productsGrid">
-                <!-- Products will be loaded here -->
-            </div>
+                </div>
         </div>
     </section>
 
-    <!-- Product Quick View Modal -->
     <div class="modal-overlay" id="productModal">
         <div class="modal-box modal-full-content">
             <button class="close-btn" onclick="closeModal('productModal')">&times;</button>
@@ -566,7 +579,38 @@
         </div>
     </div>
 
-    <!-- Checkout Modal -->
+    <div class="modal-overlay" id="sizeCamModal">
+        <div class="modal-box cam-modal-content">
+            <button class="close-btn" onclick="closeCamModal()">&times;</button>
+            <h3 style="margin-bottom: 1rem;">AI Size Measurement</h3>
+            
+            <div class="cam-instructions" id="camInstructions">
+                <strong>Instructions:</strong>
+                <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>Hold a standard credit/debit card against your shoulder for scale.</li>
+                    <li>Click <strong>Start Camera</strong> and position yourself.</li>
+                    <li>Click <strong>Capture Image</strong>.</li>
+                    <li>Click the <strong>Left Edge</strong> then <strong>Right Edge</strong> of the card (Width).</li>
+                    <li>Click your <strong>Left Shoulder</strong> then <strong>Right Shoulder</strong>.</li>
+                </ol>
+            </div>
+
+            <div id="camContainer">
+                <div id="camPlaceholder" style="color: white;">Camera inactive</div>
+                <video id="camera" autoplay playsinline></video>
+                <canvas id="canvas"></canvas>
+            </div>
+
+            <div class="cam-controls">
+                <button class="cam-btn" id="startCameraBtn" onclick="startCamera()">Start Camera</button>
+                <button class="cam-btn" id="captureBtn" onclick="captureImage()" style="display:none;">Capture Image</button>
+                <button class="cam-btn" id="resetBtn" onclick="resetCamera()" style="display:none; background:var(--gray); border-color:var(--gray); color:white;">Reset</button>
+            </div>
+
+            <div id="camOutput" class="cam-result"></div>
+        </div>
+    </div>
+
     <div class="modal-overlay" id="checkoutModal">
         <div class="modal-box">
             <button class="close-btn" onclick="closeModal('checkoutModal')">&times;</button>
@@ -580,7 +624,6 @@
             <div class="input-group"><input type="tel" id="coPhone" class="input-field" placeholder="WhatsApp Number *" required></div>
             <div class="input-group"><textarea id="coAddress" class="input-field" rows="3" placeholder="Complete Shipping Address *" required></textarea></div>
 
-            <!-- Payment Instructions -->
             <div class="payment-instructions">
                 <h4>Payment Instructions:</h4>
                 <ul>
@@ -592,7 +635,6 @@
                 </ul>
             </div>
 
-            <!-- Payment Gateway -->
             <div class="payment-container">
                 <h3 class="payment-title">Checkout: ₹<span id="displayAmount">0</span></h3>
                 <div class="payment-options">
@@ -625,7 +667,6 @@
         </div>
     </div>
 
-    <!-- Success Modal -->
     <div class="modal-overlay" id="successModal">
         <div class="modal-box success-modal-content">
             <i class="fas fa-check-circle" style="font-size: 4rem; color: #28a745; margin-bottom: 1.5rem;"></i>
@@ -645,7 +686,6 @@
         </div>
     </div>
 
-    <!-- Track Order Modal -->
     <div class="modal-overlay" id="trackModal">
         <div class="modal-box">
             <button class="close-btn" onclick="closeModal('trackModal')">&times;</button>
@@ -658,7 +698,6 @@
         </div>
     </div>
 
-    <!-- Admin Panel -->
     <div class="admin-panel" id="adminPanel">
         <div class="admin-login" id="adminLogin">
             <h3 style="color: var(--primary); margin-bottom: 1.5rem;">Admin Login</h3>
@@ -719,15 +758,13 @@
                             </tr>
                         </thead>
                         <tbody id="admTable">
-                            <!-- Orders will be loaded here -->
-                        </tbody>
+                            </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Cart Sidebar -->
     <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
@@ -752,7 +789,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <footer class="footer" id="contact">
         <div class="footer-content">
             <div class="footer-section">
@@ -795,7 +831,6 @@
         </div>
     </footer>
 
-    <!-- Mobile Navigation -->
     <div class="mobile-nav">
         <a href="#hero" class="mobile-link"><i class="fas fa-home"></i> Home</a>
         <a href="#collection" class="mobile-link"><i class="fas fa-layer-group"></i> Shop</a>
@@ -898,6 +933,11 @@
         let selectedProductId = null;
         let selectedSize = null;
 
+        // --- CAMERA MEASUREMENT VARIABLES ---
+        let stream = null;
+        let points = [];
+        const CARD_WIDTH_INCH = 3.37; // Standard credit card width
+
         // --- INITIALIZATION ---
         window.addEventListener('load', () => {
             init();
@@ -966,8 +1006,17 @@
                     if (document.getElementById('adminPanel').classList.contains('active')) {
                         toggleAdmin();
                     }
+                    
+                    // Stop camera if open
+                    if(stream) {
+                        stopCameraStream();
+                    }
                 }
             });
+            
+            // Canvas Click Event for Measurement
+            const canvas = document.getElementById('canvas');
+            canvas.addEventListener('click', handleCanvasClick);
         }
 
         // --- PRODUCT FUNCTIONS ---
@@ -1379,9 +1428,9 @@
                 
                 // Send email using EmailJS (You need to set up your EmailJS account)
                 // const response = await emailjs.send(
-                //     'YOUR_EMAILJS_SERVICE_ID',
-                //     'YOUR_EMAILJS_TEMPLATE_ID',
-                //     templateParams
+                //      'YOUR_EMAILJS_SERVICE_ID',
+                //      'YOUR_EMAILJS_TEMPLATE_ID',
+                //      templateParams
                 // );
                 
                 // console.log('Email sent successfully:', response);
@@ -1433,6 +1482,174 @@
                 </div>
             `;
             resultDiv.style.display = 'block';
+        }
+
+        // --- AI CAMERA FUNCTIONS ---
+        function openCamModal() {
+            openModal('sizeCamModal');
+            document.getElementById('camOutput').innerHTML = '';
+            points = [];
+            document.getElementById('startCameraBtn').style.display = 'inline-flex';
+            document.getElementById('captureBtn').style.display = 'none';
+            document.getElementById('resetBtn').style.display = 'none';
+            document.getElementById('canvas').style.display = 'none';
+            document.getElementById('camera').style.display = 'none';
+            document.getElementById('camPlaceholder').style.display = 'flex';
+        }
+
+        function closeCamModal() {
+            stopCameraStream();
+            closeModal('sizeCamModal');
+        }
+
+        async function startCamera() {
+            const video = document.getElementById('camera');
+            const placeholder = document.getElementById('camPlaceholder');
+            const startBtn = document.getElementById('startCameraBtn');
+            const captureBtn = document.getElementById('captureBtn');
+            const output = document.getElementById('camOutput');
+
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+                video.srcObject = stream;
+                video.style.display = 'block';
+                placeholder.style.display = 'none';
+                startBtn.style.display = 'none';
+                captureBtn.style.display = 'inline-flex';
+                output.innerHTML = "Position yourself and click Capture";
+            } catch (err) {
+                console.error("Error accessing camera: ", err);
+                output.innerHTML = "Error accessing camera. Please allow permission.";
+            }
+        }
+
+        function stopCameraStream() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+        }
+
+        function captureImage() {
+            const video = document.getElementById('camera');
+            const canvas = document.getElementById('canvas');
+            const captureBtn = document.getElementById('captureBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const output = document.getElementById('camOutput');
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            video.style.display = 'none';
+            canvas.style.display = 'block';
+            captureBtn.style.display = 'none';
+            resetBtn.style.display = 'inline-flex';
+            
+            stopCameraStream();
+            points = [];
+            output.innerHTML = "Click Left Edge then Right Edge of Card (Width)";
+        }
+
+        function handleCanvasClick(event) {
+            const canvas = document.getElementById('canvas');
+            const output = document.getElementById('camOutput');
+            const rect = canvas.getBoundingClientRect();
+            
+            // Calculate scale factor in case canvas is resized via CSS
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+
+            const x = (event.clientX - rect.left) * scaleX;
+            const y = (event.clientY - rect.top) * scaleY;
+
+            if (points.length < 4) {
+                points.push({ x, y });
+                drawPoints();
+
+                if (points.length === 0) output.innerHTML = "Click Left Edge of Card";
+                else if (points.length === 1) output.innerHTML = "Click Right Edge of Card";
+                else if (points.length === 2) {
+                    output.innerHTML = "Card Measured. Now Click Left Shoulder";
+                    drawPoints(); // Draw line for card
+                }
+                else if (points.length === 3) output.innerHTML = "Click Right Shoulder";
+                else if (points.length === 4) {
+                    calculateSize();
+                }
+            }
+        }
+
+        function drawPoints() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Redraw image first (to clear previous lines if needed, though we want persistence here)
+            // Ideally we'd store the original image data, but for simplicity we just draw on top
+            
+            ctx.lineWidth = 3;
+            
+            // Draw points
+            points.forEach((point, index) => {
+                ctx.fillStyle = index < 2 ? '#C6A664' : '#0F3D2E'; // Gold for card, Emerald for shoulder
+                ctx.beginPath();
+                ctx.arc(point.x, point.y, 5, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+
+            // Draw Line for Card
+            if (points.length >= 2) {
+                ctx.strokeStyle = '#C6A664';
+                ctx.beginPath();
+                ctx.moveTo(points[0].x, points[0].y);
+                ctx.lineTo(points[1].x, points[1].y);
+                ctx.stroke();
+            }
+
+            // Draw Line for Shoulder
+            if (points.length === 4) {
+                ctx.strokeStyle = '#0F3D2E';
+                ctx.beginPath();
+                ctx.moveTo(points[2].x, points[2].y);
+                ctx.lineTo(points[3].x, points[3].y);
+                ctx.stroke();
+            }
+        }
+
+        function calculateSize() {
+            const output = document.getElementById('camOutput');
+            
+            // Pixel distance for card
+            const cardPixels = Math.sqrt(
+                Math.pow(points[1].x - points[0].x, 2) + 
+                Math.pow(points[1].y - points[0].y, 2)
+            );
+
+            // Pixel distance for shoulder
+            const shoulderPixels = Math.sqrt(
+                Math.pow(points[3].x - points[2].x, 2) + 
+                Math.pow(points[3].y - points[2].y, 2)
+            );
+
+            // Calculation
+            const pixelsPerInch = cardPixels / CARD_WIDTH_INCH;
+            const shoulderWidthInches = (shoulderPixels / pixelsPerInch).toFixed(1);
+
+            let recommendedSize = "Unknown";
+            if (shoulderWidthInches < 17) recommendedSize = "S";
+            else if (shoulderWidthInches < 18) recommendedSize = "M";
+            else if (shoulderWidthInches < 19) recommendedSize = "L";
+            else if (shoulderWidthInches < 20) recommendedSize = "XL";
+            else recommendedSize = "XXL";
+
+            output.innerHTML = `Width: ${shoulderWidthInches}" <br> <span style="font-size:0.8em; color:var(--text);">Recommended Size: <strong style="color:var(--primary); font-size:1.2em;">${recommendedSize}</strong></span>`;
+        }
+
+        function resetCamera() {
+            points = [];
+            document.getElementById('camOutput').innerHTML = "";
+            startCamera(); // Restart process
         }
 
         // --- ADMIN FUNCTIONS ---
