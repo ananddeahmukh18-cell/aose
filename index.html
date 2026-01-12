@@ -1,722 +1,722 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>AOSE | Timeless Elegance</title>
-<meta name="description" content="AOSE - Premium Stitch & Wear Clothing">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AOSE | Timeless Elegance</title>
+    <meta name="description" content="AOSE - Premium Stitch & Wear Clothing">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* --- 1. CORE VARIABLES --- */
+        :root {
+            --primary: #0F3D2E; --primary-light: #1a5c45; --primary-dark: #051F16;
+            --gold: #C6A664; --gold-light: #E5D5A8; --beige: #F5F5DC;
+            --bg: #FAFAF9; --white: #FFFFFF; --text: #1A1A1A; --gray: #666666;
+            --font-main: 'Montserrat', sans-serif; --font-serif: 'Playfair Display', serif;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; }
+        body { font-family: var(--font-main); background: var(--bg); color: var(--text); line-height: 1.6; }
+        
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(198, 166, 100, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(198, 166, 100, 0); } 100% { box-shadow: 0 0 0 0 rgba(198, 166, 100, 0); } }
+        @keyframes typing { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
 
-<style>
-/* --- 1. CORE VARIABLES --- */
-:root {
---primary: #0F3D2E; --primary-light: #1a5c45; --primary-dark: #051F16;
---gold: #C6A664; --gold-light: #E5D5A8; --beige: #F5F5DC;
---bg: #FAFAF9; --white: #FFFFFF; --text: #1A1A1A; --gray: #666666;
---font-main: 'Montserrat', sans-serif; --font-serif: 'Playfair Display', serif;
---shadow: 0 10px 30px rgba(0,0,0,0.08);
---transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
-* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; }
-body { font-family: var(--font-main); background: var(--bg); color: var(--text); line-height: 1.6; }
+        /* --- 2. HEADER --- */
+        .header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 1rem 0; background: rgba(250,250,249,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.05); transition: var(--transition); }
+        .header.scrolled { padding: 0.6rem 0; box-shadow: var(--shadow); }
+        .nav-content { max-width: 1400px; margin: 0 auto; padding: 0 5%; display: flex; justify-content: space-between; align-items: center; }
+        .brand-logo { height: 45px; transition: var(--transition); }
+        
+        .menu-desktop { display: flex; gap: 2rem; }
+        .menu-link { text-decoration: none; color: var(--text); font-weight: 500; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; position: relative; }
+        .menu-link:hover { color: var(--gold); }
+        
+        .nav-icons button { font-size: 1.2rem; color: var(--primary); margin-left: 1.5rem; position: relative; }
+        .cart-badge { position: absolute; top: -8px; right: -8px; background: var(--gold); color: white; font-size: 0.6rem; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
 
-/* Animations */
-@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(198, 166, 100, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(198, 166, 100, 0); } 100% { box-shadow: 0 0 0 0 rgba(198, 166, 100, 0); } }
-@keyframes typing { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
+        /* --- 3. HERO --- */
+        .hero { height: 85vh; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; color: white; background: #000; overflow: hidden; }
+        .hero-bg { position: absolute; inset: 0; opacity: 0.6; background: url('https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?q=80&w=2187') center/cover no-repeat; animation: scaleBg 20s infinite alternate; }
+        @keyframes scaleBg { from { transform: scale(1); } to { transform: scale(1.1); } }
+        .hero-content { position: relative; z-index: 2; }
+        .hero h1 { font-family: var(--font-serif); font-size: clamp(3rem, 8vw, 6rem); line-height: 1; margin-bottom: 1.5rem; text-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .btn-luxury { padding: 1rem 3rem; border: 1px solid rgba(255,255,255,0.8); color: white; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; transition: var(--transition); position: relative; overflow: hidden; }
+        .btn-luxury:hover { background: white; color: var(--primary); }
 
-.reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
-.reveal.active { opacity: 1; transform: translateY(0); }
+        /* --- 4. SIZE CHART (MATCHING IMAGE) --- */
+        .chart-section { padding: 4rem 5%; background: var(--bg-light); text-align: center; }
+        .chart-container { max-width: 1000px; margin: 2rem auto; overflow-x: auto; box-shadow: var(--shadow); border-radius: 10px; }
+        .aose-table { width: 100%; border-collapse: collapse; background: #FFF8E7; /* Light beige like image */ }
+        .aose-table th { background: var(--primary); color: var(--gold); padding: 15px; font-family: var(--font-serif); letter-spacing: 1px; border: 1px solid #0b2e22; }
+        .aose-table td { padding: 12px; border: 1px solid var(--gold); color: var(--primary-dark); font-weight: 500; }
+        .aose-table tr:nth-child(even) { background: rgba(198, 166, 100, 0.1); }
 
-/* --- 2. HEADER --- */
-.header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 1rem 0; background: rgba(250,250,249,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.05); transition: var(--transition); }
-.header.scrolled { padding: 0.6rem 0; box-shadow: var(--shadow); }
-.nav-content { max-width: 1400px; margin: 0 auto; padding: 0 5%; display: flex; justify-content: space-between; align-items: center; }
-.brand-logo { height: 45px; transition: var(--transition); }
+        /* --- 5. AI MEASUREMENT TOOL --- */
+        .measurement-section { padding: 5rem 0; background: linear-gradient(135deg, #f3f4f6 0%, #ffffff 100%); }
+        .mt-container { max-width: 800px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: var(--shadow); overflow: hidden; }
+        .mt-header { background: var(--primary); color: white; padding: 20px; text-align: center; }
+        .mt-body { padding: 2rem; position: relative; }
+        
+        .camera-wrapper { position: relative; width: 100%; height: 450px; background: #000; border-radius: 10px; overflow: hidden; margin: 20px 0; display: flex; align-items: center; justify-content: center; }
+        #mt-video, #mt-canvas { position: absolute; width: 100%; height: 100%; object-fit: contain; }
+        #mt-canvas { z-index: 10; cursor: crosshair; }
+        
+        .mt-result-card { 
+            display: none; background: var(--bg-light); padding: 20px; border-left: 4px solid var(--gold); 
+            margin-top: 20px; border-radius: 5px; animation: fadeIn 0.5s;
+        }
+        .fit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; margin-top: 15px; }
+        .fit-item { background: white; padding: 10px; text-align: center; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .fit-label { font-size: 0.75rem; color: var(--gray); text-transform: uppercase; }
+        .fit-val { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
 
-.menu-desktop { display: flex; gap: 2rem; }
-.menu-link { text-decoration: none; color: var(--text); font-weight: 500; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; position: relative; }
-.menu-link:hover { color: var(--gold); }
+        .btn-tool { padding: 12px 24px; border-radius: 8px; font-weight: 600; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; margin: 5px; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-outline { border: 1px solid var(--gray); color: var(--gray); background: transparent; }
 
-.nav-icons button { font-size: 1.2rem; color: var(--primary); margin-left: 1.5rem; position: relative; }
-.cart-badge { position: absolute; top: -8px; right: -8px; background: var(--gold); color: white; font-size: 0.6rem; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        /* --- 6. PRODUCTS --- */
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2rem; padding: 2rem 5%; max-width: 1400px; margin: 0 auto; }
+        .product-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); position: relative; }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .product-image { position: relative; height: 320px; overflow: hidden; background: #f0f0f0; }
+        .product-image img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .product-card:hover .product-image img { transform: scale(1.05); }
+        .badge { position: absolute; top: 10px; right: 10px; background: var(--gold); color: white; padding: 4px 12px; font-size: 0.7rem; font-weight: 700; border-radius: 20px; text-transform: uppercase; }
+        
+        .product-details { padding: 1.5rem; text-align: center; }
+        .product-name { font-family: var(--font-serif); font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--primary); }
+        .product-price { font-weight: 700; color: var(--text); font-size: 1.1rem; margin-bottom: 1rem; }
+        .btn-add { width: 100%; padding: 10px; background: var(--primary); color: white; border: none; font-weight: 600; border-radius: 5px; opacity: 0.9; cursor: pointer; }
+        .btn-add:hover { opacity: 1; }
 
-/* --- 3. HERO --- */
-.hero { height: 85vh; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; color: white; background: #000; overflow: hidden; }
-.hero-bg { position: absolute; inset: 0; opacity: 0.6; background: url('https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?q=80&w=2187') center/cover no-repeat; animation: scaleBg 20s infinite alternate; }
-@keyframes scaleBg { from { transform: scale(1); } to { transform: scale(1.1); } }
-.hero-content { position: relative; z-index: 2; }
-.hero h1 { font-family: var(--font-serif); font-size: clamp(3rem, 8vw, 6rem); line-height: 1; margin-bottom: 1.5rem; text-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-.btn-luxury { padding: 1rem 3rem; border: 1px solid rgba(255,255,255,0.8); color: white; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; transition: var(--transition); position: relative; overflow: hidden; }
-.btn-luxury:hover { background: white; color: var(--primary); }
+        /* --- 7. GEMINI CHATBOT --- */
+        .chatbot-fab { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; cursor: pointer; box-shadow: 0 5px 20px rgba(0,0,0,0.2); z-index: 1500; animation: pulse 3s infinite; transition: 0.3s; }
+        .chatbot-fab:hover { transform: scale(1.1); }
+        .chatbot-container { position: fixed; bottom: 90px; right: 20px; width: 350px; height: 500px; background: white; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); z-index: 1500; display: none; flex-direction: column; overflow: hidden; transform-origin: bottom right; animation: fadeIn 0.3s; }
+        .chatbot-container.active { display: flex; }
+        
+        .chat-header { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 15px; display: flex; align-items: center; gap: 10px; }
+        .chat-body { flex: 1; padding: 15px; overflow-y: auto; background: #f9f9f9; display: flex; flex-direction: column; gap: 10px; }
+        .chat-msg { max-width: 80%; padding: 10px 15px; border-radius: 10px; font-size: 0.9rem; line-height: 1.4; position: relative; }
+        .msg-bot { background: white; border-bottom-left-radius: 2px; align-self: flex-start; box-shadow: 0 2px 5px rgba(0,0,0,0.05); color: #333; }
+        .msg-user { background: var(--primary); color: white; border-bottom-right-radius: 2px; align-self: flex-end; }
+        
+        .typing-indicator { display: flex; gap: 5px; padding: 10px; background: white; width: fit-content; border-radius: 10px; display: none; }
+        .typing-dot { width: 6px; height: 6px; background: var(--gray); border-radius: 50%; animation: typing 1s infinite; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
 
-/* --- 4. SIZE CHART (MATCHING IMAGE) --- */
-.chart-section { padding: 4rem 5%; background: var(--bg-light); text-align: center; }
-.chart-container { max-width: 1000px; margin: 2rem auto; overflow-x: auto; box-shadow: var(--shadow); border-radius: 10px; }
-.aose-table { width: 100%; border-collapse: collapse; background: #FFF8E7; /* Light beige like image */ }
-.aose-table th { background: var(--primary); color: var(--gold); padding: 15px; font-family: var(--font-serif); letter-spacing: 1px; border: 1px solid #0b2e22; }
-.aose-table td { padding: 12px; border: 1px solid var(--gold); color: var(--primary-dark); font-weight: 500; }
-.aose-table tr:nth-child(even) { background: rgba(198, 166, 100, 0.1); }
+        .chat-input-area { padding: 15px; background: white; border-top: 1px solid #eee; display: flex; gap: 10px; }
+        .chat-input { flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 20px; font-family: inherit; }
+        .chat-send { background: var(--gold); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; }
 
-/* --- 5. AI MEASUREMENT TOOL --- */
-.measurement-section { padding: 5rem 0; background: linear-gradient(135deg, #f3f4f6 0%, #ffffff 100%); }
-.mt-container { max-width: 800px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: var(--shadow); overflow: hidden; }
-.mt-header { background: var(--primary); color: white; padding: 20px; text-align: center; }
-.mt-body { padding: 2rem; position: relative; }
+        /* --- 8. CART & MODALS --- */
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(3px); }
+        .overlay.active { opacity: 1; visibility: visible; }
+        .sidebar { position: fixed; top: 0; right: -100%; width: 400px; height: 100vh; background: white; z-index: 2100; transition: 0.4s cubic-bezier(0.77, 0, 0.175, 1); display: flex; flex-direction: column; box-shadow: -5px 0 30px rgba(0,0,0,0.1); }
+        .sidebar.active { right: 0; }
+        .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); background: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; z-index: 2100; opacity: 0; visibility: hidden; transition: 0.3s; }
+        .modal.active { transform: translate(-50%, -50%) scale(1); opacity: 1; visibility: visible; }
 
-.camera-wrapper { position: relative; width: 100%; height: 450px; background: #000; border-radius: 10px; overflow: hidden; margin: 20px 0; display: flex; align-items: center; justify-content: center; }
-#mt-video, #mt-canvas { position: absolute; width: 100%; height: 100%; object-fit: contain; }
-#mt-canvas { z-index: 10; cursor: crosshair; }
-
-.mt-result-card {
-display: none; background: var(--bg-light); padding: 20px; border-left: 4px solid var(--gold);
-margin-top: 20px; border-radius: 5px; animation: fadeIn 0.5s;
-}
-.fit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; margin-top: 15px; }
-.fit-item { background: white; padding: 10px; text-align: center; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-.fit-label { font-size: 0.75rem; color: var(--gray); text-transform: uppercase; }
-.fit-val { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
-
-.btn-tool { padding: 12px 24px; border-radius: 8px; font-weight: 600; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; margin: 5px; }
-.btn-primary { background: var(--primary); color: white; }
-.btn-success { background: #28a745; color: white; }
-.btn-outline { border: 1px solid var(--gray); color: var(--gray); background: transparent; }
-
-/* --- 6. PRODUCTS --- */
-.products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2rem; padding: 2rem 5%; max-width: 1400px; margin: 0 auto; }
-.product-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); position: relative; }
-.product-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
-.product-image { position: relative; height: 320px; overflow: hidden; background: #f0f0f0; }
-.product-image img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-.product-card:hover .product-image img { transform: scale(1.05); }
-.badge { position: absolute; top: 10px; right: 10px; background: var(--gold); color: white; padding: 4px 12px; font-size: 0.7rem; font-weight: 700; border-radius: 20px; text-transform: uppercase; }
-
-.product-details { padding: 1.5rem; text-align: center; }
-.product-name { font-family: var(--font-serif); font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--primary); }
-.product-price { font-weight: 700; color: var(--text); font-size: 1.1rem; margin-bottom: 1rem; }
-.btn-add { width: 100%; padding: 10px; background: var(--primary); color: white; border: none; font-weight: 600; border-radius: 5px; opacity: 0.9; cursor: pointer; }
-.btn-add:hover { opacity: 1; }
-
-/* --- 7. GEMINI CHATBOT --- */
-.chatbot-fab { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; cursor: pointer; box-shadow: 0 5px 20px rgba(0,0,0,0.2); z-index: 1500; animation: pulse 3s infinite; transition: 0.3s; }
-.chatbot-fab:hover { transform: scale(1.1); }
-.chatbot-container { position: fixed; bottom: 90px; right: 20px; width: 350px; height: 500px; background: white; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); z-index: 1500; display: none; flex-direction: column; overflow: hidden; transform-origin: bottom right; animation: fadeIn 0.3s; }
-.chatbot-container.active { display: flex; }
-
-.chat-header { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 15px; display: flex; align-items: center; gap: 10px; }
-.chat-body { flex: 1; padding: 15px; overflow-y: auto; background: #f9f9f9; display: flex; flex-direction: column; gap: 10px; }
-.chat-msg { max-width: 80%; padding: 10px 15px; border-radius: 10px; font-size: 0.9rem; line-height: 1.4; position: relative; }
-.msg-bot { background: white; border-bottom-left-radius: 2px; align-self: flex-start; box-shadow: 0 2px 5px rgba(0,0,0,0.05); color: #333; }
-.msg-user { background: var(--primary); color: white; border-bottom-right-radius: 2px; align-self: flex-end; }
-
-.typing-indicator { display: flex; gap: 5px; padding: 10px; background: white; width: fit-content; border-radius: 10px; display: none; }
-.typing-dot { width: 6px; height: 6px; background: var(--gray); border-radius: 50%; animation: typing 1s infinite; }
-.typing-dot:nth-child(2) { animation-delay: 0.2s; }
-.typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-.chat-input-area { padding: 15px; background: white; border-top: 1px solid #eee; display: flex; gap: 10px; }
-.chat-input { flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 20px; font-family: inherit; }
-.chat-send { background: var(--gold); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; }
-
-/* --- 8. CART & MODALS --- */
-.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(3px); }
-.overlay.active { opacity: 1; visibility: visible; }
-.sidebar { position: fixed; top: 0; right: -100%; width: 400px; height: 100vh; background: white; z-index: 2100; transition: 0.4s cubic-bezier(0.77, 0, 0.175, 1); display: flex; flex-direction: column; box-shadow: -5px 0 30px rgba(0,0,0,0.1); }
-.sidebar.active { right: 0; }
-.modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); background: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; z-index: 2100; opacity: 0; visibility: hidden; transition: 0.3s; }
-.modal.active { transform: translate(-50%, -50%) scale(1); opacity: 1; visibility: visible; }
-
-/* --- RESPONSIVE --- */
-@media (max-width: 768px) {
-.hero h1 { font-size: 2.5rem; }
-.products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 1rem; }
-.sidebar { width: 85%; }
-.menu-desktop { display: none; }
-.chatbot-container { width: 90%; right: 5%; bottom: 85px; }
-.camera-wrapper { height: 300px; }
-.product-image { height: 200px; }
-}
-</style>
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 1rem; }
+            .sidebar { width: 85%; }
+            .menu-desktop { display: none; }
+            .chatbot-container { width: 90%; right: 5%; bottom: 85px; }
+            .camera-wrapper { height: 300px; }
+            .product-image { height: 200px; }
+        }
+    </style>
 </head>
 <body>
 
-<div id="loadingScreen" style="position:fixed; inset:0; background:var(--bg); z-index:9999; display:flex; justify-content:center; align-items:center;">
-<div class="loading-spinner"></div>
-</div>
-
-<div class="toast-notification" id="toast">
-<i class="fas fa-check-circle"></i> <span id="toastMsg"></span>
-</div>
-
-<header class="header" id="header">
-<div class="nav-content">
-<a href="#" class="brand">
-<img src="aose ad.png" alt="AOSE" class="brand-logo" onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 40\'><text y=\'30\' font-family=\'serif\' font-size=\'28\' fill=\'#0F3D2E\'>AOSE</text></svg>'">
-</a>
-<nav class="menu-desktop">
-<a href="#hero" class="menu-link">Home</a>
-<a href="#collection" class="menu-link">Collection</a>
-<a href="#ai-measure" class="menu-link">AI Measure</a>
-<a href="#contact" class="menu-link">Contact</a>
-</nav>
-<div class="nav-icons">
-<button onclick="toggleCart()"><i class="fas fa-shopping-bag"></i> <span class="cart-badge" id="cartCount">0</span></button>
-</div>
-</div>
-</header>
-
-<section class="hero" id="hero">
-<div class="hero-bg"></div>
-<div class="hero-content reveal active">
-<p style="letter-spacing: 3px; margin-bottom: 10px;">PREMIUM STITCH & WEAR</p>
-<h1>TIMELESS<br>ELEGANCE</h1>
-<button class="btn-luxury" onclick="document.getElementById('collection').scrollIntoView()">Shop Collection</button>
-</div>
-</section>
-
-<section class="measurement-section" id="ai-measure">
-<div class="mt-container reveal">
-<div class="mt-header">
-<h3><i class="fas fa-ruler-combined"></i> AOSE AI Tailor</h3>
-<p>Precise body measurement using your camera based on our Official Size Chart</p>
-</div>
-<div class="mt-body">
-<div style="text-align:center; margin-bottom:15px;">
-<button class="ref-btn selected" onclick="setRef(3.37, this)">Credit Card (3.37")</button>
-<button class="ref-btn" onclick="setRef(2.12, this)">ID Card (2.12")</button>
-</div>
-
-<div style="background:#eef6fc; padding:10px; border-radius:5px; text-align:center; font-size:0.9rem; margin-bottom:10px;" id="mt-instructions">
-Step 1: Place a card on your chest. Click <strong>Start Camera</strong>.
-</div>
-
-<div class="camera-wrapper">
-<video id="mt-video" autoplay playsinline></video>
-<canvas id="mt-canvas" style="display:none;"></canvas>
-<div style="position:absolute; color:white; z-index:1;" id="cam-placeholder"><i class="fas fa-camera" style="font-size:3rem; opacity:0.5;"></i></div>
-</div>
-
-<div class="mt-actions">
-<button class="btn-tool btn-primary" id="btn-start" onclick="startCamera()"><i class="fas fa-power-off"></i> Start Camera</button>
-<button class="btn-tool btn-success" id="btn-capture" onclick="captureImage()" style="display:none;"><i class="fas fa-circle"></i> Capture</button>
-<button class="btn-tool btn-outline" id="btn-retake" onclick="resetTool()" style="display:none;"><i class="fas fa-redo"></i> Retake</button>
-</div>
-
-<div class="mt-result-card" id="fitResult">
-<h4 style="color:var(--primary); margin-bottom:5px;">Fit Analysis</h4>
-<div style="font-size:0.9rem; margin-bottom:10px;">Based on your shoulder measurement of <strong id="res-shoulder">0"</strong>:</div>
-<div style="text-align:center; margin:10px 0; font-size:1.2rem;">Recommended Size: <strong style="color:var(--primary); font-size:1.5rem;" id="res-size">--</strong></div>
-<div class="fit-grid">
-<div class="fit-item"><div class="fit-label">Chest</div><div class="fit-val" id="res-chest">--</div></div>
-<div class="fit-item"><div class="fit-label">Length</div><div class="fit-val" id="res-height">--</div></div>
-<div class="fit-item"><div class="fit-label">Sleeve</div><div class="fit-val" id="res-sleeve">--</div></div>
-<div class="fit-item"><div class="fit-label">Front</div><div class="fit-val" id="res-front">--</div></div>
-</div>
-<button class="btn-tool btn-primary" style="width:100%; margin-top:15px; justify-content:center;" onclick="applySizeToOrder()"><i class="fas fa-check"></i> Save This Fit</button>
-</div>
-</div>
-</div>
-</section>
-
-<section class="chart-section" id="sizeGuide">
-<div class="reveal">
-<h2 style="color:var(--primary);">Stitch and Wear Collection - Shirt Size Chart</h2>
-<p style="margin-bottom:20px; color:var(--gray);">Premium measurements in inches for perfect tailoring</p>
-<div class="chart-container">
-<table class="aose-table">
-<thead>
-<tr>
-<th>SIZE</th><th>HEIGHT</th><th>SHOULDER</th><th>SLEEVE</th><th>CHEST</th><th>FRONT</th>
-</tr>
-</thead>
-<tbody id="chartBody">
-</tbody>
-</table>
-</div>
-</div>
-</section>
-
-<section id="collection" style="padding: 4rem 0;">
-<div class="reveal">
-<h2 style="text-align:center; margin-bottom: 0.5rem;">The Collection</h2>
-<p style="text-align:center; color:var(--gray); margin-bottom: 2rem;">Handcrafted excellence.</p>
-</div>
-
-<div class="products-grid" id="grid">
-</div>
-</section>
-
-<div class="chatbot-fab" onclick="toggleChat()">
-<i class="fas fa-sparkles"></i>
-</div>
-<div class="chatbot-container" id="chatContainer">
-<div class="chat-header">
-<i class="fas fa-robot"></i>
-<div>
-<span style="font-weight:600; display:block;">AOSE AI</span>
-<span style="font-size:0.7rem; opacity:0.9;">Powered by Gemini</span>
-</div>
-<i class="fas fa-times" style="margin-left:auto; cursor:pointer;" onclick="toggleChat()"></i>
-</div>
-<div class="chat-body" id="chatBody">
-<div class="chat-msg msg-bot">Hello! I'm AOSE's AI. I can help with sizing, checking order status, or style advice. How can I help?</div>
-<div class="typing-indicator" id="typingIndicator">
-<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
-</div>
-</div>
-<div class="chat-input-area">
-<input type="text" class="chat-input" id="chatInput" placeholder="Type a message..." onkeypress="handleChatEnter(event)">
-<button class="chat-send" onclick="handleUserMessage()"><i class="fas fa-paper-plane"></i></button>
-</div>
-</div>
-
-<div class="overlay" id="overlay" onclick="toggleCart()"></div>
-<div class="sidebar" id="cartSidebar">
-<div style="padding:20px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center;">
-<h3>Your Bag</h3>
-<i class="fas fa-times" style="cursor:pointer; font-size:1.2rem;" onclick="toggleCart()"></i>
-</div>
-<div style="flex:1; overflow-y:auto; padding:20px;" id="cartItems"></div>
-<div style="padding:20px; background:#f9f9f9; border-top:1px solid #eee;">
-<div style="display:flex; justify-content:space-between; margin-bottom:15px; font-weight:700;">
-<span>Total</span>
-<span id="cartTotal">₹0</span>
-</div>
-<button class="btn-add" onclick="openCheckoutModal()">PROCEED TO CHECKOUT</button>
-</div>
-</div>
-
-<div class="overlay" id="modalOverlay"></div>
-<div class="modal" id="checkoutModal">
-<div style="display:flex; justify-content:space-between; margin-bottom:20px;">
-<h3>Express Checkout</h3>
-<i class="fas fa-times" style="cursor:pointer;" onclick="closeModal()"></i>
-</div>
-
-<input type="text" id="coName" placeholder="Full Name" style="width:100%; padding:12px; margin-bottom:10px; border:1px solid #ddd; border-radius:5px;">
-<input type="tel" id="coPhone" placeholder="WhatsApp Number" style="width:100%; padding:12px; margin-bottom:10px; border:1px solid #ddd; border-radius:5px;">
-<textarea id="coAddress" placeholder="Shipping Address" rows="3" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #ddd; border-radius:5px;"></textarea>
-
-<div id="attachedMeasurement" style="display:none; background:#d1e7dd; color:#0f5132; padding:10px; border-radius:5px; margin-bottom:15px; font-size:0.9rem;">
-<i class="fas fa-ruler-combined"></i> Custom Fit Profile Attached
-</div>
-
-<div style="text-align:center; margin-bottom:15px;">
-<p style="font-size:0.8rem; color:gray; margin-bottom:10px;">SCAN TO PAY</p>
-<div id="qrcode" style="display:inline-block;"></div>
-</div>
-
-<button class="btn-add" onclick="placeOrder()" style="background:#25D366;">
-<i class="fab fa-whatsapp"></i> Confirm via WhatsApp
-</button>
-</div>
-
-<script>
-/* ================= 1. DATA & CONSTANTS ================= */
-const PRODUCTS = [
-{ id: 1, category: "stitch_wear", name: "Signature Stitch & Wear", price: 999, image: "pro.jpg", badge: "Best Seller" },
-{ id: 2, category: "stitch_wear", name: "Classic Stitch & Wear", price: 999, image: "proo10.jpg", badge: "New" },
-{ id: 3, category: "stitch_wear", name: "Premium Stitch & Wear", price: 999, image: "proo11.jpg", badge: "Limited" },
-{ id: 4, category: "stitch_wear", name: "Elegant Stitch & Wear", price: 999, image: "proo12.jpg", badge: "Popular" },
-{ id: 5, category: "stitch_wear", name: "Royal Stitch & Wear", price: 999, image: "pro13.jpg", badge: "Exclusive" },
-{ id: 6, category: "stitch_wear", name: "Modern Stitch & Wear", price: 999, image: "proo14.jpg", badge: "Trending" },
-{ id: 7, category: "stitch_wear", name: "Heritage Stitch & Wear", price: 999, image: "proo15.jpg", badge: "Classic" },
-{ id: 8, category: "stitch_wear", name: "Urban Stitch & Wear", price: 999, image: "proo16.jpg", badge: "Urban" },
-{ id: 9, category: "stitch_wear", name: "Luxury Stitch & Wear", price: 999, image: "pro17.jpg", badge: "Luxury" },
-{ id: 10, category: "stitch_wear", name: "Premium Stitch & Wear", price: 999, image: "proo2.jpg", badge: "Premium" },
-{ id: 11, category: "stitch_wear", name: "Classic Collection", price: 999, image: "pro3.jpg", badge: "Classic" },
-{ id: 12, category: "stitch_wear", name: "Onyx Collection", price: 999, image: "pro4.jpg", badge: "Dark" },
-{ id: 13, category: "stitch_wear", name: "Azure Collection", price: 999, image: "pro5.jpg", badge: "Blue" },
-{ id: 14, category: "stitch_wear", name: "Frost Collection", price: 999, image: "propro.jpg", badge: "White" },
-{ id: 15, category: "stitch_wear", name: "Stealth Collection", price: 999, image: "propro2.jpg", badge: "Black" },
-{ id: 16, category: "stitch_wear", name: "Monarch Collection", price: 999, image: "proo7.jpg", badge: "Royal" },
-{ id: 17, category: "stitch_wear", name: "Ivory Collection", price: 999, image: "proo8.jpg", badge: "Cream" }
-];
-
-// Corrected Data from Image (3.6 -> 36, 3.8 -> 38)
-const SIZE_DATA = [
-{ size: 'S', height: 26.5, shoulder: 16, sleeve: 22, chest: 36, front: 10 },
-{ size: 'M', height: 26, shoulder: 16.5, sleeve: 22.5, chest: 38, front: 10.5 },
-{ size: 'L', height: 29, shoulder: 17, sleeve: 23.5, chest: 40, front: 11.5 },
-{ size: 'XL', height: 29.5, shoulder: 18, sleeve: 24, chest: 42, front: 12 },
-{ size: 'XXL', height: 28.5, shoulder: 19, sleeve: 24.5, chest: 44, front: 13 }
-];
-
-const CONFIG = { upi: "7887731818@ybl", phone: "917887731818" };
-let cart = JSON.parse(localStorage.getItem('aose_cart')) || [];
-let userFitProfile = null; // Stores calculated Size object
-
-/* ================= 2. INITIALIZATION ================= */
-window.onload = () => {
-renderGrid();
-renderSizeTable();
-updateCartUI();
-
-// Scroll Animation Observer
-const observer = new IntersectionObserver(entries => {
-entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
-}, {threshold: 0.1});
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// Remove Loader
-setTimeout(() => document.getElementById('loadingScreen').style.display = 'none', 800);
-
-// Header Scroll
-window.onscroll = () => {
-document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
-};
-};
-
-/* ================= 3. RENDER FUNCTIONS ================= */
-function renderGrid() {
-const grid = document.getElementById('grid');
-grid.innerHTML = PRODUCTS.map(p => {
-const fallback = `this.onerror=null;this.src='https://placehold.co/400x500/f0f0f0/0F3D2E?text=AOSE';`;
-return `
-<div class="product-card reveal">
-<div class="product-image">
-<img src="${p.image}" alt="${p.name}" onerror="${fallback}">
-${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
-</div>
-<div class="product-details">
-<div class="product-name">${p.name}</div>
-<div class="product-price">₹${p.price}</div>
-<div class="size-opts">
-${['S','M','L','XL','XXL'].map(s => `<div class="size-pill" onclick="selectSizePill(this, '${s}')">${s}</div>`).join('')}
-</div>
-<button class="btn-add" onclick="addToCart(${p.id}, this)">ADD TO BAG</button>
-</div>
-</div>`;
-}).join('');
-}
-
-function renderSizeTable() {
-const body = document.getElementById('chartBody');
-body.innerHTML = SIZE_DATA.map(r => `
-<tr>
-<td>${r.size}</td><td>${r.height}"</td><td>${r.shoulder}"</td><td>${r.sleeve}"</td><td>${r.chest}"</td><td>${r.front}"</td>
-</tr>
-`).join('');
-}
-
-function selectSizePill(el, size) {
-el.closest('.size-opts').querySelectorAll('.size-pill').forEach(s => s.classList.remove('active'));
-el.classList.add('active');
-}
-
-/* ================= 4. SHOPPING CART ================= */
-function addToCart(pid, btn) {
-const card = btn.closest('.product-card');
-const activeSize = card.querySelector('.size-pill.active');
-
-if(!activeSize) {
-showToast("Please select a size first", "error");
-return;
-}
-
-const product = PRODUCTS.find(p => p.id === pid);
-const size = activeSize.innerText;
-const existing = cart.find(i => i.id === pid && i.size === size);
-
-if(existing) existing.qty++;
-else cart.push({...product, size, qty: 1});
-
-saveCart();
-updateCartUI();
-showToast("Added to Bag");
-toggleCart();
-}
-
-function updateCartUI() {
-const list = document.getElementById('cartItems');
-const totalEl = document.getElementById('cartTotal');
-const countEl = document.getElementById('cartCount');
-
-let total = 0, count = 0;
-
-list.innerHTML = cart.map((item, index) => {
-total += item.price * item.qty;
-count += item.qty;
-const fallback = `this.src='https://placehold.co/100x100?text=AOSE'`;
-return `
-<div style="display:flex; gap:15px; margin-bottom:15px; border-bottom:1px solid #f0f0f0; padding-bottom:10px;">
-<img src="${item.image}" style="width:60px; height:80px; object-fit:cover; border-radius:5px;" onerror="${fallback}">
-<div style="flex:1;">
-<div style="font-weight:600; font-size:0.9rem;">${item.name}</div>
-<div style="font-size:0.8rem; color:gray;">Size: ${item.size}</div>
-<div style="display:flex; justify-content:space-between; align-items:center; margin-top:5px;">
-<div style="font-weight:bold;">₹${item.price * item.qty}</div>
-<div style="display:flex; gap:10px; align-items:center;">
-<i class="fas fa-minus-circle" style="color:#ddd; cursor:pointer;" onclick="modQty(${index}, -1)"></i>
-<span>${item.qty}</span>
-<i class="fas fa-plus-circle" style="color:var(--primary); cursor:pointer;" onclick="modQty(${index}, 1)"></i>
-</div>
-</div>
-</div>
-</div>`;
-}).join('');
-
-if(cart.length === 0) list.innerHTML = '<div style="text-align:center; padding:40px; color:gray;">Your bag is empty</div>';
-
-totalEl.innerText = "₹" + total;
-countEl.innerText = count;
-localStorage.setItem('aose_cart', JSON.stringify(cart));
-}
-
-function modQty(idx, amount) {
-cart[idx].qty += amount;
-if(cart[idx].qty <= 0) cart.splice(idx, 1);
-updateCartUI();
-}
-
-function saveCart() { localStorage.setItem('aose_cart', JSON.stringify(cart)); }
-function toggleCart() {
-document.getElementById('cartSidebar').classList.toggle('active');
-document.getElementById('overlay').classList.toggle('active');
-}
-
-/* ================= 5. AI MEASUREMENT TOOL ================= */
-let stream = null, points = [], refSize = 3.37;
-const video = document.getElementById('mt-video');
-const canvas = document.getElementById('mt-canvas');
-const ctx = canvas.getContext('2d');
-
-function setRef(size, el) {
-refSize = size;
-document.querySelectorAll('.ref-btn').forEach(b => b.classList.remove('selected'));
-el.classList.add('selected');
-}
-
-async function startCamera() {
-try {
-stream = await navigator.mediaDevices.getUserMedia({
-video: { facingMode: 'environment', width: {ideal: 1920}, height: {ideal: 1080} }
-});
-video.srcObject = stream;
-video.onloadedmetadata = () => {
-canvas.width = video.videoWidth;
-canvas.height = video.videoHeight;
-};
-document.getElementById('cam-placeholder').style.display = 'none';
-document.getElementById('btn-start').style.display = 'none';
-document.getElementById('btn-capture').style.display = 'flex';
-} catch(e) { alert("Camera access denied."); }
-}
-
-function captureImage() {
-ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-video.style.display = 'none';
-canvas.style.display = 'block';
-stream.getTracks().forEach(t => t.stop());
-
-document.getElementById('btn-capture').style.display = 'none';
-document.getElementById('btn-retake').style.display = 'flex';
-document.getElementById('mt-instructions').innerHTML = "Tap <strong>Left</strong> then <strong>Right</strong> edge of the CARD.";
-
-canvas.onclick = (e) => {
-if(points.length >= 4) return;
-
-// Map screen click to canvas resolution
-const rect = canvas.getBoundingClientRect();
-const scaleX = canvas.width / rect.width;
-const scaleY = canvas.height / rect.height;
-const x = (e.clientX - rect.left) * scaleX;
-const y = (e.clientY - rect.top) * scaleY;
-
-points.push({x, y});
-drawPoints();
-
-if(points.length === 2) document.getElementById('mt-instructions').innerHTML = "Card set. Tap <strong>Left</strong> then <strong>Right</strong> SHOULDER.";
-if(points.length === 4) calculate();
-};
-}
-
-function drawPoints() {
-ctx.lineWidth = 4;
-points.forEach((p, i) => {
-ctx.fillStyle = i < 2 ? '#C6A664' : '#0F3D2E';
-ctx.beginPath(); ctx.arc(p.x, p.y, 10, 0, Math.PI*2); ctx.fill();
-});
-if(points.length >= 2) {
-ctx.strokeStyle = '#C6A664'; ctx.beginPath(); ctx.moveTo(points[0].x, points[0].y); ctx.lineTo(points[1].x, points[1].y); ctx.stroke();
-}
-if(points.length === 4) {
-ctx.strokeStyle = '#0F3D2E'; ctx.beginPath(); ctx.moveTo(points[2].x, points[2].y); ctx.lineTo(points[3].x, points[3].y); ctx.stroke();
-}
-}
-
-function calculate() {
-const dist = (p1, p2) => Math.hypot(p1.x - p2.x, p1.y - p2.y);
-const refPx = dist(points[0], points[1]);
-const shoulderPx = dist(points[2], points[3]);
-
-const measuredShoulder = ((shoulderPx / refPx) * refSize).toFixed(1);
-
-// Draw Result on Canvas
-const midX = (points[2].x + points[3].x) / 2;
-const midY = (points[2].y + points[3].y) / 2 - 50;
-ctx.font = "bold 60px Arial";
-ctx.fillStyle = "white"; ctx.strokeStyle="black"; ctx.lineWidth=2;
-ctx.strokeText(measuredShoulder + '"', midX, midY);
-ctx.fillText(measuredShoulder + '"', midX, midY);
-
-findClosestSize(measuredShoulder);
-}
-
-function findClosestSize(measured) {
-// Logic: Find size in SIZE_DATA closest to measured shoulder
-let closest = null;
-let minDiff = Infinity;
-
-SIZE_DATA.forEach(row => {
-const diff = Math.abs(row.shoulder - measured);
-if(diff < minDiff) {
-minDiff = diff;
-closest = row;
-}
-});
-
-userFitProfile = closest;
-
-document.getElementById('mt-instructions').innerHTML = "Analysis Complete.";
-document.getElementById('fitResult').style.display = 'block';
-document.getElementById('res-shoulder').innerText = measured + '"';
-document.getElementById('res-size').innerText = closest.size;
-document.getElementById('res-chest').innerText = closest.chest + '"';
-document.getElementById('res-height').innerText = closest.height + '"';
-document.getElementById('res-sleeve').innerText = closest.sleeve + '"';
-document.getElementById('res-front').innerText = closest.front + '"';
-}
-
-function resetTool() {
-points = [];
-video.style.display = 'block';
-canvas.style.display = 'none';
-document.getElementById('fitResult').style.display = 'none';
-startCamera();
-document.getElementById('btn-retake').style.display = 'none';
-}
-
-function applySizeToOrder() {
-showToast(`Size ${userFitProfile.size} saved!`);
-document.getElementById('collection').scrollIntoView();
-}
-
-/* ================= 6. GEMINI-STYLE CHATBOT ================= */
-function toggleChat() {
-document.getElementById('chatContainer').classList.toggle('active');
-}
-
-function handleChatEnter(e) {
-if(e.key === 'Enter') handleUserMessage();
-}
-
-function handleUserMessage() {
-const input = document.getElementById('chatInput');
-const txt = input.value.trim();
-if(!txt) return;
-
-addMsg(txt, 'user');
-input.value = '';
-document.getElementById('typingIndicator').style.display = 'flex';
-document.getElementById('chatBody').scrollTop = document.getElementById('chatBody').scrollHeight;
-
-// SIMULATED GEMINI AI RESPONSE
-setTimeout(() => {
-document.getElementById('typingIndicator').style.display = 'none';
-const lower = txt.toLowerCase();
-let response = "I'm not sure about that. Try asking about sizes, tracking, or our collection.";
-
-if(lower.includes('size') || lower.includes('measure') || lower.includes('fit')) {
-response = "You can use our **AI Measure Tool** above to find your exact fit using your camera. Or check the Size Chart: <br>S: 16\" Shoulder<br>M: 16.5\" Shoulder<br>L: 17\" Shoulder";
-} else if(lower.includes('track') || lower.includes('order') || lower.includes('status')) {
-response = "You can track your order by clicking the 'Truck' icon in the top menu and entering your Order ID.";
-} else if(lower.includes('price') || lower.includes('cost')) {
-response = "Our Premium Stitch & Wear collection is priced at ₹999 across all designs.";
-} else if(lower.includes('ship') || lower.includes('delivery')) {
-response = "We ship across India within 3-5 business days via BlueDart express shipping.";
-} else if(lower.includes('hello') || lower.includes('hi')) {
-response = "Hello! I am the AOSE AI Assistant. How can I help you elevate your style today?";
-} else if(lower.includes('chest') && lower.includes('xl')) {
-response = "According to our chart, size **XL** has a Chest measurement of **42 inches**.";
-}
-
-addMsg(response, 'bot');
-}, 1000);
-}
-
-function addMsg(text, sender) {
-const div = document.createElement('div');
-div.className = `chat-msg msg-${sender}`;
-div.innerHTML = text; // Allow HTML for line breaks
-const body = document.getElementById('chatBody');
-body.insertBefore(div, document.getElementById('typingIndicator'));
-body.scrollTop = body.scrollHeight;
-}
-
-/* ================= 7. CHECKOUT ================= */
-function openCheckoutModal() {
-if(cart.length === 0) return;
-toggleCart();
-document.getElementById('modalOverlay').classList.add('active');
-document.getElementById('checkoutModal').classList.add('active');
-
-if(userFitProfile) {
-document.getElementById('attachedMeasurement').style.display = 'block';
-document.getElementById('attachedMeasurement').innerHTML = `<i class="fas fa-ruler-combined"></i> <strong>${userFitProfile.size}</strong> Fit Profile Attached`;
-}
-
-const total = cart.reduce((s,i)=>s+(i.price*i.qty), 0);
-document.getElementById('qrcode').innerHTML = "";
-new QRCode(document.getElementById('qrcode'), {
-text: `upi://pay?pa=${CONFIG.upi}&pn=AOSE&am=${total}&cu=INR`,
-width: 100, height: 100
-});
-}
-
-function closeModal() {
-document.getElementById('modalOverlay').classList.remove('active');
-document.getElementById('checkoutModal').classList.remove('active');
-}
-
-function placeOrder() {
-const name = document.getElementById('coName').value;
-const phone = document.getElementById('coPhone').value;
-const addr = document.getElementById('coAddress').value;
-
-if(!name || !phone || !addr) { showToast("Fill all fields", "error"); return; }
-
-const total = cart.reduce((s,i)=>s+(i.price*i.qty), 0);
-const items = cart.map(i => `${i.name} (${i.size}) x${i.qty}`).join(', ');
-
-let msg = `*NEW ORDER - AOSE*\n\nName: ${name}\nPhone: ${phone}\nAddress: ${addr}\n\nItems: ${items}\nTotal: ₹${total}`;
-if(userFitProfile) {
-msg += `\n\n*AI FIT PROFILE ATTACHED:*\nSize: ${userFitProfile.size}\nShoulder: ${userFitProfile.shoulder}"\nChest: ${userFitProfile.chest}"`;
-}
-
-window.open(`https://wa.me/${CONFIG.phone}?text=${encodeURIComponent(msg)}`, '_blank');
-
-cart = [];
-userFitProfile = null;
-updateCartUI();
-closeModal();
-showToast("Order Sent!");
-}
-
-/* ================= UTILS ================= */
-function showToast(msg, type='success') {
-const t = document.getElementById('toast');
-document.getElementById('toastMsg').innerText = msg;
-t.style.background = type === 'error' ? '#dc3545' : '#28a745';
-t.classList.add('show');
-setTimeout(() => t.classList.remove('show'), 3000);
-}
-</script>
+    <div id="loadingScreen" style="position:fixed; inset:0; background:var(--bg); z-index:9999; display:flex; justify-content:center; align-items:center;">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <div class="toast-notification" id="toast">
+        <i class="fas fa-check-circle"></i> <span id="toastMsg"></span>
+    </div>
+
+    <header class="header" id="header">
+        <div class="nav-content">
+            <a href="#" class="brand">
+                <img src="aose ad.png" alt="AOSE" class="brand-logo" onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 40\'><text y=\'30\' font-family=\'serif\' font-size=\'28\' fill=\'#0F3D2E\'>AOSE</text></svg>'">
+            </a>
+            <nav class="menu-desktop">
+                <a href="#hero" class="menu-link">Home</a>
+                <a href="#collection" class="menu-link">Collection</a>
+                <a href="#ai-measure" class="menu-link">AI Measure</a>
+                <a href="#contact" class="menu-link">Contact</a>
+            </nav>
+            <div class="nav-icons">
+                <button onclick="toggleCart()"><i class="fas fa-shopping-bag"></i> <span class="cart-badge" id="cartCount">0</span></button>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero" id="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content reveal active">
+            <p style="letter-spacing: 3px; margin-bottom: 10px;">PREMIUM STITCH & WEAR</p>
+            <h1>TIMELESS<br>ELEGANCE</h1>
+            <button class="btn-luxury" onclick="document.getElementById('collection').scrollIntoView()">Shop Collection</button>
+        </div>
+    </section>
+
+    <section class="measurement-section" id="ai-measure">
+        <div class="mt-container reveal">
+            <div class="mt-header">
+                <h3><i class="fas fa-ruler-combined"></i> AOSE AI Tailor</h3>
+                <p>Precise body measurement using your camera based on our Official Size Chart</p>
+            </div>
+            <div class="mt-body">
+                <div style="text-align:center; margin-bottom:15px;">
+                    <button class="ref-btn selected" onclick="setRef(3.37, this)">Credit Card (3.37")</button>
+                    <button class="ref-btn" onclick="setRef(2.12, this)">ID Card (2.12")</button>
+                </div>
+                
+                <div style="background:#eef6fc; padding:10px; border-radius:5px; text-align:center; font-size:0.9rem; margin-bottom:10px;" id="mt-instructions">
+                    Step 1: Place a card on your chest. Click <strong>Start Camera</strong>.
+                </div>
+
+                <div class="camera-wrapper">
+                    <video id="mt-video" autoplay playsinline></video>
+                    <canvas id="mt-canvas" style="display:none;"></canvas>
+                    <div style="position:absolute; color:white; z-index:1;" id="cam-placeholder"><i class="fas fa-camera" style="font-size:3rem; opacity:0.5;"></i></div>
+                </div>
+
+                <div class="mt-actions">
+                    <button class="btn-tool btn-primary" id="btn-start" onclick="startCamera()"><i class="fas fa-power-off"></i> Start Camera</button>
+                    <button class="btn-tool btn-success" id="btn-capture" onclick="captureImage()" style="display:none;"><i class="fas fa-circle"></i> Capture</button>
+                    <button class="btn-tool btn-outline" id="btn-retake" onclick="resetTool()" style="display:none;"><i class="fas fa-redo"></i> Retake</button>
+                </div>
+
+                <div class="mt-result-card" id="fitResult">
+                    <h4 style="color:var(--primary); margin-bottom:5px;">Fit Analysis</h4>
+                    <div style="font-size:0.9rem; margin-bottom:10px;">Based on your shoulder measurement of <strong id="res-shoulder">0"</strong>:</div>
+                    <div style="text-align:center; margin:10px 0; font-size:1.2rem;">Recommended Size: <strong style="color:var(--primary); font-size:1.5rem;" id="res-size">--</strong></div>
+                    <div class="fit-grid">
+                        <div class="fit-item"><div class="fit-label">Chest</div><div class="fit-val" id="res-chest">--</div></div>
+                        <div class="fit-item"><div class="fit-label">Length</div><div class="fit-val" id="res-height">--</div></div>
+                        <div class="fit-item"><div class="fit-label">Sleeve</div><div class="fit-val" id="res-sleeve">--</div></div>
+                        <div class="fit-item"><div class="fit-label">Front</div><div class="fit-val" id="res-front">--</div></div>
+                    </div>
+                    <button class="btn-tool btn-primary" style="width:100%; margin-top:15px; justify-content:center;" onclick="applySizeToOrder()"><i class="fas fa-check"></i> Save This Fit</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="chart-section" id="sizeGuide">
+        <div class="reveal">
+            <h2 style="color:var(--primary);">Stitch and Wear Collection - Shirt Size Chart</h2>
+            <p style="margin-bottom:20px; color:var(--gray);">Premium measurements in inches for perfect tailoring</p>
+            <div class="chart-container">
+                <table class="aose-table">
+                    <thead>
+                        <tr>
+                            <th>SIZE</th><th>HEIGHT</th><th>SHOULDER</th><th>SLEEVE</th><th>CHEST</th><th>FRONT</th>
+                        </tr>
+                    </thead>
+                    <tbody id="chartBody">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section id="collection" style="padding: 4rem 0;">
+        <div class="reveal">
+            <h2 style="text-align:center; margin-bottom: 0.5rem;">The Collection</h2>
+            <p style="text-align:center; color:var(--gray); margin-bottom: 2rem;">Handcrafted excellence.</p>
+        </div>
+        
+        <div class="products-grid" id="grid">
+            </div>
+    </section>
+
+    <div class="chatbot-fab" onclick="toggleChat()">
+        <i class="fas fa-sparkles"></i>
+    </div>
+    <div class="chatbot-container" id="chatContainer">
+        <div class="chat-header">
+            <i class="fas fa-robot"></i> 
+            <div>
+                <span style="font-weight:600; display:block;">AOSE AI</span>
+                <span style="font-size:0.7rem; opacity:0.9;">Powered by Gemini</span>
+            </div>
+            <i class="fas fa-times" style="margin-left:auto; cursor:pointer;" onclick="toggleChat()"></i>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <div class="chat-msg msg-bot">Hello! I'm AOSE's AI. I can help with sizing, checking order status, or style advice. How can I help?</div>
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Type a message..." onkeypress="handleChatEnter(event)">
+            <button class="chat-send" onclick="handleUserMessage()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+    <div class="sidebar" id="cartSidebar">
+        <div style="padding:20px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center;">
+            <h3>Your Bag</h3>
+            <i class="fas fa-times" style="cursor:pointer; font-size:1.2rem;" onclick="toggleCart()"></i>
+        </div>
+        <div style="flex:1; overflow-y:auto; padding:20px;" id="cartItems"></div>
+        <div style="padding:20px; background:#f9f9f9; border-top:1px solid #eee;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-weight:700;">
+                <span>Total</span>
+                <span id="cartTotal">₹0</span>
+            </div>
+            <button class="btn-add" onclick="openCheckoutModal()">PROCEED TO CHECKOUT</button>
+        </div>
+    </div>
+
+    <div class="overlay" id="modalOverlay"></div>
+    <div class="modal" id="checkoutModal">
+        <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+            <h3>Express Checkout</h3>
+            <i class="fas fa-times" style="cursor:pointer;" onclick="closeModal()"></i>
+        </div>
+        
+        <input type="text" id="coName" placeholder="Full Name" style="width:100%; padding:12px; margin-bottom:10px; border:1px solid #ddd; border-radius:5px;">
+        <input type="tel" id="coPhone" placeholder="WhatsApp Number" style="width:100%; padding:12px; margin-bottom:10px; border:1px solid #ddd; border-radius:5px;">
+        <textarea id="coAddress" placeholder="Shipping Address" rows="3" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #ddd; border-radius:5px;"></textarea>
+        
+        <div id="attachedMeasurement" style="display:none; background:#d1e7dd; color:#0f5132; padding:10px; border-radius:5px; margin-bottom:15px; font-size:0.9rem;">
+            <i class="fas fa-ruler-combined"></i> Custom Fit Profile Attached
+        </div>
+
+        <div style="text-align:center; margin-bottom:15px;">
+            <p style="font-size:0.8rem; color:gray; margin-bottom:10px;">SCAN TO PAY</p>
+            <div id="qrcode" style="display:inline-block;"></div>
+        </div>
+
+        <button class="btn-add" onclick="placeOrder()" style="background:#25D366;">
+            <i class="fab fa-whatsapp"></i> Confirm via WhatsApp
+        </button>
+    </div>
+
+    <script>
+        /* ================= 1. DATA & CONSTANTS ================= */
+        const PRODUCTS = [
+            { id: 1, category: "stitch_wear", name: "Signature Stitch & Wear", price: 999, image: "pro.jpg", badge: "Best Seller" },
+            { id: 2, category: "stitch_wear", name: "Classic Stitch & Wear", price: 999, image: "proo10.jpg", badge: "New" },
+            { id: 3, category: "stitch_wear", name: "Premium Stitch & Wear", price: 999, image: "proo11.jpg", badge: "Limited" },
+            { id: 4, category: "stitch_wear", name: "Elegant Stitch & Wear", price: 999, image: "proo12.jpg", badge: "Popular" },
+            { id: 5, category: "stitch_wear", name: "Royal Stitch & Wear", price: 999, image: "pro13.jpg", badge: "Exclusive" },
+            { id: 6, category: "stitch_wear", name: "Modern Stitch & Wear", price: 999, image: "proo14.jpg", badge: "Trending" },
+            { id: 7, category: "stitch_wear", name: "Heritage Stitch & Wear", price: 999, image: "proo15.jpg", badge: "Classic" },
+            { id: 8, category: "stitch_wear", name: "Urban Stitch & Wear", price: 999, image: "proo16.jpg", badge: "Urban" },
+            { id: 9, category: "stitch_wear", name: "Luxury Stitch & Wear", price: 999, image: "pro17.jpg", badge: "Luxury" },
+            { id: 10, category: "stitch_wear", name: "Premium Stitch & Wear", price: 999, image: "proo2.jpg", badge: "Premium" },
+            { id: 11, category: "stitch_wear", name: "Classic Collection", price: 999, image: "pro3.jpg", badge: "Classic" },
+            { id: 12, category: "stitch_wear", name: "Onyx Collection", price: 999, image: "pro4.jpg", badge: "Dark" },
+            { id: 13, category: "stitch_wear", name: "Azure Collection", price: 999, image: "pro5.jpg", badge: "Blue" },
+            { id: 14, category: "stitch_wear", name: "Frost Collection", price: 999, image: "propro.jpg", badge: "White" },
+            { id: 15, category: "stitch_wear", name: "Stealth Collection", price: 999, image: "propro2.jpg", badge: "Black" },
+            { id: 16, category: "stitch_wear", name: "Monarch Collection", price: 999, image: "proo7.jpg", badge: "Royal" },
+            { id: 17, category: "stitch_wear", name: "Ivory Collection", price: 999, image: "proo8.jpg", badge: "Cream" }
+        ];
+
+        // Corrected Data from Image (3.6 -> 36, 3.8 -> 38)
+        const SIZE_DATA = [
+            { size: 'S', height: 26.5, shoulder: 16, sleeve: 22, chest: 36, front: 10 },
+            { size: 'M', height: 26, shoulder: 16.5, sleeve: 22.5, chest: 38, front: 10.5 },
+            { size: 'L', height: 29, shoulder: 17, sleeve: 23.5, chest: 40, front: 11.5 },
+            { size: 'XL', height: 29.5, shoulder: 18, sleeve: 24, chest: 42, front: 12 },
+            { size: 'XXL', height: 28.5, shoulder: 19, sleeve: 24.5, chest: 44, front: 13 }
+        ];
+
+        const CONFIG = { upi: "7887731818@ybl", phone: "917887731818" };
+        let cart = JSON.parse(localStorage.getItem('aose_cart')) || [];
+        let userFitProfile = null; // Stores calculated Size object
+
+        /* ================= 2. INITIALIZATION ================= */
+        window.onload = () => {
+            renderGrid();
+            renderSizeTable();
+            updateCartUI();
+            
+            // Scroll Animation Observer
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
+            }, {threshold: 0.1});
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+            // Remove Loader
+            setTimeout(() => document.getElementById('loadingScreen').style.display = 'none', 800);
+            
+            // Header Scroll
+            window.onscroll = () => {
+                document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+            };
+        };
+
+        /* ================= 3. RENDER FUNCTIONS ================= */
+        function renderGrid() {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = PRODUCTS.map(p => {
+                const fallback = `this.onerror=null;this.src='https://placehold.co/400x500/f0f0f0/0F3D2E?text=AOSE';`;
+                return `
+                <div class="product-card reveal">
+                    <div class="product-image">
+                        <img src="${p.image}" alt="${p.name}" onerror="${fallback}">
+                        ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
+                    </div>
+                    <div class="product-details">
+                        <div class="product-name">${p.name}</div>
+                        <div class="product-price">₹${p.price}</div>
+                        <div class="size-opts">
+                            ${['S','M','L','XL','XXL'].map(s => `<div class="size-pill" onclick="selectSizePill(this, '${s}')">${s}</div>`).join('')}
+                        </div>
+                        <button class="btn-add" onclick="addToCart(${p.id}, this)">ADD TO BAG</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function renderSizeTable() {
+            const body = document.getElementById('chartBody');
+            body.innerHTML = SIZE_DATA.map(r => `
+                <tr>
+                    <td>${r.size}</td><td>${r.height}"</td><td>${r.shoulder}"</td><td>${r.sleeve}"</td><td>${r.chest}"</td><td>${r.front}"</td>
+                </tr>
+            `).join('');
+        }
+
+        function selectSizePill(el, size) {
+            el.closest('.size-opts').querySelectorAll('.size-pill').forEach(s => s.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        /* ================= 4. SHOPPING CART ================= */
+        function addToCart(pid, btn) {
+            const card = btn.closest('.product-card');
+            const activeSize = card.querySelector('.size-pill.active');
+            
+            if(!activeSize) {
+                showToast("Please select a size first", "error");
+                return;
+            }
+
+            const product = PRODUCTS.find(p => p.id === pid);
+            const size = activeSize.innerText;
+            const existing = cart.find(i => i.id === pid && i.size === size);
+
+            if(existing) existing.qty++;
+            else cart.push({...product, size, qty: 1});
+
+            saveCart();
+            updateCartUI();
+            showToast("Added to Bag");
+            toggleCart();
+        }
+
+        function updateCartUI() {
+            const list = document.getElementById('cartItems');
+            const totalEl = document.getElementById('cartTotal');
+            const countEl = document.getElementById('cartCount');
+            
+            let total = 0, count = 0;
+            
+            list.innerHTML = cart.map((item, index) => {
+                total += item.price * item.qty;
+                count += item.qty;
+                const fallback = `this.src='https://placehold.co/100x100?text=AOSE'`;
+                return `
+                <div style="display:flex; gap:15px; margin-bottom:15px; border-bottom:1px solid #f0f0f0; padding-bottom:10px;">
+                    <img src="${item.image}" style="width:60px; height:80px; object-fit:cover; border-radius:5px;" onerror="${fallback}">
+                    <div style="flex:1;">
+                        <div style="font-weight:600; font-size:0.9rem;">${item.name}</div>
+                        <div style="font-size:0.8rem; color:gray;">Size: ${item.size}</div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:5px;">
+                            <div style="font-weight:bold;">₹${item.price * item.qty}</div>
+                            <div style="display:flex; gap:10px; align-items:center;">
+                                <i class="fas fa-minus-circle" style="color:#ddd; cursor:pointer;" onclick="modQty(${index}, -1)"></i>
+                                <span>${item.qty}</span>
+                                <i class="fas fa-plus-circle" style="color:var(--primary); cursor:pointer;" onclick="modQty(${index}, 1)"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            if(cart.length === 0) list.innerHTML = '<div style="text-align:center; padding:40px; color:gray;">Your bag is empty</div>';
+            
+            totalEl.innerText = "₹" + total;
+            countEl.innerText = count;
+            localStorage.setItem('aose_cart', JSON.stringify(cart));
+        }
+
+        function modQty(idx, amount) {
+            cart[idx].qty += amount;
+            if(cart[idx].qty <= 0) cart.splice(idx, 1);
+            updateCartUI();
+        }
+
+        function saveCart() { localStorage.setItem('aose_cart', JSON.stringify(cart)); }
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('active');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+
+        /* ================= 5. AI MEASUREMENT TOOL ================= */
+        let stream = null, points = [], refSize = 3.37;
+        const video = document.getElementById('mt-video');
+        const canvas = document.getElementById('mt-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function setRef(size, el) {
+            refSize = size;
+            document.querySelectorAll('.ref-btn').forEach(b => b.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        async function startCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'environment', width: {ideal: 1920}, height: {ideal: 1080} } 
+                });
+                video.srcObject = stream;
+                video.onloadedmetadata = () => {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                };
+                document.getElementById('cam-placeholder').style.display = 'none';
+                document.getElementById('btn-start').style.display = 'none';
+                document.getElementById('btn-capture').style.display = 'flex';
+            } catch(e) { alert("Camera access denied."); }
+        }
+
+        function captureImage() {
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            video.style.display = 'none';
+            canvas.style.display = 'block';
+            stream.getTracks().forEach(t => t.stop());
+            
+            document.getElementById('btn-capture').style.display = 'none';
+            document.getElementById('btn-retake').style.display = 'flex';
+            document.getElementById('mt-instructions').innerHTML = "Tap <strong>Left</strong> then <strong>Right</strong> edge of the CARD.";
+            
+            canvas.onclick = (e) => {
+                if(points.length >= 4) return;
+                
+                // Map screen click to canvas resolution
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const x = (e.clientX - rect.left) * scaleX;
+                const y = (e.clientY - rect.top) * scaleY;
+                
+                points.push({x, y});
+                drawPoints();
+                
+                if(points.length === 2) document.getElementById('mt-instructions').innerHTML = "Card set. Tap <strong>Left</strong> then <strong>Right</strong> SHOULDER.";
+                if(points.length === 4) calculate();
+            };
+        }
+
+        function drawPoints() {
+            ctx.lineWidth = 4;
+            points.forEach((p, i) => {
+                ctx.fillStyle = i < 2 ? '#C6A664' : '#0F3D2E';
+                ctx.beginPath(); ctx.arc(p.x, p.y, 10, 0, Math.PI*2); ctx.fill();
+            });
+            if(points.length >= 2) {
+                ctx.strokeStyle = '#C6A664'; ctx.beginPath(); ctx.moveTo(points[0].x, points[0].y); ctx.lineTo(points[1].x, points[1].y); ctx.stroke();
+            }
+            if(points.length === 4) {
+                ctx.strokeStyle = '#0F3D2E'; ctx.beginPath(); ctx.moveTo(points[2].x, points[2].y); ctx.lineTo(points[3].x, points[3].y); ctx.stroke();
+            }
+        }
+
+        function calculate() {
+            const dist = (p1, p2) => Math.hypot(p1.x - p2.x, p1.y - p2.y);
+            const refPx = dist(points[0], points[1]);
+            const shoulderPx = dist(points[2], points[3]);
+            
+            const measuredShoulder = ((shoulderPx / refPx) * refSize).toFixed(1);
+            
+            // Draw Result on Canvas
+            const midX = (points[2].x + points[3].x) / 2;
+            const midY = (points[2].y + points[3].y) / 2 - 50;
+            ctx.font = "bold 60px Arial";
+            ctx.fillStyle = "white"; ctx.strokeStyle="black"; ctx.lineWidth=2;
+            ctx.strokeText(measuredShoulder + '"', midX, midY);
+            ctx.fillText(measuredShoulder + '"', midX, midY);
+            
+            findClosestSize(measuredShoulder);
+        }
+
+        function findClosestSize(measured) {
+            // Logic: Find size in SIZE_DATA closest to measured shoulder
+            let closest = null;
+            let minDiff = Infinity;
+
+            SIZE_DATA.forEach(row => {
+                const diff = Math.abs(row.shoulder - measured);
+                if(diff < minDiff) {
+                    minDiff = diff;
+                    closest = row;
+                }
+            });
+
+            userFitProfile = closest;
+            
+            document.getElementById('mt-instructions').innerHTML = "Analysis Complete.";
+            document.getElementById('fitResult').style.display = 'block';
+            document.getElementById('res-shoulder').innerText = measured + '"';
+            document.getElementById('res-size').innerText = closest.size;
+            document.getElementById('res-chest').innerText = closest.chest + '"';
+            document.getElementById('res-height').innerText = closest.height + '"';
+            document.getElementById('res-sleeve').innerText = closest.sleeve + '"';
+            document.getElementById('res-front').innerText = closest.front + '"';
+        }
+
+        function resetTool() {
+            points = [];
+            video.style.display = 'block';
+            canvas.style.display = 'none';
+            document.getElementById('fitResult').style.display = 'none';
+            startCamera();
+            document.getElementById('btn-retake').style.display = 'none';
+        }
+
+        function applySizeToOrder() {
+            showToast(`Size ${userFitProfile.size} saved!`);
+            document.getElementById('collection').scrollIntoView();
+        }
+
+        /* ================= 6. GEMINI-STYLE CHATBOT ================= */
+        function toggleChat() {
+            document.getElementById('chatContainer').classList.toggle('active');
+        }
+
+        function handleChatEnter(e) {
+            if(e.key === 'Enter') handleUserMessage();
+        }
+
+        function handleUserMessage() {
+            const input = document.getElementById('chatInput');
+            const txt = input.value.trim();
+            if(!txt) return;
+            
+            addMsg(txt, 'user');
+            input.value = '';
+            document.getElementById('typingIndicator').style.display = 'flex';
+            document.getElementById('chatBody').scrollTop = document.getElementById('chatBody').scrollHeight;
+
+            // SIMULATED GEMINI AI RESPONSE
+            setTimeout(() => {
+                document.getElementById('typingIndicator').style.display = 'none';
+                const lower = txt.toLowerCase();
+                let response = "I'm not sure about that. Try asking about sizes, tracking, or our collection.";
+
+                if(lower.includes('size') || lower.includes('measure') || lower.includes('fit')) {
+                    response = "You can use our **AI Measure Tool** above to find your exact fit using your camera. Or check the Size Chart: <br>S: 16\" Shoulder<br>M: 16.5\" Shoulder<br>L: 17\" Shoulder";
+                } else if(lower.includes('track') || lower.includes('order') || lower.includes('status')) {
+                    response = "You can track your order by clicking the 'Truck' icon in the top menu and entering your Order ID.";
+                } else if(lower.includes('price') || lower.includes('cost')) {
+                    response = "Our Premium Stitch & Wear collection is priced at ₹999 across all designs.";
+                } else if(lower.includes('ship') || lower.includes('delivery')) {
+                    response = "We ship across India within 3-5 business days via BlueDart express shipping.";
+                } else if(lower.includes('hello') || lower.includes('hi')) {
+                    response = "Hello! I am the AOSE AI Assistant. How can I help you elevate your style today?";
+                } else if(lower.includes('chest') && lower.includes('xl')) {
+                    response = "According to our chart, size **XL** has a Chest measurement of **42 inches**.";
+                }
+
+                addMsg(response, 'bot');
+            }, 1000);
+        }
+
+        function addMsg(text, sender) {
+            const div = document.createElement('div');
+            div.className = `chat-msg msg-${sender}`;
+            div.innerHTML = text; // Allow HTML for line breaks
+            const body = document.getElementById('chatBody');
+            body.insertBefore(div, document.getElementById('typingIndicator'));
+            body.scrollTop = body.scrollHeight;
+        }
+
+        /* ================= 7. CHECKOUT ================= */
+        function openCheckoutModal() {
+            if(cart.length === 0) return;
+            toggleCart();
+            document.getElementById('modalOverlay').classList.add('active');
+            document.getElementById('checkoutModal').classList.add('active');
+            
+            if(userFitProfile) {
+                document.getElementById('attachedMeasurement').style.display = 'block';
+                document.getElementById('attachedMeasurement').innerHTML = `<i class="fas fa-ruler-combined"></i> <strong>${userFitProfile.size}</strong> Fit Profile Attached`;
+            }
+
+            const total = cart.reduce((s,i)=>s+(i.price*i.qty), 0);
+            document.getElementById('qrcode').innerHTML = "";
+            new QRCode(document.getElementById('qrcode'), {
+                text: `upi://pay?pa=${CONFIG.upi}&pn=AOSE&am=${total}&cu=INR`,
+                width: 100, height: 100
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+            document.getElementById('checkoutModal').classList.remove('active');
+        }
+
+        function placeOrder() {
+            const name = document.getElementById('coName').value;
+            const phone = document.getElementById('coPhone').value;
+            const addr = document.getElementById('coAddress').value;
+            
+            if(!name || !phone || !addr) { showToast("Fill all fields", "error"); return; }
+            
+            const total = cart.reduce((s,i)=>s+(i.price*i.qty), 0);
+            const items = cart.map(i => `${i.name} (${i.size}) x${i.qty}`).join(', ');
+            
+            let msg = `*NEW ORDER - AOSE*\n\nName: ${name}\nPhone: ${phone}\nAddress: ${addr}\n\nItems: ${items}\nTotal: ₹${total}`;
+            if(userFitProfile) {
+                msg += `\n\n*AI FIT PROFILE ATTACHED:*\nSize: ${userFitProfile.size}\nShoulder: ${userFitProfile.shoulder}"\nChest: ${userFitProfile.chest}"`;
+            }
+            
+            window.open(`https://wa.me/${CONFIG.phone}?text=${encodeURIComponent(msg)}`, '_blank');
+            
+            cart = [];
+            userFitProfile = null;
+            updateCartUI();
+            closeModal();
+            showToast("Order Sent!");
+        }
+
+        /* ================= UTILS ================= */
+        function showToast(msg, type='success') {
+            const t = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            t.style.background = type === 'error' ? '#dc3545' : '#28a745';
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+    </script>
 </body>
 </html>
