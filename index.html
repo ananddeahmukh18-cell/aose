@@ -1,2800 +1,722 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="AOSE - Premium Stitch & Wear Clothing. Timeless Elegance, Modern Legacy.">
-    <meta name="keywords" content="AOSE, clothing, fashion, stitch and wear, premium, India">
-    <title>AOSE | Timeless Elegance, Modern Legacy</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    
-    <!-- Chatbot Animation Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-
-    <style>
-        /* Add logo styling */
-        .brand-logo { 
-            height: 45px; 
-            width: auto; 
-            object-fit: contain; 
-            transition: all 0.3s ease; 
-            border-radius: 5px;
-        }
-        .header.scrolled .brand-logo { height: 35px; }
-        .brand { 
-            display: flex; 
-            align-items: center; 
-            text-decoration: none;
-            gap: 10px;
-        }
-        .brand-text {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            letter-spacing: 1px;
-        }
-        @media (max-width: 768px) { 
-            .brand-logo { height: 35px; }
-            .brand-text { font-size: 1.2rem; }
-        }
-
-        /* Rest of the CSS */
-        :root {
-            --primary: #0F3D2E; --primary-light: #1a5c45; --primary-dark: #051F16;
-            --gold: #C6A664; --gold-light: #E5D5A8;
-            --bg: #FAFAF9; --bg-light: #fffcf7; --bg-cream: #f8f4ec;
-            --white: #FFFFFF; --black: #1A1A1A; --text: #1A1A1A; --gray: #777777;
-            --border: #E5E5E5; --light-gray: #f0f0f0;
-            --success: #28a745; --error: #dc3545;
-            --chat-primary: #25D366; --chat-secondary: #128C7E;
-            --font-main: 'Montserrat', sans-serif; --font-serif: 'Playfair Display', serif;
-            --shadow: 0 10px 30px rgba(0,0,0,0.08); --shadow-light: rgba(0, 0, 0, 0.08);
-        }
-
-        /* --- Base --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; }
-        body { font-family: var(--font-main); background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; min-height: 100vh; }
-        
-        h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 400; color: var(--primary); }
-        button { cursor: pointer; border: none; background: none; font-family: inherit; transition: all 0.3s ease; }
-        img { max-width: 100%; height: auto; display: block; object-fit: cover; }
-        input, textarea { font-family: inherit; outline: none; }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-cream); }
-        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
-
-        /* --- Utility --- */
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
-        .section-padding { padding: 6rem 0; }
-        .text-center { text-align: center; }
-        .fade-up { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
-        .fade-up.visible { opacity: 1; transform: translateY(0); }
-        .hidden { display: none !important; }
-
-        /* --- Loading Screen --- */
-        #loadingScreen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-cream);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 9999; transition: opacity 0.5s ease;
-        }
-        .loading-spinner {
-            width: 50px; height: 50px; border: 3px solid rgba(15, 61, 46, 0.1);
-            border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* --- Toast Notification --- */
-        .toast-notification {
-            position: fixed; top: 100px; right: 20px; background: var(--success); color: white;
-            padding: 1rem 1.5rem; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-            z-index: 2000; transform: translateX(150%); transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            display: flex; align-items: center; gap: 10px; max-width: 350px;
-        }
-        .toast-notification.show { transform: translateX(0); }
-        .toast-notification.error { background: var(--error); }
-
-        /* --- Header --- */
-        .header {
-            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-            padding: 1.2rem 0; background: rgba(250, 250, 249, 0.95); backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0,0,0,0.05); transition: 0.3s;
-        }
-        .header.scrolled { padding: 0.8rem 0; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
-        
-        .nav-content { display: flex; justify-content: space-between; align-items: center; }
-        
-        .menu-desktop { display: flex; gap: 2rem; }
-        .menu-link { 
-            text-decoration: none; color: var(--text); font-size: 0.85rem; 
-            letter-spacing: 1px; text-transform: uppercase; font-weight: 500; 
-            position: relative; transition: color 0.3s ease;
-        }
-        .menu-link:hover { color: var(--gold); }
-        .menu-link::after {
-            content: ''; position: absolute; bottom: -5px; left: 0;
-            width: 0; height: 2px; background: var(--gold); transition: width 0.3s ease;
-        }
-        .menu-link:hover::after { width: 100%; }
-
-        .nav-icons { display: flex; gap: 1.2rem; align-items: center; color: var(--primary); }
-        .icon-btn { 
-            font-size: 1.2rem; position: relative; color: var(--primary);
-            background: none; border: none; cursor: pointer;
-        }
-        .cart-badge { 
-            position: absolute; top: -5px; right: -8px; background: var(--gold); color: white;
-            font-size: 0.6rem; width: 16px; height: 16px; border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        /* --- Hero --- */
-        .hero {
-            height: 90vh; position: relative; display: flex; align-items: center; justify-content: center;
-            text-align: center; color: var(--white); background: #000; margin-top: 0;
-        }
-        .hero-bg {
-            position: absolute; inset: 0; opacity: 0.6;
-            background: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070') center/cover;
-        }
-        .hero-content { position: relative; z-index: 2; }
-        .hero h1 { 
-            font-size: clamp(2.5rem, 6vw, 5rem); margin-bottom: 1rem; color: white; line-height: 1.1;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-        .hero-tagline {
-            font-size: 1.2rem; letter-spacing: 3px; text-transform: uppercase; 
-            margin-bottom: 10px; color: var(--gold-light);
-        }
-        .btn-luxury {
-            padding: 1rem 3rem; border: 1px solid var(--white); color: var(--white);
-            font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase;
-            position: relative; overflow: hidden; z-index: 1; background: transparent;
-            transition: all 0.4s; cursor: pointer; margin-top: 2rem;
-        }
-        .btn-luxury:hover { color: var(--primary); background: var(--white); }
-
-        /* --- Size Guide --- */
-        .size-guide { padding: 4rem 5%; background: var(--bg-light); }
-        .section-title { text-align: center; font-size: 2.2rem; margin-bottom: 1rem; color: var(--primary); }
-        .section-subtitle { 
-            text-align: center; color: var(--gray); margin-bottom: 3rem; font-size: 1rem; 
-            max-width: 600px; margin: 0 auto 3rem; line-height: 1.6;
-        }
-        .size-chart-container { 
-            max-width: 800px; margin: 0 auto; background: var(--white); 
-            border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px var(--shadow-light);
-        }
-        .size-chart { width: 100%; border-collapse: collapse; }
-        .size-chart th { background: var(--primary); color: var(--white); padding: 1.2rem; font-weight: 600; }
-        .size-chart td { padding: 1rem; text-align: center; border-bottom: 1px solid var(--light-gray); }
-        .size-chart tr:hover { background: var(--bg-cream); }
-
-        /* --- Enhanced Body Measurement Tool Styles --- */
-        .measurement-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
-            padding: 40px 0;
-        }
-
-        .measurement-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-        }
-
-        /* --- AI Chatbot Styles --- */
-        .chatbot-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            font-family: var(--font-main);
-        }
-
-        .chatbot-button {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--chat-primary), var(--chat-secondary));
-            color: white;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
-            transition: all 0.3s ease;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .chatbot-button:hover {
-            transform: scale(1.1) rotate(10deg);
-            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
-        }
-
-        .chatbot-button.pulse {
-            animation: pulse 1.5s infinite;
-        }
-
-        .chatbot-window {
-            position: absolute;
-            bottom: 80px;
-            right: 0;
-            width: 350px;
-            height: 500px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-            transform: translateY(20px);
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .chatbot-window.active {
-            display: flex;
-            transform: translateY(0);
-            opacity: 1;
-            animation: slideUp 0.3s ease;
-        }
-
-        .chatbot-header {
-            background: linear-gradient(135deg, var(--chat-primary), var(--chat-secondary));
-            color: white;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .chatbot-header h3 {
-            margin: 0;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .chatbot-close {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .chatbot-close:hover {
-            transform: rotate(90deg);
-        }
-
-        .chatbot-messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            background: #f8f9fa;
-        }
-
-        .message {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 18px;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .message.bot {
-            background: white;
-            align-self: flex-start;
-            border-bottom-left-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .message.user {
-            background: linear-gradient(135deg, var(--chat-primary), var(--chat-secondary));
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 5px;
-        }
-
-        .chatbot-input {
-            padding: 20px;
-            border-top: 1px solid #eee;
-            background: white;
-        }
-
-        .chatbot-input form {
-            display: flex;
-            gap: 10px;
-        }
-
-        .chatbot-input input {
-            flex: 1;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 25px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .chatbot-input input:focus {
-            outline: none;
-            border-color: var(--chat-primary);
-            box-shadow: 0 0 0 2px rgba(37, 211, 102, 0.1);
-        }
-
-        .chatbot-input button {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--chat-primary), var(--chat-secondary));
-            color: white;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .chatbot-input button:hover {
-            transform: scale(1.1);
-        }
-
-        .quick-replies {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .quick-reply {
-            padding: 8px 16px;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .quick-reply:hover {
-            background: var(--chat-primary);
-            color: white;
-            border-color: var(--chat-primary);
-        }
-
-        .typing-indicator {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            padding: 10px;
-        }
-
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background: #ccc;
-            border-radius: 50%;
-            animation: typing 1.4s infinite;
-        }
-
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes typing {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-8px); }
-        }
-
-        /* Chatbot Animation Effects */
-        .chatbot-glow {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(37, 211, 102, 0.2) 0%, transparent 70%);
-            transform: translate(-50%, -50%);
-            z-index: -1;
-            animation: glow 2s ease-in-out infinite;
-        }
-
-        @keyframes glow {
-            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
-        }
-
-        /* Responsive Chatbot */
-        @media (max-width: 768px) {
-            .chatbot-window {
-                width: calc(100vw - 40px);
-                height: 400px;
-                right: 20px;
-                bottom: 70px;
-            }
-
-            .chatbot-button {
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
-            }
-
-            .chatbot-container {
-                bottom: 15px;
-                right: 15px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .chatbot-window {
-                width: calc(100vw - 30px);
-                height: 450px;
-                bottom: 60px;
-            }
-        }
-
-        /* --- Products --- */
-        .filters { 
-            display: flex; 
-            justify-content: center; 
-            gap: 1rem; 
-            margin-bottom: 3rem; 
-            flex-wrap: wrap; 
-        }
-        .filter-btn { 
-            padding: 0.5rem 1.5rem; 
-            border: 1px solid var(--border); 
-            border-radius: 30px;
-            font-size: 0.9rem; 
-            color: var(--gray); 
-            transition: 0.3s;
-            cursor: pointer;
-        }
-        .filter-btn.active, .filter-btn:hover { 
-            background: var(--primary); 
-            color: white; 
-            border-color: var(--primary); 
-        }
-
-        .products-grid {
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2.5rem; 
-            max-width: 1200px; 
-            margin: 0 auto;
-        }
-        .product-card { 
-            cursor: pointer; 
-            transition: 0.3s; 
-            background: var(--white); 
-            border-radius: 15px; 
-            overflow: hidden; 
-            box-shadow: 0 5px 20px var(--shadow-light);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-        .product-card:hover { 
-            transform: translateY(-10px); 
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-        }
-        .product-image {
-            position: relative; 
-            aspect-ratio: 3/4; 
-            overflow: hidden; 
-            margin-bottom: 1rem;
-            background: #f0f0f0; 
-            border-radius: 8px; 
-            flex-shrink: 0;
-        }
-        .product-image img { 
-            width: 100%; 
-            height: 100%; 
-            transition: 0.5s; 
-            object-fit: cover;
-        }
-        .product-card:hover .product-image img { 
-            transform: scale(1.05); 
-        }
-        .product-badge {
-            position: absolute; 
-            top: 10px; 
-            right: 10px; 
-            background: var(--gold);
-            color: var(--white); 
-            padding: 0.4rem 0.8rem; 
-            border-radius: 20px;
-            font-size: 0.8rem; 
-            font-weight: 600;
-            z-index: 2;
-        }
-        .product-info { 
-            padding: 1.5rem; 
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        .product-name { 
-            font-size: 1.1rem; 
-            font-weight: 700; 
-            margin-bottom: 0.5rem; 
-            color: var(--primary);
-            line-height: 1.3;
-        }
-        .product-price { 
-            font-size: 1.3rem; 
-            font-weight: 800; 
-            color: var(--primary); 
-            margin-bottom: 1rem; 
-        }
-        .size-selector { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 0.5rem; 
-            margin-bottom: 1rem; 
-        }
-        .size-btn {
-            width: 40px; 
-            height: 35px; 
-            border: 1px solid var(--light-gray); 
-            border-radius: 5px;
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-weight: 600;
-            cursor: pointer; 
-            transition: all 0.2s ease; 
-            background: var(--white);
-        }
-        .size-btn:hover { 
-            border-color: var(--primary); 
-        }
-        .size-btn.active { 
-            background: var(--primary); 
-            color: var(--white); 
-            border-color: var(--primary); 
-        }
-        .add-to-cart-btn {
-            width: 100%; 
-            padding: 0.8rem; 
-            background: var(--primary); 
-            color: var(--white);
-            border: none; 
-            border-radius: 8px; 
-            font-weight: 600; 
-            cursor: pointer;
-            transition: all 0.3s ease; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 0.5rem;
-            margin-top: auto;
-        }
-        .add-to-cart-btn:hover:not(:disabled) { 
-            background: var(--primary-light); 
-        }
-        .add-to-cart-btn:disabled { 
-            opacity: 0.5; 
-            cursor: not-allowed; 
-        }
-
-        /* --- Modals (Shared) --- */
-        .modal-overlay {
-            position: fixed; 
-            inset: 0; 
-            background: rgba(0,0,0,0.6); 
-            z-index: 2000;
-            display: none; 
-            align-items: center; 
-            justify-content: center; 
-            backdrop-filter: blur(5px);
-            padding: 20px;
-        }
-        .modal-overlay.active { 
-            display: flex; 
-        }
-        .modal-box {
-            background: var(--white); 
-            width: 90%; 
-            max-width: 500px; 
-            padding: 2rem;
-            border-radius: 12px; 
-            position: relative; 
-            max-height: 90vh; 
-            overflow-y: auto;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2); 
-            animation: slideUp 0.3s ease;
-        }
-        @keyframes slideUp { 
-            from { 
-                transform: translateY(20px); 
-                opacity: 0; 
-            } 
-            to { 
-                transform: translateY(0); 
-                opacity: 1; 
-            } 
-        }
-        
-        .close-btn { 
-            position: absolute; 
-            top: 1.5rem; 
-            right: 1.5rem; 
-            font-size: 1.5rem; 
-            color: var(--gray); 
-            cursor: pointer;
-            background: none;
-            border: none;
-            z-index: 1;
-        }
-
-        /* --- Detailed Product Modal --- */
-        .modal-full-content { 
-            max-width: 1000px; 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            padding: 0; 
-            overflow: hidden; 
-            border-radius: 12px; 
-        }
-        .mf-img { 
-            height: 100%; 
-            background: #f9f9f9; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .mf-img img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-        }
-        .mf-details { 
-            padding: 3rem; 
-            overflow-y: auto; 
-        }
-        .p-badge {
-            background: var(--gold-light); 
-            color: var(--primary); 
-            padding: 5px 10px;
-            font-size: 0.7rem; 
-            text-transform: uppercase; 
-            letter-spacing: 1px;
-            display: inline-block; 
-            margin-bottom: 1rem; 
-            width: fit-content; 
-            border-radius: 3px;
-        }
-        .size-grid { 
-            display: flex; 
-            gap: 10px; 
-            margin: 1.5rem 0; 
-            flex-wrap: wrap;
-        }
-        .size-grid-btn { 
-            width: 40px; 
-            height: 40px; 
-            border: 1px solid var(--border); 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 0.9rem; 
-            border-radius: 5px; 
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .size-grid-btn.selected { 
-            background: var(--primary); 
-            color: white; 
-            border-color: var(--primary); 
-        }
-        .size-grid-btn:hover:not(.selected) {
-            border-color: var(--primary);
-        }
-        
-        .add-cart-btn {
-            background: var(--primary); 
-            color: white; 
-            width: 100%; 
-            padding: 1rem;
-            font-weight: 600; 
-            letter-spacing: 1px; 
-            border-radius: 5px; 
-            margin-top: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .add-cart-btn:hover { 
-            background: var(--primary-light); 
-        }
-
-        /* --- Checkout UI --- */
-        .checkout-header { 
-            text-align: center; 
-            margin-bottom: 2rem; 
-            border-bottom: 1px solid var(--border); 
-            padding-bottom: 1rem; 
-        }
-        .input-group { 
-            margin-bottom: 1rem; 
-        }
-        .input-field { 
-            width: 100%; 
-            padding: 1rem; 
-            border: 1px solid var(--border); 
-            border-radius: 8px; 
-            font-size: 0.95rem; 
-            font-family: var(--font-main);
-            transition: border-color 0.3s ease;
-        }
-        .input-field:focus { 
-            border-color: var(--primary); 
-        }
-        
-        .payment-section { 
-            background: #f8f9fa; 
-            padding: 1.5rem; 
-            border-radius: 10px; 
-            margin-top: 1.5rem; 
-        }
-        .pay-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 10px; 
-            margin-top: 1rem; 
-        }
-        
-        .pay-btn {
-            background: white; 
-            border: 1px solid #e0e0e0; 
-            padding: 12px; 
-            border-radius: 8px;
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            height: 50px;
-            transition: 0.2s; 
-            cursor: pointer;
-        }
-        .pay-btn:hover { 
-            border-color: var(--primary); 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
-            transform: translateY(-2px); 
-        }
-
-        .confirm-btn {
-            background: #25D366; 
-            color: white; 
-            width: 100%; 
-            padding: 1.2rem;
-            font-weight: 600; 
-            border-radius: 8px; 
-            margin-top: 1.5rem; 
-            font-size: 1rem;
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 10px;
-            cursor: pointer; 
-            border: none;
-            transition: background 0.3s ease;
-        }
-        .confirm-btn:hover { 
-            background: #20bd5a; 
-        }
-
-        /* Payment Gateway Styles */
-        .payment-container { 
-            max-width: 400px; 
-            margin: 0 auto; 
-            padding: 20px; 
-            border-radius: 15px; 
-            background: var(--white); 
-        }
-        .payment-title { 
-            text-align: center; 
-            color: var(--primary); 
-            font-weight: 600; 
-            margin-bottom: 20px; 
-            font-size: 1.4rem; 
-        }
-        .payment-options { 
-            display: grid; 
-            grid-template-columns: 1fr; 
-            gap: 12px; 
-            margin: 1.5rem 0; 
-        }
-        .pay-option-btn {
-            padding: 15px; 
-            border: none; 
-            border-radius: 10px; 
-            font-weight: 600; 
-            font-size: 16px;
-            color: white; 
-            cursor: pointer; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            gap: 10px; 
-            transition: transform 0.2s, box-shadow 0.2s; 
-            width: 100%;
-        }
-        .pay-option-btn:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
-        }
-        .btn-gpay { 
-            background: #1a73e8; 
-            border: 1px solid #1669d6; 
-        }
-        .btn-phonepe { 
-            background: #5f259f; 
-            border: 1px solid #4b1b8c; 
-        }
-        .btn-paytm { 
-            background: #00b9f5; 
-            border: 1px solid #00a0d4; 
-        }
-        .btn-upi { 
-            background: var(--primary); 
-            border: 1px solid var(--primary-dark); 
-        }
-        
-        .qr-box { 
-            text-align: center; 
-            margin-top: 20px; 
-            padding: 15px; 
-            background: var(--bg-light); 
-            border-radius: 8px; 
-            border: 1px solid var(--light-gray); 
-        }
-        .qr-label { 
-            font-size: 0.9rem; 
-            color: var(--gray); 
-            margin-bottom: 10px; 
-            display: block; 
-        }
-        .qr-canvas { 
-            display: flex; 
-            justify-content: center; 
-            margin: 10px 0; 
-        }
-
-        /* Payment Instructions */
-        .payment-instructions {
-            background: #f8f9fa; 
-            border-radius: 10px; 
-            padding: 1rem; 
-            margin: 1rem 0;
-            border-left: 4px solid var(--primary);
-        }
-        .payment-instructions h4 { 
-            color: var(--primary); 
-            margin-bottom: 0.5rem; 
-        }
-        .payment-instructions ul { 
-            padding-left: 1.2rem; 
-            margin-bottom: 0; 
-        }
-        .payment-instructions li { 
-            margin-bottom: 0.3rem; 
-            font-size: 0.9rem; 
-        }
-
-        /* --- Cart Sidebar --- */
-        .cart-sidebar {
-            position: fixed; 
-            top: 0; 
-            right: -400px; 
-            width: 400px; 
-            height: 100vh;
-            background: white; 
-            z-index: 2100; 
-            transition: right 0.3s cubic-bezier(0.7,0,0.3,1);
-            display: flex; 
-            flex-direction: column; 
-            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
-        }
-        .cart-sidebar.open { 
-            right: 0; 
-        }
-        .cart-overlay {
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5); 
-            z-index: 2099; 
-            display: none;
-        }
-        .cart-overlay.active { 
-            display: block; 
-        }
-        
-        .cart-header { 
-            padding: 1.5rem; 
-            border-bottom: 1px solid var(--light-gray); 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-        }
-        .cart-title { 
-            font-size: 1.3rem; 
-            font-weight: 700; 
-            color: var(--primary); 
-        }
-        .cart-close { 
-            font-size: 1.3rem; 
-            cursor: pointer; 
-            color: var(--gray);
-            background: none;
-            border: none;
-        }
-        
-        .cart-items { 
-            flex: 1; 
-            overflow-y: auto; 
-            padding: 1.5rem; 
-        }
-        .cart-empty { 
-            text-align: center; 
-            padding: 3rem 1rem; 
-            color: var(--gray); 
-        }
-        .cart-empty i { 
-            font-size: 3rem; 
-            margin-bottom: 1rem; 
-            color: var(--light-gray); 
-        }
-        
-        .cart-item { 
-            display: flex; 
-            gap: 1rem; 
-            padding: 1rem 0; 
-            border-bottom: 1px solid var(--light-gray); 
-        }
-        .cart-item-image { 
-            width: 70px; 
-            height: 90px; 
-            object-fit: cover; 
-            border-radius: 5px; 
-            flex-shrink: 0;
-        }
-        .cart-item-info { 
-            flex: 1; 
-            min-width: 0;
-        }
-        .cart-item-name { 
-            font-weight: 600; 
-            margin-bottom: 0.3rem; 
-            font-size: 0.9rem; 
-            line-height: 1.3;
-        }
-        .cart-item-size { 
-            color: var(--gray); 
-            font-size: 0.8rem; 
-            margin-bottom: 0.8rem; 
-        }
-        .cart-item-controls { 
-            display: flex; 
-            align-items: center; 
-            gap: 0.8rem; 
-        }
-        .quantity-btn {
-            width: 28px; 
-            height: 28px; 
-            border: 1px solid var(--light-gray); 
-            background: var(--white);
-            border-radius: 50%; 
-            cursor: pointer; 
-            font-weight: 600; 
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .quantity-btn:hover { 
-            border-color: var(--primary); 
-        }
-        .cart-item-quantity { 
-            font-weight: 600; 
-            min-width: 25px; 
-            text-align: center; 
-        }
-        .cart-item-price { 
-            font-weight: 700; 
-            color: var(--primary); 
-            font-size: 0.9rem; 
-            flex-shrink: 0;
-        }
-        
-        .cart-footer { 
-            padding: 1.5rem; 
-            border-top: 1px solid var(--light-gray); 
-            background: var(--bg-light); 
-        }
-        .cart-total { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 1.5rem; 
-            font-size: 1.1rem; 
-            font-weight: 700; 
-        }
-        .total-amount { 
-            color: var(--primary); 
-            font-size: 1.4rem; 
-        }
-        .checkout-btn {
-            width: 100%; 
-            padding: 1rem; 
-            background: var(--primary); 
-            color: var(--white);
-            border: none; 
-            border-radius: 8px; 
-            font-weight: 700; 
-            cursor: pointer; 
-            transition: all 0.3s ease;
-        }
-        .checkout-btn:hover:not(:disabled) { 
-            background: var(--primary-light); 
-        }
-        .checkout-btn:disabled { 
-            opacity: 0.5; 
-            cursor: not-allowed; 
-        }
-
-        /* Success Modal */
-        .success-modal-content { 
-            text-align: center; 
-        }
-
-        /* --- Admin Panel --- */
-        .admin-panel {
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 2200; 
-            display: none; 
-            flex-direction: column;
-            overflow-y: auto;
-        }
-        .admin-panel.active { 
-            display: flex; 
-        }
-        .admin-login { 
-            background: var(--white); 
-            max-width: 400px; 
-            margin: auto; 
-            padding: 2rem; 
-            border-radius: 15px; 
-            text-align: center; 
-        }
-        .admin-dashboard { 
-            flex: 1; 
-            padding: 2rem 5%; 
-            max-width: 1400px; 
-            margin: 0 auto; 
-            width: 100%; 
-            overflow-y: auto; 
-        }
-        .admin-header {
-            background: var(--primary); 
-            color: var(--white); 
-            padding: 1.5rem; 
-            border-radius: 10px;
-            margin-bottom: 2rem; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            flex-wrap: wrap; 
-            gap: 1rem;
-        }
-        .admin-stats { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-            gap: 1.5rem; 
-            margin-bottom: 2rem; 
-        }
-        .stat-card { 
-            background: var(--white); 
-            padding: 1.5rem; 
-            border-radius: 10px; 
-            text-align: center; 
-            box-shadow: 0 5px 15px var(--shadow-light); 
-        }
-        .stat-number { 
-            font-size: 2.5rem; 
-            font-weight: 800; 
-            color: var(--primary); 
-            margin-bottom: 0.5rem; 
-        }
-
-        /* --- Footer --- */
-        .footer {
-            background: var(--primary-dark); 
-            color: var(--white); 
-            padding: 4rem 5%; 
-            margin-top: 4rem;
-        }
-        .footer-content {
-            max-width: 1400px; 
-            margin: 0 auto; 
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
-            gap: 3rem;
-        }
-        .footer-section h3 { 
-            font-size: 1.2rem; 
-            margin-bottom: 1rem; 
-            color: var(--gold); 
-        }
-        .footer-links { 
-            list-style: none; 
-        }
-        .footer-links li { 
-            margin-bottom: 0.5rem; 
-        }
-        .footer-links a { 
-            color: rgba(255, 255, 255, 0.8); 
-            transition: color 0.2s ease; 
-            text-decoration: none; 
-        }
-        .footer-links a:hover { 
-            color: var(--gold); 
-        }
-        .social-links { 
-            display: flex; 
-            gap: 1rem; 
-            margin-top: 1rem; 
-        }
-        .social-link {
-            width: 40px; 
-            height: 40px; 
-            border-radius: 50%; 
-            background: rgba(255, 255, 255, 0.1);
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 1.2rem;
-            transition: all 0.3s ease; 
-            color: white; 
-            text-decoration: none;
-        }
-        .social-link:hover { 
-            background: var(--gold); 
-            transform: translateY(-3px); 
-        }
-        .footer-bottom {
-            text-align: center; 
-            padding-top: 2rem; 
-            margin-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1); 
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
-        }
-
-        /* Mobile Menu */
-        .mobile-nav {
-            position: fixed; 
-            bottom: 0; 
-            left: 0; 
-            width: 100%; 
-            background: var(--white);
-            border-top: 1px solid var(--light-gray); 
-            padding: 1rem; 
-            z-index: 999;
-            display: none; 
-            justify-content: space-around;
-        }
-        .mobile-link {
-            display: flex; 
-            flex-direction: column; 
-            align-items: center;
-            font-size: 0.7rem; 
-            color: var(--gray); 
-            gap: 5px; 
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        .mobile-link:hover,
-        .mobile-link.active {
-            color: var(--primary);
-        }
-        .mobile-link i {
-            font-size: 1.2rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .menu-desktop { display: none; }
-            .mobile-nav { display: flex; }
-            .cart-sidebar { width: 100%; right: -100%; }
-            .modal-full-content { 
-                grid-template-columns: 1fr; 
-                border-radius: 0; 
-                height: auto; 
-                max-height: 90vh;
-                width: 100%; 
-            }
-            .mf-img { height: 35vh; }
-            .mf-details { padding: 2rem; }
-            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-            .toast-notification { 
-                left: 3%; 
-                right: 3%; 
-                max-width: none; 
-                top: 80px;
-            }
-            .hero { height: 70vh; }
-            .hero h1 { font-size: 2.5rem; }
-            .pay-grid { grid-template-columns: 1fr; }
-            .admin-stats { grid-template-columns: 1fr; }
-            
-            /* Measurement tool responsive */
-            .measurement-content { flex-direction: column; }
-            .measurement-btn-group { flex-direction: column; }
-            .measurement-btn { width: 100%; }
-            .camera-container { height: 250px; }
-            .reference-options { flex-direction: column; }
-            .reference-option { width: 100%; }
-            
-            /* Footer */
-            .footer-content { grid-template-columns: 1fr; gap: 2rem; }
-        }
-
-        @media (max-width: 576px) {
-            .section-padding { padding: 4rem 0; }
-            .products-grid { grid-template-columns: 1fr; }
-            .filters { gap: 0.5rem; }
-            .filter-btn { padding: 0.5rem 1rem; font-size: 0.8rem; }
-            .modal-box { padding: 1.5rem; width: 95%; }
-            .hero-tagline { font-size: 1rem; letter-spacing: 2px; }
-            .btn-luxury { padding: 0.8rem 2rem; font-size: 0.8rem; }
-            
-            /* Cart items */
-            .cart-item { flex-direction: column; gap: 0.5rem; }
-            .cart-item-image { width: 100%; height: 150px; }
-            
-            /* Product card */
-            .product-image { aspect-ratio: 4/5; }
-        }
-
-        @media (max-width: 400px) {
-            .products-grid { grid-template-columns: 1fr; }
-            .filters { flex-direction: column; align-items: center; }
-            .filter-btn { width: 100%; max-width: 200px; }
-            .brand-text { font-size: 1rem; }
-            .brand-logo { height: 30px; }
-        }
-
-        /* Image fallback styling */
-        .image-fallback {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-family: var(--font-serif);
-            font-size: 1.5rem;
-            text-align: center;
-            padding: 20px;
-        }
-
-        /* Fix for iOS Safari */
-        @supports (-webkit-touch-callout: none) {
-            .hero, .camera-container {
-                height: -webkit-fill-available;
-            }
-        }
-
-        /* Smooth transitions */
-        * {
-            scroll-behavior: smooth;
-        }
-
-        /* Prevent horizontal scroll */
-        body {
-            overflow-x: hidden;
-            width: 100%;
-        }
-
-        /* Improved focus styles for accessibility */
-        button:focus, 
-        input:focus, 
-        textarea:focus, 
-        select:focus {
-            outline: 2px solid var(--primary);
-            outline-offset: 2px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>AOSE | Timeless Elegance</title>
+<meta name="description" content="AOSE - Premium Stitch & Wear Clothing">
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+/* --- 1. CORE VARIABLES --- */
+:root {
+--primary: #0F3D2E; --primary-light: #1a5c45; --primary-dark: #051F16;
+--gold: #C6A664; --gold-light: #E5D5A8; --beige: #F5F5DC;
+--bg: #FAFAF9; --white: #FFFFFF; --text: #1A1A1A; --gray: #666666;
+--font-main: 'Montserrat', sans-serif; --font-serif: 'Playfair Display', serif;
+--shadow: 0 10px 30px rgba(0,0,0,0.08);
+--transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; }
+body { font-family: var(--font-main); background: var(--bg); color: var(--text); line-height: 1.6; }
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(198, 166, 100, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(198, 166, 100, 0); } 100% { box-shadow: 0 0 0 0 rgba(198, 166, 100, 0); } }
+@keyframes typing { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
+
+.reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+.reveal.active { opacity: 1; transform: translateY(0); }
+
+/* --- 2. HEADER --- */
+.header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 1rem 0; background: rgba(250,250,249,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.05); transition: var(--transition); }
+.header.scrolled { padding: 0.6rem 0; box-shadow: var(--shadow); }
+.nav-content { max-width: 1400px; margin: 0 auto; padding: 0 5%; display: flex; justify-content: space-between; align-items: center; }
+.brand-logo { height: 45px; transition: var(--transition); }
+
+.menu-desktop { display: flex; gap: 2rem; }
+.menu-link { text-decoration: none; color: var(--text); font-weight: 500; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; position: relative; }
+.menu-link:hover { color: var(--gold); }
+
+.nav-icons button { font-size: 1.2rem; color: var(--primary); margin-left: 1.5rem; position: relative; }
+.cart-badge { position: absolute; top: -8px; right: -8px; background: var(--gold); color: white; font-size: 0.6rem; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+
+/* --- 3. HERO --- */
+.hero { height: 85vh; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; color: white; background: #000; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; opacity: 0.6; background: url('https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?q=80&w=2187') center/cover no-repeat; animation: scaleBg 20s infinite alternate; }
+@keyframes scaleBg { from { transform: scale(1); } to { transform: scale(1.1); } }
+.hero-content { position: relative; z-index: 2; }
+.hero h1 { font-family: var(--font-serif); font-size: clamp(3rem, 8vw, 6rem); line-height: 1; margin-bottom: 1.5rem; text-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+.btn-luxury { padding: 1rem 3rem; border: 1px solid rgba(255,255,255,0.8); color: white; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; transition: var(--transition); position: relative; overflow: hidden; }
+.btn-luxury:hover { background: white; color: var(--primary); }
+
+/* --- 4. SIZE CHART (MATCHING IMAGE) --- */
+.chart-section { padding: 4rem 5%; background: var(--bg-light); text-align: center; }
+.chart-container { max-width: 1000px; margin: 2rem auto; overflow-x: auto; box-shadow: var(--shadow); border-radius: 10px; }
+.aose-table { width: 100%; border-collapse: collapse; background: #FFF8E7; /* Light beige like image */ }
+.aose-table th { background: var(--primary); color: var(--gold); padding: 15px; font-family: var(--font-serif); letter-spacing: 1px; border: 1px solid #0b2e22; }
+.aose-table td { padding: 12px; border: 1px solid var(--gold); color: var(--primary-dark); font-weight: 500; }
+.aose-table tr:nth-child(even) { background: rgba(198, 166, 100, 0.1); }
+
+/* --- 5. AI MEASUREMENT TOOL --- */
+.measurement-section { padding: 5rem 0; background: linear-gradient(135deg, #f3f4f6 0%, #ffffff 100%); }
+.mt-container { max-width: 800px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: var(--shadow); overflow: hidden; }
+.mt-header { background: var(--primary); color: white; padding: 20px; text-align: center; }
+.mt-body { padding: 2rem; position: relative; }
+
+.camera-wrapper { position: relative; width: 100%; height: 450px; background: #000; border-radius: 10px; overflow: hidden; margin: 20px 0; display: flex; align-items: center; justify-content: center; }
+#mt-video, #mt-canvas { position: absolute; width: 100%; height: 100%; object-fit: contain; }
+#mt-canvas { z-index: 10; cursor: crosshair; }
+
+.mt-result-card {
+display: none; background: var(--bg-light); padding: 20px; border-left: 4px solid var(--gold);
+margin-top: 20px; border-radius: 5px; animation: fadeIn 0.5s;
+}
+.fit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; margin-top: 15px; }
+.fit-item { background: white; padding: 10px; text-align: center; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.fit-label { font-size: 0.75rem; color: var(--gray); text-transform: uppercase; }
+.fit-val { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+
+.btn-tool { padding: 12px 24px; border-radius: 8px; font-weight: 600; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; margin: 5px; }
+.btn-primary { background: var(--primary); color: white; }
+.btn-success { background: #28a745; color: white; }
+.btn-outline { border: 1px solid var(--gray); color: var(--gray); background: transparent; }
+
+/* --- 6. PRODUCTS --- */
+.products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2rem; padding: 2rem 5%; max-width: 1400px; margin: 0 auto; }
+.product-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); position: relative; }
+.product-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+.product-image { position: relative; height: 320px; overflow: hidden; background: #f0f0f0; }
+.product-image img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+.product-card:hover .product-image img { transform: scale(1.05); }
+.badge { position: absolute; top: 10px; right: 10px; background: var(--gold); color: white; padding: 4px 12px; font-size: 0.7rem; font-weight: 700; border-radius: 20px; text-transform: uppercase; }
+
+.product-details { padding: 1.5rem; text-align: center; }
+.product-name { font-family: var(--font-serif); font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--primary); }
+.product-price { font-weight: 700; color: var(--text); font-size: 1.1rem; margin-bottom: 1rem; }
+.btn-add { width: 100%; padding: 10px; background: var(--primary); color: white; border: none; font-weight: 600; border-radius: 5px; opacity: 0.9; cursor: pointer; }
+.btn-add:hover { opacity: 1; }
+
+/* --- 7. GEMINI CHATBOT --- */
+.chatbot-fab { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; cursor: pointer; box-shadow: 0 5px 20px rgba(0,0,0,0.2); z-index: 1500; animation: pulse 3s infinite; transition: 0.3s; }
+.chatbot-fab:hover { transform: scale(1.1); }
+.chatbot-container { position: fixed; bottom: 90px; right: 20px; width: 350px; height: 500px; background: white; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); z-index: 1500; display: none; flex-direction: column; overflow: hidden; transform-origin: bottom right; animation: fadeIn 0.3s; }
+.chatbot-container.active { display: flex; }
+
+.chat-header { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 15px; display: flex; align-items: center; gap: 10px; }
+.chat-body { flex: 1; padding: 15px; overflow-y: auto; background: #f9f9f9; display: flex; flex-direction: column; gap: 10px; }
+.chat-msg { max-width: 80%; padding: 10px 15px; border-radius: 10px; font-size: 0.9rem; line-height: 1.4; position: relative; }
+.msg-bot { background: white; border-bottom-left-radius: 2px; align-self: flex-start; box-shadow: 0 2px 5px rgba(0,0,0,0.05); color: #333; }
+.msg-user { background: var(--primary); color: white; border-bottom-right-radius: 2px; align-self: flex-end; }
+
+.typing-indicator { display: flex; gap: 5px; padding: 10px; background: white; width: fit-content; border-radius: 10px; display: none; }
+.typing-dot { width: 6px; height: 6px; background: var(--gray); border-radius: 50%; animation: typing 1s infinite; }
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+.chat-input-area { padding: 15px; background: white; border-top: 1px solid #eee; display: flex; gap: 10px; }
+.chat-input { flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 20px; font-family: inherit; }
+.chat-send { background: var(--gold); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; }
+
+/* --- 8. CART & MODALS --- */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(3px); }
+.overlay.active { opacity: 1; visibility: visible; }
+.sidebar { position: fixed; top: 0; right: -100%; width: 400px; height: 100vh; background: white; z-index: 2100; transition: 0.4s cubic-bezier(0.77, 0, 0.175, 1); display: flex; flex-direction: column; box-shadow: -5px 0 30px rgba(0,0,0,0.1); }
+.sidebar.active { right: 0; }
+.modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); background: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; z-index: 2100; opacity: 0; visibility: hidden; transition: 0.3s; }
+.modal.active { transform: translate(-50%, -50%) scale(1); opacity: 1; visibility: visible; }
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+.hero h1 { font-size: 2.5rem; }
+.products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 1rem; }
+.sidebar { width: 85%; }
+.menu-desktop { display: none; }
+.chatbot-container { width: 90%; right: 5%; bottom: 85px; }
+.camera-wrapper { height: 300px; }
+.product-image { height: 200px; }
+}
+</style>
 </head>
 <body>
 
-    <div id="loadingScreen">
-        <div class="loading-spinner"></div>
-        <p style="color: var(--primary); font-weight: 600;">Loading AOSE...</p>
-    </div>
+<div id="loadingScreen" style="position:fixed; inset:0; background:var(--bg); z-index:9999; display:flex; justify-content:center; align-items:center;">
+<div class="loading-spinner"></div>
+</div>
 
-    <div class="toast-notification" id="toastNotification">
-        <i class="fas fa-check-circle toast-icon"></i>
-        <span id="toastMessage">Product added to cart!</span>
-    </div>
+<div class="toast-notification" id="toast">
+<i class="fas fa-check-circle"></i> <span id="toastMsg"></span>
+</div>
 
-    <!-- AI Chatbot -->
-    <div class="chatbot-container" id="chatbotContainer">
-        <div class="chatbot-glow"></div>
-        <button class="chatbot-button" id="chatbotButton">
-            <i class="fas fa-robot"></i>
-        </button>
-        <div class="chatbot-window" id="chatbotWindow">
-            <div class="chatbot-header">
-                <h3><i class="fas fa-robot"></i> AOSE Assistant</h3>
-                <button class="chatbot-close" id="chatbotClose">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="chatbot-messages" id="chatbotMessages">
-                <!-- Messages will be added here dynamically -->
-                <div class="message bot">
-                    <p>👋 Hello! I'm your AOSE Assistant. How can I help you today?</p>
-                </div>
-                <div class="message bot">
-                    <p>I can help you with:</p>
-                    <ul style="margin-left: 20px; margin-top: 5px;">
-                        <li>📏 Size recommendations</li>
-                        <li>🛍️ Product information</li>
-                        <li>📦 Order tracking</li>
-                        <li>📱 Store information</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="chatbot-input">
-                <form id="chatbotForm">
-                    <input type="text" id="chatbotInput" placeholder="Type your message..." autocomplete="off">
-                    <button type="submit">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </form>
-                <div class="quick-replies" id="quickReplies">
-                    <div class="quick-reply" onclick="sendQuickReply('size guide')">Size Guide</div>
-                    <div class="quick-reply" onclick="sendQuickReply('price list')">Price List</div>
-                    <div class="quick-reply" onclick="sendQuickReply('track order')">Track Order</div>
-                    <div class="quick-reply" onclick="sendQuickReply('contact')">Contact Info</div>
-                </div>
-            </div>
-        </div>
-    </div>
+<header class="header" id="header">
+<div class="nav-content">
+<a href="#" class="brand">
+<img src="aose ad.png" alt="AOSE" class="brand-logo" onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 40\'><text y=\'30\' font-family=\'serif\' font-size=\'28\' fill=\'#0F3D2E\'>AOSE</text></svg>'">
+</a>
+<nav class="menu-desktop">
+<a href="#hero" class="menu-link">Home</a>
+<a href="#collection" class="menu-link">Collection</a>
+<a href="#ai-measure" class="menu-link">AI Measure</a>
+<a href="#contact" class="menu-link">Contact</a>
+</nav>
+<div class="nav-icons">
+<button onclick="toggleCart()"><i class="fas fa-shopping-bag"></i> <span class="cart-badge" id="cartCount">0</span></button>
+</div>
+</div>
+</header>
 
-    <header class="header" id="mainHeader">
-        <div class="container nav-content">
-            <a href="#" class="brand">
-                <img src="aose ad.png" alt="AOSE Logo" class="brand-logo" onerror="this.style.display='none'; document.querySelector('.brand-text').style.marginLeft='0';">
-                <span class="brand-text">AOSE</span>
-            </a>
-            <nav class="menu-desktop">
-                <a href="#hero" class="menu-link">Home</a>
-                <a href="#collection" class="menu-link">Collection</a>
-                <a href="#sizeGuide" class="menu-link">Size Guide</a>
-                <a href="#measurementTool" class="menu-link">Measure</a>
-                <a href="#contact" class="menu-link">Contact</a>
-            </nav>
-            <div class="nav-icons">
-                <button class="icon-btn" onclick="openModal('trackModal')" aria-label="Track Order">
-                    <i class="fas fa-truck"></i>
-                </button>
-                <!-- Admin Button is now visible by default -->
-                <button class="icon-btn admin-trigger" onclick="toggleAdmin()" aria-label="Admin Panel">
-                    <i class="fas fa-cog"></i>
-                </button>
-                <button class="icon-btn" onclick="toggleCart()" aria-label="Shopping Cart">
-                    <i class="fas fa-shopping-bag"></i>
-                    <span class="cart-badge" id="cartCount">0</span>
-                </button>
-            </div>
-        </div>
-    </header>
+<section class="hero" id="hero">
+<div class="hero-bg"></div>
+<div class="hero-content reveal active">
+<p style="letter-spacing: 3px; margin-bottom: 10px;">PREMIUM STITCH & WEAR</p>
+<h1>TIMELESS<br>ELEGANCE</h1>
+<button class="btn-luxury" onclick="document.getElementById('collection').scrollIntoView()">Shop Collection</button>
+</div>
+</section>
 
-    <section class="hero" id="hero">
-        <div class="hero-bg"></div>
-        <div class="hero-content fade-up">
-            <p class="hero-tagline">Premium Stitch & Wear</p>
-            <h1>TIMELESS<br>ELEGANCE</h1>
-            <button class="btn-luxury" onclick="scrollToSection('collection')">Explore Collection</button>
-        </div>
-    </section>
+<section class="measurement-section" id="ai-measure">
+<div class="mt-container reveal">
+<div class="mt-header">
+<h3><i class="fas fa-ruler-combined"></i> AOSE AI Tailor</h3>
+<p>Precise body measurement using your camera based on our Official Size Chart</p>
+</div>
+<div class="mt-body">
+<div style="text-align:center; margin-bottom:15px;">
+<button class="ref-btn selected" onclick="setRef(3.37, this)">Credit Card (3.37")</button>
+<button class="ref-btn" onclick="setRef(2.12, this)">ID Card (2.12")</button>
+</div>
 
-    <section class="size-guide" id="sizeGuide">
-        <div class="container">
-            <h2 class="section-title">Size Guide</h2>
-            <p class="section-subtitle">Find your perfect fit with our comprehensive size chart</p>
-            <div class="size-chart-container">
-                <table class="size-chart">
-                    <thead>
-                        <tr>
-                            <th>Size</th>
-                            <th>Chest</th>
-                            <th>Length</th>
-                            <th>Shoulder</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>S</td><td>36-38"</td><td>26"</td><td>16.5"</td></tr>
-                        <tr><td>M</td><td>38-40"</td><td>27"</td><td>17.5"</td></tr>
-                        <tr><td>L</td><td>40-42"</td><td>28"</td><td>18.5"</td></tr>
-                        <tr><td>XL</td><td>42-44"</td><td>29"</td><td>19.5"</td></tr>
-                        <tr><td>XXL</td><td>44-46"</td><td>30"</td><td>20.5"</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
+<div style="background:#eef6fc; padding:10px; border-radius:5px; text-align:center; font-size:0.9rem; margin-bottom:10px;" id="mt-instructions">
+Step 1: Place a card on your chest. Click <strong>Start Camera</strong>.
+</div>
 
-    <!-- Enhanced Body Measurement Tool Section -->
-    <section class="measurement-section" id="measurementTool">
-        <div class="measurement-container">
-            <div class="measurement-header">
-                <div class="measurement-logo">
-                    <h2>AOSE <span>BODY MEASUREMENT TOOL</span></h2>
-                </div>
-                <p class="measurement-tagline">Stitch and Wear Collection - Accurate Body Measurement Tool</p>
-                
-                <!-- Measurement Steps -->
-                <div class="measurement-steps">
-                    <div class="step-indicator">
-                        <div class="step-circle active" id="step1">1</div>
-                        <div class="step-text active">Take Photo</div>
-                    </div>
-                    <div class="step-indicator">
-                        <div class="step-circle" id="step2">2</div>
-                        <div class="step-text">Mark Shoulder</div>
-                    </div>
-                    <div class="step-indicator">
-                        <div class="step-circle" id="step3">3</div>
-                        <div class="step-text">Get Results</div>
-                    </div>
-                    <div class="step-indicator">
-                        <div class="step-circle" id="step4">4</div>
-                        <div class="step-text">Submit</div>
-                    </div>
-                </div>
-            </div>
+<div class="camera-wrapper">
+<video id="mt-video" autoplay playsinline></video>
+<canvas id="mt-canvas" style="display:none;"></canvas>
+<div style="position:absolute; color:white; z-index:1;" id="cam-placeholder"><i class="fas fa-camera" style="font-size:3rem; opacity:0.5;"></i></div>
+</div>
 
-            <div class="measurement-content">
-                <div class="measurement-left">
-                    <div class="measurement-panel">
-                        <div class="measurement-panel-title">
-                            <i class="fas fa-camera"></i>
-                            <h3>Step 1: Take Your Photo</h3>
-                        </div>
-                        <p>Stand 6 feet away from camera. Wear form-fitting clothes. Stand straight with arms slightly away from body.</p>
-                        
-                        <div class="camera-container" id="camera-container">
-                            <video id="measurement-video" autoplay playsinline></video>
-                            <img id="captured-image" alt="Captured Image">
-                            <div class="camera-overlay">
-                                <div class="measurement-guide"></div>
-                                <!-- Measurement line and points will be added here -->
-                            </div>
-                        </div>
-                        
-                        <!-- Shoulder Measurement Instructions (Step 2) -->
-                        <div class="shoulder-measurement-container" id="shoulder-measurement-container">
-                            <div class="shoulder-instructions">
-                                <h4><i class="fas fa-ruler"></i> Mark Your Shoulder Width</h4>
-                                <ol>
-                                    <li>Click on your LEFT shoulder point</li>
-                                    <li>Click on your RIGHT shoulder point</li>
-                                    <li>The line will show your shoulder width</li>
-                                    <li>Select a reference object for accurate scaling</li>
-                                </ol>
-                            </div>
-                            
-                            <!-- Reference Object Selector -->
-                            <div class="reference-selector" id="reference-selector">
-                                <p><strong>Select a reference object for accurate scaling:</strong></p>
-                                <div class="reference-options">
-                                    <div class="reference-option" data-size="2.125" onclick="selectReference(this)">Credit Card (2.125")</div>
-                                    <div class="reference-option" data-size="3.375" onclick="selectReference(this)">Mobile Phone (3.375")</div>
-                                    <div class="reference-option" data-size="4" onclick="selectReference(this)">Soda Can (4")</div>
-                                    <div class="reference-option" data-size="8.5" onclick="selectReference(this)">A4 Paper (8.5")</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Measurement Results (Step 3) -->
-                        <div class="measurement-results" id="measurement-results">
-                            <h4>Your Calculated Measurements</h4>
-                            <div class="measurement-item">
-                                <span class="measurement-name">Shoulder Width:</span>
-                                <span class="measurement-value" id="calculated-shoulder">--</span>
-                            </div>
-                            <div class="measurement-item">
-                                <span class="measurement-name">Height:</span>
-                                <span class="measurement-value" id="calculated-height">--</span>
-                            </div>
-                            <div class="measurement-item">
-                                <span class="measurement-name">Sleeve Length:</span>
-                                <span class="measurement-value" id="calculated-sleeve">--</span>
-                            </div>
-                            <div class="measurement-item">
-                                <span class="measurement-name">Chest:</span>
-                                <span class="measurement-value" id="calculated-chest">--</span>
-                            </div>
-                            <div class="measurement-item">
-                                <span class="measurement-name">Front Length:</span>
-                                <span class="measurement-value" id="calculated-front">--</span>
-                            </div>
-                        </div>
-                        
-                        <!-- Recommended Size -->
-                        <div class="recommended-size" id="recommended-size">
-                            <h4>Your Recommended Size</h4>
-                            <div class="size-badge" id="recommended-size-badge">--</div>
-                            <p>Based on your body measurements</p>
-                        </div>
-                        
-                        <!-- Buttons for Different Steps -->
-                        <div class="measurement-btn-group">
-                            <!-- Step 1: Camera Controls -->
-                            <button id="start-camera-btn" class="measurement-btn measurement-btn-primary">
-                                <i class="fas fa-video"></i> Start Camera
-                            </button>
-                            <button id="capture-btn" class="measurement-btn measurement-btn-success" disabled>
-                                <i class="fas fa-camera"></i> Capture Photo
-                            </button>
-                            <button id="retake-btn" class="measurement-btn measurement-btn-secondary" style="display: none;">
-                                <i class="fas fa-redo"></i> Retake
-                            </button>
-                            
-                            <!-- Step 2: Shoulder Measurement -->
-                            <button id="measure-shoulder-btn" class="measurement-btn measurement-btn-primary" style="display: none;">
-                                <i class="fas fa-ruler"></i> Mark Shoulder Points
-                            </button>
-                            
-                            <!-- Step 3: Calculate Results -->
-                            <button id="calculate-btn" class="measurement-btn measurement-btn-success" style="display: none;">
-                                <i class="fas fa-calculator"></i> Calculate Measurements
-                            </button>
-                            
-                            <!-- Step 4: Submit Results -->
-                            <button id="submit-whatsapp-btn" class="measurement-btn measurement-btn-whatsapp" style="display: none;">
-                                <i class="fab fa-whatsapp"></i> Send via WhatsApp
-                            </button>
-                        </div>
-                        
-                        <div class="measurement-loading" id="measurement-loading">
-                            <div class="measurement-spinner"></div>
-                            <p>Calculating your measurements...</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="measurement-right">
-                    <div class="measurement-panel">
-                        <div class="measurement-panel-title">
-                            <i class="fas fa-table"></i>
-                            <h3>Premium Stitch & Wear Size Chart</h3>
-                        </div>
-                        <table class="measurement-size-chart" id="premium-size-chart">
-                            <thead>
-                                <tr>
-                                    <th>SIZE</th>
-                                    <th>HEIGHT</th>
-                                    <th>SHOULDER</th>
-                                    <th>SLEEVE</th>
-                                    <th>CHEST</th>
-                                    <th>FRONT</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr id="size-s">
-                                    <td><span class="measurement-size-label">S</span></td>
-                                    <td>26.5"</td>
-                                    <td>16"</td>
-                                    <td>22"</td>
-                                    <td>36"</td>
-                                    <td>10"</td>
-                                </tr>
-                                <tr id="size-m">
-                                    <td><span class="measurement-size-label">M</span></td>
-                                    <td>26"</td>
-                                    <td>16.5"</td>
-                                    <td>22.5"</td>
-                                    <td>38"</td>
-                                    <td>10.5"</td>
-                                </tr>
-                                <tr id="size-l">
-                                    <td><span class="measurement-size-label">L</span></td>
-                                    <td>29"</td>
-                                    <td>17"</td>
-                                    <td>23.5"</td>
-                                    <td>40"</td>
-                                    <td>11.5"</td>
-                                </tr>
-                                <tr id="size-xl">
-                                    <td><span class="measurement-size-label">XL</span></td>
-                                    <td>29.5"</td>
-                                    <td>18"</td>
-                                    <td>24"</td>
-                                    <td>42"</td>
-                                    <td>12"</td>
-                                </tr>
-                                <tr id="size-xxl">
-                                    <td><span class="measurement-size-label">XXL</span></td>
-                                    <td>28.5"</td>
-                                    <td>19"</td>
-                                    <td>24.5"</td>
-                                    <td>44"</td>
-                                    <td>13"</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="measurement-note">
-                            <strong>Note:</strong> This is our premium stitch & wear collection size chart. All measurements are in inches. 
-                            For most accurate results, stand 6 feet away from camera and use a reference object for scaling.
-                        </div>
-                    </div>
-                    
-                    <div class="measurement-panel">
-                        <div class="measurement-panel-title">
-                            <i class="fas fa-user-check"></i>
-                            <h3>How It Works</h3>
-                        </div>
-                        <p><strong>4-Step Process for Accurate Measurements:</strong></p>
-                        <ol style="padding-left: 20px; margin-top: 10px;">
-                            <li style="margin-bottom: 8px;"><strong>Take Photo:</strong> Capture clear front-facing photo</li>
-                            <li style="margin-bottom: 8px;"><strong>Mark Shoulder:</strong> Click on left & right shoulder points</li>
-                            <li style="margin-bottom: 8px;"><strong>Select Reference:</strong> Choose a reference object for scaling</li>
-                            <li style="margin-bottom: 8px;"><strong>Get Results:</strong> Receive accurate measurements & size recommendation</li>
-                            <li style="margin-bottom: 8px;"><strong>Submit:</strong> Send measurements via WhatsApp for expert consultation</li>
-                        </ol>
-                        <div class="measurement-note">
-                            <strong>Tip:</strong> For best results, wear form-fitting clothes and stand against a plain background.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<div class="mt-actions">
+<button class="btn-tool btn-primary" id="btn-start" onclick="startCamera()"><i class="fas fa-power-off"></i> Start Camera</button>
+<button class="btn-tool btn-success" id="btn-capture" onclick="captureImage()" style="display:none;"><i class="fas fa-circle"></i> Capture</button>
+<button class="btn-tool btn-outline" id="btn-retake" onclick="resetTool()" style="display:none;"><i class="fas fa-redo"></i> Retake</button>
+</div>
 
-    <section class="section-padding" id="collection">
-        <div class="container">
-            <div class="text-center fade-up" style="margin-bottom: 3rem;">
-                <h2 class="section-title">Premium Collection</h2>
-                <p class="section-subtitle">Handcrafted with precision, designed for the modern individual who values tradition and luxury.</p>
-            </div>
+<div class="mt-result-card" id="fitResult">
+<h4 style="color:var(--primary); margin-bottom:5px;">Fit Analysis</h4>
+<div style="font-size:0.9rem; margin-bottom:10px;">Based on your shoulder measurement of <strong id="res-shoulder">0"</strong>:</div>
+<div style="text-align:center; margin:10px 0; font-size:1.2rem;">Recommended Size: <strong style="color:var(--primary); font-size:1.5rem;" id="res-size">--</strong></div>
+<div class="fit-grid">
+<div class="fit-item"><div class="fit-label">Chest</div><div class="fit-val" id="res-chest">--</div></div>
+<div class="fit-item"><div class="fit-label">Length</div><div class="fit-val" id="res-height">--</div></div>
+<div class="fit-item"><div class="fit-label">Sleeve</div><div class="fit-val" id="res-sleeve">--</div></div>
+<div class="fit-item"><div class="fit-label">Front</div><div class="fit-val" id="res-front">--</div></div>
+</div>
+<button class="btn-tool btn-primary" style="width:100%; margin-top:15px; justify-content:center;" onclick="applySizeToOrder()"><i class="fas fa-check"></i> Save This Fit</button>
+</div>
+</div>
+</div>
+</section>
 
-            <div class="filters fade-up">
-                <button class="filter-btn active" onclick="filterProducts('all', this)">All View</button>
-                <button class="filter-btn" onclick="filterProducts('stitch_wear', this)">Stitch & Wear</button>
-                <button class="filter-btn" onclick="filterProducts('shirts', this)">Shirts</button>
-                <button class="filter-btn" onclick="filterProducts('tshirts', this)">T-Shirts</button>
-            </div>
+<section class="chart-section" id="sizeGuide">
+<div class="reveal">
+<h2 style="color:var(--primary);">Stitch and Wear Collection - Shirt Size Chart</h2>
+<p style="margin-bottom:20px; color:var(--gray);">Premium measurements in inches for perfect tailoring</p>
+<div class="chart-container">
+<table class="aose-table">
+<thead>
+<tr>
+<th>SIZE</th><th>HEIGHT</th><th>SHOULDER</th><th>SLEEVE</th><th>CHEST</th><th>FRONT</th>
+</tr>
+</thead>
+<tbody id="chartBody">
+</tbody>
+</table>
+</div>
+</div>
+</section>
 
-            <div class="products-grid" id="productsGrid">
-                <!-- Products will be loaded here -->
-            </div>
-        </div>
-    </section>
+<section id="collection" style="padding: 4rem 0;">
+<div class="reveal">
+<h2 style="text-align:center; margin-bottom: 0.5rem;">The Collection</h2>
+<p style="text-align:center; color:var(--gray); margin-bottom: 2rem;">Handcrafted excellence.</p>
+</div>
 
-    <!-- Product Quick View Modal -->
-    <div class="modal-overlay" id="productModal">
-        <div class="modal-box modal-full-content">
-            <button class="close-btn" onclick="closeModal('productModal')" aria-label="Close">&times;</button>
-            <div class="mf-img">
-                <img id="pmImg" src="" alt="" onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 300 400\"><rect width=\"300\" height=\"400\" fill=\"%23f8f4ec\"/><text x=\"150\" y=\"200\" text-anchor=\"middle\" fill=\"%230f3d2e\" font-family=\"sans-serif\" font-size=\"24\">AOSE</text></svg>';">
-            </div>
-            <div class="mf-details">
-                <span id="pmCat" style="color:var(--gray); text-transform:uppercase; font-size:0.8rem;">Category</span>
-                <h2 id="pmName" style="margin: 0.5rem 0;">Product Name</h2>
-                <h3 id="pmPrice" style="color:var(--primary); margin-bottom:1.5rem;">₹0</h3>
-                <p style="color:var(--gray); font-size:0.9rem; line-height:1.7; margin-bottom:1.5rem;" id="pmDesc">
-                    Premium quality fabric designed for comfort and durability.
-                </p>
-                
-                <p style="font-size:0.8rem; font-weight:600; text-transform:uppercase;">Select Size</p>
-                <div class="size-grid" id="pmSizes">
-                    <button class="size-grid-btn" onclick="selectSizeInModal(this)" data-size="S">S</button>
-                    <button class="size-grid-btn" onclick="selectSizeInModal(this)" data-size="M">M</button>
-                    <button class="size-grid-btn" onclick="selectSizeInModal(this)" data-size="L">L</button>
-                    <button class="size-grid-btn" onclick="selectSizeInModal(this)" data-size="XL">XL</button>
-                    <button class="size-grid-btn" onclick="selectSizeInModal(this)" data-size="XXL">XXL</button>
-                </div>
+<div class="products-grid" id="grid">
+</div>
+</section>
 
-                <button class="add-cart-btn" id="pmAddBtn">ADD TO BAG</button>
-            </div>
-        </div>
-    </div>
+<div class="chatbot-fab" onclick="toggleChat()">
+<i class="fas fa-sparkles"></i>
+</div>
+<div class="chatbot-container" id="chatContainer">
+<div class="chat-header">
+<i class="fas fa-robot"></i>
+<div>
+<span style="font-weight:600; display:block;">AOSE AI</span>
+<span style="font-size:0.7rem; opacity:0.9;">Powered by Gemini</span>
+</div>
+<i class="fas fa-times" style="margin-left:auto; cursor:pointer;" onclick="toggleChat()"></i>
+</div>
+<div class="chat-body" id="chatBody">
+<div class="chat-msg msg-bot">Hello! I'm AOSE's AI. I can help with sizing, checking order status, or style advice. How can I help?</div>
+<div class="typing-indicator" id="typingIndicator">
+<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+</div>
+</div>
+<div class="chat-input-area">
+<input type="text" class="chat-input" id="chatInput" placeholder="Type a message..." onkeypress="handleChatEnter(event)">
+<button class="chat-send" onclick="handleUserMessage()"><i class="fas fa-paper-plane"></i></button>
+</div>
+</div>
 
-    <!-- Checkout Modal -->
-    <div class="modal-overlay" id="checkoutModal">
-        <div class="modal-box">
-            <button class="close-btn" onclick="closeModal('checkoutModal')" aria-label="Close">&times;</button>
-            <div class="checkout-header">
-                <h3>Secure Checkout</h3>
-                <p style="color:var(--gray); font-size:0.9rem;">Total to Pay: <strong style="color:var(--primary); font-size:1.2rem;">₹<span id="coTotal">0</span></strong></p>
-            </div>
+<div class="overlay" id="overlay" onclick="toggleCart()"></div>
+<div class="sidebar" id="cartSidebar">
+<div style="padding:20px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center;">
+<h3>Your Bag</h3>
+<i class="fas fa-times" style="cursor:pointer; font-size:1.2rem;" onclick="toggleCart()"></i>
+</div>
+<div style="flex:1; overflow-y:auto; padding:20px;" id="cartItems"></div>
+<div style="padding:20px; background:#f9f9f9; border-top:1px solid #eee;">
+<div style="display:flex; justify-content:space-between; margin-bottom:15px; font-weight:700;">
+<span>Total</span>
+<span id="cartTotal">₹0</span>
+</div>
+<button class="btn-add" onclick="openCheckoutModal()">PROCEED TO CHECKOUT</button>
+</div>
+</div>
 
-            <div class="input-group"><input type="text" id="coName" class="input-field" placeholder="Full Name *" required></div>
-            <div class="input-group"><input type="email" id="coEmail" class="input-field" placeholder="Email Address *" required></div>
-            <div class="input-group"><input type="tel" id="coPhone" class="input-field" placeholder="WhatsApp Number *" required></div>
-            <div class="input-group"><textarea id="coAddress" class="input-field" rows="3" placeholder="Complete Shipping Address *" required></textarea></div>
-            
-            <div id="measurementAlert" style="display:none; background:#d4edda; color:#155724; padding:0.8rem; border-radius:5px; margin-bottom:1rem; font-size:0.9rem;">
-                <i class="fas fa-check-circle"></i> Custom measurement attached!
-            </div>
+<div class="overlay" id="modalOverlay"></div>
+<div class="modal" id="checkoutModal">
+<div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+<h3>Express Checkout</h3>
+<i class="fas fa-times" style="cursor:pointer;" onclick="closeModal()"></i>
+</div>
 
-            <div class="payment-instructions">
-                <h4>Payment Instructions:</h4>
-                <ul>
-                    <li>Fill your details above first</li>
-                    <li>Choose a payment method below</li>
-                    <li>Click the button to open the payment app</li>
-                    <li>Amount will be pre-filled automatically</li>
-                    <li>After payment, come back and click "Confirm Order"</li>
-                </ul>
-            </div>
+<input type="text" id="coName" placeholder="Full Name" style="width:100%; padding:12px; margin-bottom:10px; border:1px solid #ddd; border-radius:5px;">
+<input type="tel" id="coPhone" placeholder="WhatsApp Number" style="width:100%; padding:12px; margin-bottom:10px; border:1px solid #ddd; border-radius:5px;">
+<textarea id="coAddress" placeholder="Shipping Address" rows="3" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #ddd; border-radius:5px;"></textarea>
 
-            <div class="payment-container">
-                <h3 class="payment-title">Checkout: ₹<span id="displayAmount">0</span></h3>
-                <div class="payment-options">
-                    <button class="pay-option-btn btn-gpay" onclick="handlePayment('gpay')">
-                        <i class="fab fa-google-pay" style="font-size:1.5rem;"></i> Google Pay
-                    </button>
-                    <button class="pay-option-btn btn-phonepe" onclick="handlePayment('phonepe')">
-                        <i class="fas fa-rupee-sign"></i> PhonePe
-                    </button>
-                    <button class="pay-option-btn btn-paytm" onclick="handlePayment('paytm')">
-                        <i class="fas fa-wallet"></i> Paytm
-                    </button>
-                    <button class="pay-option-btn btn-upi" onclick="handlePayment('upi')">
-                        <i class="fas fa-mobile-alt"></i> Other UPI App
-                    </button>
-                </div>
+<div id="attachedMeasurement" style="display:none; background:#d1e7dd; color:#0f5132; padding:10px; border-radius:5px; margin-bottom:15px; font-size:0.9rem;">
+<i class="fas fa-ruler-combined"></i> Custom Fit Profile Attached
+</div>
 
-                <div class="qr-box">
-                    <span class="qr-label">Scan QR Code to Pay</span>
-                    <div id="qrcode" class="qr-canvas"></div>
-                    <p style="margin-top: 1rem; color: var(--gray);">
-                        Amount: <strong>₹<span id="paymentAmount">0</span></strong>
-                    </p>
-                </div>
-            </div>
+<div style="text-align:center; margin-bottom:15px;">
+<p style="font-size:0.8rem; color:gray; margin-bottom:10px;">SCAN TO PAY</p>
+<div id="qrcode" style="display:inline-block;"></div>
+</div>
 
-            <button class="confirm-btn" id="confirmPaymentBtn" onclick="confirmOrder()" disabled>
-                <i class="fab fa-whatsapp"></i> Confirm Order & Notify Store
-            </button>
-        </div>
-    </div>
+<button class="btn-add" onclick="placeOrder()" style="background:#25D366;">
+<i class="fab fa-whatsapp"></i> Confirm via WhatsApp
+</button>
+</div>
 
-    <!-- Success Modal -->
-    <div class="modal-overlay" id="successModal">
-        <div class="modal-box success-modal-content">
-            <i class="fas fa-check-circle" style="font-size: 4rem; color: #28a745; margin-bottom: 1.5rem;"></i>
-            <h3 class="section-title">Order Confirmed!</h3>
-            <p style="text-align: center; margin-bottom: 1rem;">
-                Your order <strong id="orderIdDisplay"></strong> has been placed successfully.
-            </p>
-            <p style="text-align: center; margin-bottom: 1rem; color: var(--gray);">
-                A confirmation email has been sent to your email address.
-            </p>
-            <p style="text-align: center; margin-bottom: 2rem; color: var(--gray); font-size: 0.9rem;">
-                We'll contact you shortly with order updates on WhatsApp.
-            </p>
-            <button class="checkout-btn" onclick="closeModal('successModal')">
-                <i class="fas fa-shopping-bag"></i> Continue Shopping
-            </button>
-        </div>
-    </div>
+<script>
+/* ================= 1. DATA & CONSTANTS ================= */
+const PRODUCTS = [
+{ id: 1, category: "stitch_wear", name: "Signature Stitch & Wear", price: 999, image: "pro.jpg", badge: "Best Seller" },
+{ id: 2, category: "stitch_wear", name: "Classic Stitch & Wear", price: 999, image: "proo10.jpg", badge: "New" },
+{ id: 3, category: "stitch_wear", name: "Premium Stitch & Wear", price: 999, image: "proo11.jpg", badge: "Limited" },
+{ id: 4, category: "stitch_wear", name: "Elegant Stitch & Wear", price: 999, image: "proo12.jpg", badge: "Popular" },
+{ id: 5, category: "stitch_wear", name: "Royal Stitch & Wear", price: 999, image: "pro13.jpg", badge: "Exclusive" },
+{ id: 6, category: "stitch_wear", name: "Modern Stitch & Wear", price: 999, image: "proo14.jpg", badge: "Trending" },
+{ id: 7, category: "stitch_wear", name: "Heritage Stitch & Wear", price: 999, image: "proo15.jpg", badge: "Classic" },
+{ id: 8, category: "stitch_wear", name: "Urban Stitch & Wear", price: 999, image: "proo16.jpg", badge: "Urban" },
+{ id: 9, category: "stitch_wear", name: "Luxury Stitch & Wear", price: 999, image: "pro17.jpg", badge: "Luxury" },
+{ id: 10, category: "stitch_wear", name: "Premium Stitch & Wear", price: 999, image: "proo2.jpg", badge: "Premium" },
+{ id: 11, category: "stitch_wear", name: "Classic Collection", price: 999, image: "pro3.jpg", badge: "Classic" },
+{ id: 12, category: "stitch_wear", name: "Onyx Collection", price: 999, image: "pro4.jpg", badge: "Dark" },
+{ id: 13, category: "stitch_wear", name: "Azure Collection", price: 999, image: "pro5.jpg", badge: "Blue" },
+{ id: 14, category: "stitch_wear", name: "Frost Collection", price: 999, image: "propro.jpg", badge: "White" },
+{ id: 15, category: "stitch_wear", name: "Stealth Collection", price: 999, image: "propro2.jpg", badge: "Black" },
+{ id: 16, category: "stitch_wear", name: "Monarch Collection", price: 999, image: "proo7.jpg", badge: "Royal" },
+{ id: 17, category: "stitch_wear", name: "Ivory Collection", price: 999, image: "proo8.jpg", badge: "Cream" }
+];
 
-    <!-- Track Order Modal -->
-    <div class="modal-overlay" id="trackModal">
-        <div class="modal-box">
-            <button class="close-btn" onclick="closeModal('trackModal')" aria-label="Close">&times;</button>
-            <h3>Track Your Order</h3>
-            <div class="input-group" style="margin-top:1.5rem;">
-                <input type="text" id="trackId" class="input-field" placeholder="Order ID (AOSE-...)">
-            </div>
-            <button class="add-cart-btn" onclick="trackOrder()">Track Status</button>
-            <div id="trackRes" style="margin-top:1rem; padding:10px; background:#f4f4f4; border-radius:5px; display:none;"></div>
-        </div>
-    </div>
+// Corrected Data from Image (3.6 -> 36, 3.8 -> 38)
+const SIZE_DATA = [
+{ size: 'S', height: 26.5, shoulder: 16, sleeve: 22, chest: 36, front: 10 },
+{ size: 'M', height: 26, shoulder: 16.5, sleeve: 22.5, chest: 38, front: 10.5 },
+{ size: 'L', height: 29, shoulder: 17, sleeve: 23.5, chest: 40, front: 11.5 },
+{ size: 'XL', height: 29.5, shoulder: 18, sleeve: 24, chest: 42, front: 12 },
+{ size: 'XXL', height: 28.5, shoulder: 19, sleeve: 24.5, chest: 44, front: 13 }
+];
 
-    <!-- Admin Panel -->
-    <div class="admin-panel" id="adminPanel">
-        <div class="admin-login" id="adminLogin">
-            <h3 style="color: var(--primary); margin-bottom: 1.5rem;">Admin Login</h3>
-            <div class="input-group">
-                <input type="password" id="adminPass" class="input-field" placeholder="Enter Admin Password">
-            </div>
-            <button class="checkout-btn" onclick="loginAdmin()">
-                <i class="fas fa-sign-in-alt"></i> Login
-            </button>
-            <button class="checkout-btn" style="background: var(--gray); margin-top: 1rem;" onclick="toggleAdmin()">
-                <i class="fas fa-times"></i> Cancel
-            </button>
-        </div>
-        
-        <div class="admin-dashboard" id="adminDashboard" style="display: none;">
-            <div class="admin-header">
-                <h3 style="color: white;">AOSE Admin Dashboard</h3>
-                <button class="checkout-btn" onclick="logoutAdmin()" style="background: var(--gold);">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </button>
-            </div>
-            
-            <div class="admin-stats">
-                <div class="stat-card">
-                    <div class="stat-number" id="admCount">0</div>
-                    <p>Total Orders</p>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="admRev">₹0</div>
-                    <p>Total Revenue</p>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="pendingOrders">0</div>
-                    <p>Pending Orders</p>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="deliveredOrders">0</div>
-                    <p>Delivered Orders</p>
-                </div>
-            </div>
-            
-            <div style="background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px var(--shadow-light);">
-                <div style="padding: 1rem; background: var(--light-gray);">
-                    <h4 style="color: var(--primary);">Recent Orders</h4>
-                </div>
-                <div style="overflow-x: auto;">
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <thead>
-                            <tr style="background: var(--bg-light);">
-                                <th style="padding: 1rem; text-align: left;">Order ID</th>
-                                <th style="padding: 1rem; text-align: left;">Customer</th>
-                                <th style="padding: 1rem; text-align: left;">Phone</th>
-                                <th style="padding: 1rem; text-align: left;">Items</th>
-                                <th style="padding: 1rem; text-align: left;">Total</th>
-                                <th style="padding: 1rem; text-align: left;">Date</th>
-                                <th style="padding: 1rem; text-align: left;">Status</th>
-                                <th style="padding: 1rem; text-align: left;">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admTable">
-                            <!-- Admin orders will be loaded here -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+const CONFIG = { upi: "7887731818@ybl", phone: "917887731818" };
+let cart = JSON.parse(localStorage.getItem('aose_cart')) || [];
+let userFitProfile = null; // Stores calculated Size object
 
-    <!-- Cart Sidebar -->
-    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
-    <div class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <h3 class="cart-title"><i class="fas fa-shopping-bag"></i> Your Bag</h3>
-            <button class="cart-close" onclick="toggleCart()" aria-label="Close Cart">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="cart-items" id="cartItems">
-            <div class="cart-empty">
-                <i class="fas fa-shopping-bag"></i>
-                <h3>Your bag is empty</h3>
-                <p>Add some products to get started</p>
-            </div>
-        </div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <span>Total:</span>
-                <span class="total-amount">₹<span id="cartTotal">0</span></span>
-            </div>
-            <button class="checkout-btn" id="checkoutBtn" onclick="openCheckout()" disabled>
-                <i class="fas fa-credit-card"></i> Proceed to Checkout
-            </button>
-        </div>
-    </div>
+/* ================= 2. INITIALIZATION ================= */
+window.onload = () => {
+renderGrid();
+renderSizeTable();
+updateCartUI();
 
-    <!-- Footer -->
-    <footer class="footer" id="contact">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>AOSE</h3>
-                <p style="opacity: 0.8;">Redefining luxury through craftsmanship and modern design philosophy.</p>
-                <div class="social-links">
-                    <a href="https://wa.me/917887731818" class="social-link" target="_blank" aria-label="WhatsApp">
-                        <i class="fab fa-whatsapp"></i>
-                    </a>
-                    <a href="#" class="social-link" aria-label="Instagram">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="mailto:aoseofficial77@gmail.com" class="social-link" aria-label="Email">
-                        <i class="fas fa-envelope"></i>
-                    </a>
-                </div>
-            </div>
-            
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul class="footer-links">
-                    <li><a href="#hero" onclick="scrollToSection('hero')">Home</a></li>
-                    <li><a href="#collection" onclick="scrollToSection('collection')">Collection</a></li>
-                    <li><a href="#sizeGuide" onclick="scrollToSection('sizeGuide')">Size Guide</a></li>
-                    <li><a href="#measurementTool" onclick="scrollToSection('measurementTool')">Measure</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h3>Contact</h3>
-                <ul class="footer-links">
-                    <li><i class="fas fa-phone"></i> +91 78877 31818</li>
-                    <li><i class="fas fa-envelope"></i> aoseofficial77@gmail.com</li>
-                    <li><i class="fas fa-map-marker-alt"></i> Rashin, Maharashtra, India</li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <p>© 2024 AOSE Clothing Company. All Rights Reserved.</p>
-        </div>
-    </footer>
+// Scroll Animation Observer
+const observer = new IntersectionObserver(entries => {
+entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
+}, {threshold: 0.1});
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    <!-- Mobile Navigation -->
-    <div class="mobile-nav">
-        <a href="#hero" class="mobile-link"><i class="fas fa-home"></i> Home</a>
-        <a href="#collection" class="mobile-link"><i class="fas fa-layer-group"></i> Shop</a>
-        <a href="#sizeGuide" class="mobile-link"><i class="fas fa-ruler"></i> Size</a>
-        <a href="#measurementTool" class="mobile-link"><i class="fas fa-camera"></i> Measure</a>
-        <a href="#" onclick="toggleCart()" class="mobile-link"><i class="fas fa-shopping-bag"></i> Cart</a>
-    </div>
+// Remove Loader
+setTimeout(() => document.getElementById('loadingScreen').style.display = 'none', 800);
 
-    <script>
-        // ============================================
-        // CONFIGURATION
-        // ============================================
-        const PAYMENT_CONFIG = {
-            upi_id: "7887731818@ybl",
-            merchant_name: "AOSE Clothing",
-            whatsapp_number: "917887731818"
-        };
-        const ADMIN_PASSWORD = "admin123"; // Default admin password
-        
-        // ============================================
-        // PRODUCT DATA (All your products included)
-        // ============================================
-        const products = [
-            { id: 1, category: "stitch_wear", name: "Signature Stitch & Wear", price: 999, image: "pro.jpg", badge: "Best Seller", desc: "Premium stitch and wear fabric with elegant design. Perfect for formal occasions and everyday wear." },
-            { id: 2, category: "stitch_wear", name: "Classic Stitch & Wear", price: 999, image: "proo10.jpg", badge: "New", desc: "Classic design with modern fit. Made from premium quality fabric for ultimate comfort." },
-            { id: 3, category: "stitch_wear", name: "Premium Stitch & Wear", price: 999, image: "proo11.jpg", badge: "Limited", desc: "Limited edition premium fabric with exclusive patterns. Only a few pieces available." },
-            { id: 4, category: "stitch_wear", name: "Elegant Stitch & Wear", price: 999, image: "proo12.jpg", badge: "Popular", desc: "Elegant design that combines traditional craftsmanship with contemporary style." },
-            { id: 5, category: "stitch_wear", name: "Royal Stitch & Wear", price: 999, image: "pro13.jpg", badge: "Exclusive", desc: "Royal collection featuring premium fabric with intricate detailing." },
-            { id: 6, category: "stitch_wear", name: "Modern Stitch & Wear", price: 999, image: "proo14.jpg", badge: "Trending", desc: "Modern design with clean lines and contemporary patterns." },
-            { id: 7, category: "stitch_wear", name: "Heritage Stitch & Wear", price: 999, image: "proo15.jpg", badge: "Classic", desc: "Heritage collection inspired by traditional designs with modern comfort." },
-            { id: 8, category: "stitch_wear", name: "Urban Stitch & Wear", price: 999, image: "proo16.jpg", badge: "Urban", desc: "Urban style fabric perfect for city living and contemporary fashion." },
-            { id: 9, category: "stitch_wear", name: "Luxury Stitch & Wear", price: 999, image: "pro17.jpg", badge: "Luxury", desc: "Luxury fabric with premium texture and exceptional quality." },
-            { id: 10, category: "stitch_wear", name: "Premium Stitch & Wear", price: 999, image: "proo2.jpg", badge: "Premium", desc: "Premium quality fabric with smooth texture and elegant finish." },
-            { id: 11, category: "stitch_wear", name: "Classic Collection", price: 999, image: "pro3.jpg", badge: "Classic", desc: "Classic collection featuring timeless designs and premium fabric." },
-            { id: 12, category: "stitch_wear", name: "Onyx Collection", price: 999, image: "pro4.jpg", badge: "Dark", desc: "Dark themed collection with sophisticated patterns and premium quality." },
-            { id: 13, category: "stitch_wear", name: "Azure Collection", price: 999, image: "pro5.jpg", badge: "Blue", desc: "Azure collection featuring beautiful blue shades and elegant patterns." },
-            { id: 14, category: "stitch_wear", name: "Frost Collection", price: 999, image: "propro.jpg", badge: "White", desc: "Frost collection with white and light shades, perfect for special occasions." },
-            { id: 15, category: "stitch_wear", name: "Stealth Collection", price: 999, image: "propro2.jpg", badge: "Black", desc: "Stealth collection featuring dark elegant patterns and premium fabric." },
-            { id: 16, category: "stitch_wear", name: "Monarch Collection", price: 999, image: "proo7.jpg", badge: "Royal", desc: "Monarch collection with royal patterns and premium quality fabric." },
-            { id: 17, category: "stitch_wear", name: "Ivory Collection", price: 999, image: "proo8.jpg", badge: "Cream", desc: "Ivory collection featuring cream shades and elegant designs." }
-        ];
-        
-        // ============================================
-        // GLOBAL VARIABLES
-        // ============================================
-        let cart = JSON.parse(localStorage.getItem('aose_cart')) || [];
-        let orders = JSON.parse(localStorage.getItem('aose_orders')) || [];
-        let selectedProductId = null;
-        let selectedSize = null;
-        
-        // ============================================
-        // ENHANCED BODY MEASUREMENT TOOL VARIABLES
-        // ============================================
-        const mt_sizeChart = [
-            { size: 'S', height: 26.5, shoulder: 16, sleeve: 22, chest: 36, front: 10 },
-            { size: 'M', height: 26, shoulder: 16.5, sleeve: 22.5, chest: 38, front: 10.5 },
-            { size: 'L', height: 29, shoulder: 17, sleeve: 23.5, chest: 40, front: 11.5 },
-            { size: 'XL', height: 29.5, shoulder: 18, sleeve: 24, chest: 42, front: 12 },
-            { size: 'XXL', height: 28.5, shoulder: 19, sleeve: 24.5, chest: 44, front: 13 }
-        ];
-        
-        let mt_stream = null;
-        let mt_canvas = null;
-        let mt_ctx = null;
-        let mt_isMeasuring = false;
-        let mt_shoulderPoints = [];
-        let mt_pixelToInchRatio = null;
-        let mt_selectedReferenceSize = null;
-        let mt_userMeasurements = {};
-        let mt_recommendedSize = null;
+// Header Scroll
+window.onscroll = () => {
+document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+};
+};
 
-        // ============================================
-        // AI CHATBOT CONFIGURATION
-        // ============================================
-        class AIChatbot {
-            constructor() {
-                this.messages = [];
-                this.isTyping = false;
-                this.greetings = [
-                    "Hello! I'm your AOSE Assistant. How can I help you today?",
-                    "Hi there! Welcome to AOSE. What can I assist you with?",
-                    "Greetings! I'm here to help with your AOSE shopping experience.",
-                    "👋 Welcome! How may I assist you today?"
-                ];
-                this.responses = {
-                    "hello": this.greetings[Math.floor(Math.random() * this.greetings.length)],
-                    "hi": this.greetings[Math.floor(Math.random() * this.greetings.length)],
-                    "hey": this.greetings[Math.floor(Math.random() * this.greetings.length)],
-                    
-                    "size guide": "Our size guide is available in the Size Guide section. Here are the measurements:\n\n• S: Chest 36-38\", Length 26\", Shoulder 16.5\"\n• M: Chest 38-40\", Length 27\", Shoulder 17.5\"\n• L: Chest 40-42\", Length 28\", Shoulder 18.5\"\n• XL: Chest 42-44\", Length 29\", Shoulder 19.5\"\n• XXL: Chest 44-46\", Length 30\", Shoulder 20.5\"\n\nYou can also use our Body Measurement Tool for accurate measurements!",
-                    
-                    "price list": "All our premium stitch & wear products are priced at ₹999 each. This includes:\n• Premium quality fabric\n• Expert stitching\n• Luxurious finishing\n• Free measurement consultation\n\nWe offer bulk discounts on orders above 5 pieces!",
-                    
-                    "track order": "To track your order:\n1. Click the truck icon at the top right\n2. Enter your Order ID (starts with AOSE-)\n3. Click 'Track Status'\n\nOr you can contact us directly at +91 78877 31818 on WhatsApp.",
-                    
-                    "contact": "You can reach us through:\n📞 Phone: +91 78877 31818\n📧 Email: aoseofficial77@gmail.com\n📍 Location: Rashin, Maharashtra, India\n💬 WhatsApp: https://wa.me/917887731818",
-                    
-                    "products": "We have 17 premium stitch & wear collections:\n1. Signature Collection\n2. Classic Collection\n3. Premium Collection\n4. Elegant Collection\n5. Royal Collection\n6. Modern Collection\n7. Heritage Collection\n8. Urban Collection\n9. Luxury Collection\n10. Premium Collection 2\n11. Classic Collection 2\n12. Onyx Collection\n13. Azure Collection\n14. Frost Collection\n15. Stealth Collection\n16. Monarch Collection\n17. Ivory Collection",
-                    
-                    "delivery": "Delivery Information:\n🚚 Standard Delivery: 5-7 business days\n⚡ Express Delivery: 2-3 business days (extra charges apply)\n🏪 Free Delivery on orders above ₹4999\n📦 Cash on Delivery available\n\nWe ship across India!",
-                    
-                    "return": "Return Policy:\n✅ 7-day return policy\n✅ Unworn, unwashed items only\n✅ Original tags must be attached\n✅ Free returns for defective items\n📞 Contact us for return instructions",
-                    
-                    "measurement": "We offer free body measurement consultation! Use our Body Measurement Tool:\n1. Take a photo from 6 feet away\n2. Mark shoulder points\n3. Select reference object\n4. Get accurate measurements\n5. Receive size recommendation\n\nOr visit our store for professional measurement.",
-                    
-                    "discount": "Current Offers:\n🎉 First-time buyer: 10% off\n👥 Refer a friend: 15% off for both\n🎁 Festival sale: Up to 20% off\n📦 Bulk orders (5+ pieces): Special pricing\n\nContact us for current promo codes!",
-                    
-                    "help": "I can help you with:\n📏 Size recommendations\n🛍️ Product information\n💰 Pricing & discounts\n📦 Order tracking\n🚚 Delivery information\n🔄 Return policy\n📱 Store contacts\n🎁 Current offers\n\nJust ask me anything!",
-                    
-                    "thank you": "You're welcome! 😊 Is there anything else I can help you with?",
-                    "thanks": "My pleasure! Let me know if you need anything else.",
-                    "bye": "Goodbye! Visit us again soon. Have a great day! 👋",
-                    "goodbye": "Thank you for visiting AOSE. See you soon! 👋"
-                };
-                
-                this.keywords = {
-                    "size": "size guide",
-                    "measure": "measurement",
-                    "fit": "size guide",
-                    "price": "price list",
-                    "cost": "price list",
-                    "expensive": "price list",
-                    "cheap": "price list",
-                    "track": "track order",
-                    "order": "track order",
-                    "delivery": "delivery",
-                    "shipping": "delivery",
-                    "return": "return",
-                    "exchange": "return",
-                    "contact": "contact",
-                    "phone": "contact",
-                    "email": "contact",
-                    "address": "contact",
-                    "product": "products",
-                    "collection": "products",
-                    "item": "products",
-                    "discount": "discount",
-                    "offer": "discount",
-                    "sale": "discount",
-                    "promo": "discount",
-                    "help": "help",
-                    "assist": "help",
-                    "support": "help"
-                };
-                
-                this.init();
-            }
-            
-            init() {
-                this.addMessage("bot", this.greetings[0]);
-                this.addMessage("bot", "I can help you with size recommendations, product info, order tracking, and more! What would you like to know?");
-            }
-            
-            addMessage(sender, text) {
-                const messagesContainer = document.getElementById('chatbotMessages');
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${sender}`;
-                messageDiv.innerHTML = `<p>${text.replace(/\n/g, '<br>')}</p>`;
-                messagesContainer.appendChild(messageDiv);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                
-                // Add animation
-                gsap.from(messageDiv, {
-                    opacity: 0,
-                    y: 20,
-                    duration: 0.3,
-                    ease: "power2.out"
-                });
-            }
-            
-            showTypingIndicator() {
-                const messagesContainer = document.getElementById('chatbotMessages');
-                const typingDiv = document.createElement('div');
-                typingDiv.className = 'typing-indicator';
-                typingDiv.innerHTML = `
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                `;
-                messagesContainer.appendChild(typingDiv);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                return typingDiv;
-            }
-            
-            removeTypingIndicator(typingDiv) {
-                if (typingDiv && typingDiv.parentNode) {
-                    typingDiv.parentNode.removeChild(typingDiv);
-                }
-            }
-            
-            processInput(input) {
-                const lowerInput = input.toLowerCase().trim();
-                
-                // Check for exact matches
-                if (this.responses[lowerInput]) {
-                    return this.responses[lowerInput];
-                }
-                
-                // Check for keyword matches
-                for (const [keyword, responseKey] of Object.entries(this.keywords)) {
-                    if (lowerInput.includes(keyword)) {
-                        return this.responses[responseKey];
-                    }
-                }
-                
-                // Default responses
-                const defaultResponses = [
-                    "I'm not sure I understand. Could you rephrase that?",
-                    "I'm still learning! Could you ask me about sizes, prices, or products?",
-                    "Hmm, I don't have an answer for that yet. Try asking about our products or services!",
-                    "Let me connect you with a human expert for that question. In the meantime, I can help with sizes, prices, or order tracking!"
-                ];
-                
-                return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
-            }
-            
-            async sendMessage(text) {
-                if (!text.trim()) return;
-                
-                // Add user message
-                this.addMessage("user", text);
-                
-                // Clear input
-                document.getElementById('chatbotInput').value = '';
-                
-                // Show typing indicator
-                const typingIndicator = this.showTypingIndicator();
-                this.isTyping = true;
-                
-                // Simulate AI thinking
-                await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000));
-                
-                // Remove typing indicator
-                this.removeTypingIndicator(typingIndicator);
-                this.isTyping = false;
-                
-                // Get response
-                const response = this.processInput(text);
-                
-                // Add bot response with slight delay for realism
-                await new Promise(resolve => setTimeout(resolve, 500));
-                this.addMessage("bot", response);
-            }
-        }
+/* ================= 3. RENDER FUNCTIONS ================= */
+function renderGrid() {
+const grid = document.getElementById('grid');
+grid.innerHTML = PRODUCTS.map(p => {
+const fallback = `this.onerror=null;this.src='https://placehold.co/400x500/f0f0f0/0F3D2E?text=AOSE';`;
+return `
+<div class="product-card reveal">
+<div class="product-image">
+<img src="${p.image}" alt="${p.name}" onerror="${fallback}">
+${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
+</div>
+<div class="product-details">
+<div class="product-name">${p.name}</div>
+<div class="product-price">₹${p.price}</div>
+<div class="size-opts">
+${['S','M','L','XL','XXL'].map(s => `<div class="size-pill" onclick="selectSizePill(this, '${s}')">${s}</div>`).join('')}
+</div>
+<button class="btn-add" onclick="addToCart(${p.id}, this)">ADD TO BAG</button>
+</div>
+</div>`;
+}).join('');
+}
 
-        let chatbot = null;
+function renderSizeTable() {
+const body = document.getElementById('chartBody');
+body.innerHTML = SIZE_DATA.map(r => `
+<tr>
+<td>${r.size}</td><td>${r.height}"</td><td>${r.shoulder}"</td><td>${r.sleeve}"</td><td>${r.chest}"</td><td>${r.front}"</td>
+</tr>
+`).join('');
+}
 
-        // ============================================
-        // INITIALIZATION
-        // ============================================
-        window.addEventListener('load', () => {
-            init();
-            
-            // Show admin button instruction on load
-            setTimeout(() => {
-                showToast('🔑 Admin panel accessible! Click the gear icon (⚙️) at top right', 'success');
-            }, 1500);
-            
-            // Animate chatbot button on load
-            setTimeout(() => {
-                const chatbotButton = document.getElementById('chatbotButton');
-                chatbotButton.classList.add('pulse');
-                setTimeout(() => {
-                    chatbotButton.classList.remove('pulse');
-                }, 3000);
-            }, 2000);
-        });
+function selectSizePill(el, size) {
+el.closest('.size-opts').querySelectorAll('.size-pill').forEach(s => s.classList.remove('active'));
+el.classList.add('active');
+}
 
-        function init() {
-            // Initialize GSAP animations
-            gsap.registerPlugin(ScrollTrigger);
-            
-            // Initialize chatbot
-            chatbot = new AIChatbot();
-            
-            // Initialize measurement tool
-            initMeasurementTool();
-            
-            // Initialize original website
-            renderProducts('all');
-            updateCart();
-            setupEventListeners();
-            
-            // Setup scroll listener for header
-            window.addEventListener('scroll', () => {
-                const header = document.getElementById('mainHeader');
-                header.classList.toggle('scrolled', window.scrollY > 50);
-            });
-            
-            // Setup intersection observer for fade-up animations
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => { 
-                    if(entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        
-                        // Add GSAP animation for extra flair
-                        gsap.from(entry.target, {
-                            opacity: 0,
-                            y: 50,
-                            duration: 0.8,
-                            ease: "power2.out"
-                        });
-                    } 
-                });
-            });
-            document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-            
-            // Hide loading screen
-            setTimeout(() => {
-                document.getElementById('loadingScreen').style.opacity = '0';
-                setTimeout(() => { 
-                    document.getElementById('loadingScreen').style.display = 'none'; 
-                }, 300);
-            }, 800);
-            
-            // Initialize EmailJS
-            emailjs.init("YOUR_EMAILJS_PUBLIC_KEY");
-            
-            // Setup mobile menu active state
-            setupMobileMenu();
-            
-            // Add keyboard shortcut for admin (Ctrl+Shift+A)
-            document.addEventListener('keydown', function(e) {
-                if (e.ctrlKey && e.shiftKey && e.key === 'A') {
-                    e.preventDefault();
-                    toggleAdmin();
-                    showToast('Admin panel opened! Use password: admin123', 'success');
-                }
-                
-                // Chatbot shortcut (Ctrl+Shift+C)
-                if (e.ctrlKey && e.shiftKey && e.key === 'C') {
-                    e.preventDefault();
-                    toggleChatbot();
-                    showToast('Chatbot opened! Ask me anything.', 'success');
-                }
-            });
-            
-            // Animate page elements on load
-            animatePageElements();
-        }
+/* ================= 4. SHOPPING CART ================= */
+function addToCart(pid, btn) {
+const card = btn.closest('.product-card');
+const activeSize = card.querySelector('.size-pill.active');
 
-        function animatePageElements() {
-            // Animate hero elements
-            gsap.from('.hero-content', {
-                opacity: 0,
-                y: 50,
-                duration: 1,
-                delay: 0.5,
-                ease: "power2.out"
-            });
-            
-            // Animate product cards on scroll
-            gsap.utils.toArray('.product-card').forEach((card, i) => {
-                gsap.from(card, {
-                    opacity: 0,
-                    y: 50,
-                    duration: 0.6,
-                    scrollTrigger: {
-                        trigger: card,
-                        start: "top 80%",
-                        toggleActions: "play none none none"
-                    },
-                    delay: i * 0.1
-                });
-            });
-            
-            // Animate section titles
-            gsap.utils.toArray('.section-title').forEach((title, i) => {
-                gsap.from(title, {
-                    opacity: 0,
-                    y: 30,
-                    duration: 0.8,
-                    scrollTrigger: {
-                        trigger: title,
-                        start: "top 85%",
-                        toggleActions: "play none none none"
-                    },
-                    delay: i * 0.2
-                });
-            });
-        }
+if(!activeSize) {
+showToast("Please select a size first", "error");
+return;
+}
 
-        function setupEventListeners() {
-            // Payment form validation
-            ['coName', 'coEmail', 'coPhone', 'coAddress'].forEach(id => {
-                const element = document.getElementById(id);
-                if (element) element.addEventListener('input', validatePaymentForm);
-            });
-            
-            // Escape key to close modals
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    document.querySelectorAll('.modal-overlay.active').forEach(modal => {
-                        modal.classList.remove('active');
-                    });
-                    document.body.style.overflow = '';
-                    if (document.getElementById('cartSidebar').classList.contains('open')) toggleCart();
-                    if (document.getElementById('adminPanel').classList.contains('active')) toggleAdmin();
-                    if (document.getElementById('chatbotWindow').classList.contains('active')) toggleChatbot();
-                }
-            });
-            
-            // Prevent form submission on Enter in checkout
-            document.getElementById('checkoutModal')?.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' && e.target.type !== 'textarea') {
-                    e.preventDefault();
-                }
-            });
-            
-            // Chatbot event listeners
-            const chatbotButton = document.getElementById('chatbotButton');
-            const chatbotClose = document.getElementById('chatbotClose');
-            const chatbotForm = document.getElementById('chatbotForm');
-            const chatbotInput = document.getElementById('chatbotInput');
-            
-            if (chatbotButton) chatbotButton.addEventListener('click', toggleChatbot);
-            if (chatbotClose) chatbotClose.addEventListener('click', toggleChatbot);
-            if (chatbotForm) chatbotForm.addEventListener('submit', handleChatbotSubmit);
-            
-            // Auto-focus chatbot input when opened
-            document.getElementById('chatbotWindow')?.addEventListener('animationend', () => {
-                if (document.getElementById('chatbotWindow').classList.contains('active')) {
-                    chatbotInput.focus();
-                }
-            });
-            
-            // Add enter key support for chatbot
-            chatbotInput?.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    handleChatbotSubmit(e);
-                }
-            });
-        }
+const product = PRODUCTS.find(p => p.id === pid);
+const size = activeSize.innerText;
+const existing = cart.find(i => i.id === pid && i.size === size);
 
-        function setupMobileMenu() {
-            const mobileLinks = document.querySelectorAll('.mobile-link');
-            mobileLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    mobileLinks.forEach(l => l.classList.remove('active'));
-                    this.classList.add('active');
-                });
-            });
-        }
+if(existing) existing.qty++;
+else cart.push({...product, size, qty: 1});
 
-        // ============================================
-        // AI CHATBOT FUNCTIONS
-        // ============================================
-        function toggleChatbot() {
-            const chatbotWindow = document.getElementById('chatbotWindow');
-            const chatbotButton = document.getElementById('chatbotButton');
-            
-            chatbotWindow.classList.toggle('active');
-            
-            if (chatbotWindow.classList.contains('active')) {
-                chatbotButton.innerHTML = '<i class="fas fa-times"></i>';
-                chatbotButton.classList.add('pulse');
-                
-                // Animate chatbot opening
-                gsap.from(chatbotWindow, {
-                    scale: 0.8,
-                    opacity: 0,
-                    duration: 0.3,
-                    ease: "back.out(1.7)"
-                });
-            } else {
-                chatbotButton.innerHTML = '<i class="fas fa-robot"></i>';
-                chatbotButton.classList.remove('pulse');
-            }
-        }
+saveCart();
+updateCartUI();
+showToast("Added to Bag");
+toggleCart();
+}
 
-        function handleChatbotSubmit(e) {
-            e.preventDefault();
-            const input = document.getElementById('chatbotInput');
-            const message = input.value.trim();
-            
-            if (message) {
-                chatbot.sendMessage(message);
-            }
-        }
+function updateCartUI() {
+const list = document.getElementById('cartItems');
+const totalEl = document.getElementById('cartTotal');
+const countEl = document.getElementById('cartCount');
 
-        function sendQuickReply(text) {
-            document.getElementById('chatbotInput').value = text;
-            handleChatbotSubmit(new Event('submit'));
-        }
+let total = 0, count = 0;
 
-        // ============================================
-        // ENHANCED BODY MEASUREMENT TOOL FUNCTIONS
-        // ============================================
-        function initMeasurementTool() {
-            // Create canvas for drawing measurements
-            mt_canvas = document.createElement('canvas');
-            mt_ctx = mt_canvas.getContext('2d');
-            
-            // Set canvas size to match camera container
-            mt_canvas.style.position = 'absolute';
-            mt_canvas.style.top = '0';
-            mt_canvas.style.left = '0';
-            mt_canvas.style.width = '100%';
-            mt_canvas.style.height = '100%';
-            mt_canvas.style.pointerEvents = 'none';
-            const overlay = document.querySelector('.camera-overlay');
-            if (overlay) overlay.appendChild(mt_canvas);
-            
-            // Setup button event listeners
-            setupMeasurementButtons();
-        }
+list.innerHTML = cart.map((item, index) => {
+total += item.price * item.qty;
+count += item.qty;
+const fallback = `this.src='https://placehold.co/100x100?text=AOSE'`;
+return `
+<div style="display:flex; gap:15px; margin-bottom:15px; border-bottom:1px solid #f0f0f0; padding-bottom:10px;">
+<img src="${item.image}" style="width:60px; height:80px; object-fit:cover; border-radius:5px;" onerror="${fallback}">
+<div style="flex:1;">
+<div style="font-weight:600; font-size:0.9rem;">${item.name}</div>
+<div style="font-size:0.8rem; color:gray;">Size: ${item.size}</div>
+<div style="display:flex; justify-content:space-between; align-items:center; margin-top:5px;">
+<div style="font-weight:bold;">₹${item.price * item.qty}</div>
+<div style="display:flex; gap:10px; align-items:center;">
+<i class="fas fa-minus-circle" style="color:#ddd; cursor:pointer;" onclick="modQty(${index}, -1)"></i>
+<span>${item.qty}</span>
+<i class="fas fa-plus-circle" style="color:var(--primary); cursor:pointer;" onclick="modQty(${index}, 1)"></i>
+</div>
+</div>
+</div>
+</div>`;
+}).join('');
 
-        // ============================================
-        // PRODUCT FUNCTIONS
-        // ============================================
-        function filterProducts(cat, btn) {
-            if(btn) {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            }
-            renderProducts(cat);
-        }
+if(cart.length === 0) list.innerHTML = '<div style="text-align:center; padding:40px; color:gray;">Your bag is empty</div>';
 
-        function renderProducts(filter) {
-            const grid = document.getElementById('productsGrid');
-            if (!grid) return;
-            
-            grid.innerHTML = '';
-            const list = filter === 'all' ? products : products.filter(p => p.category === filter);
-            
-            if (list.length === 0) {
-                grid.innerHTML = `
-                    <div class="text-center" style="grid-column: 1 / -1; padding: 3rem;">
-                        <i class="fas fa-search" style="font-size: 3rem; color: var(--light-gray); margin-bottom: 1rem;"></i>
-                        <h3 style="color: var(--gray);">No products found in this category</h3>
-                        <p style="color: var(--gray);">Try selecting a different category</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            list.forEach(product => {
-                const productCard = document.createElement('div');
-                productCard.className = 'product-card fade-up';
-                productCard.innerHTML = `
-                    <div class="product-image">
-                        <img src="${product.image}" alt="${product.name}" 
-                             onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 300 400\"><rect width=\"300\" height=\"400\" fill=\"%23f8f4ec\"/><text x=\"150\" y=\"200\" text-anchor=\"middle\" fill=\"%230f3d2e\" font-family=\"sans-serif\" font-size=\"24\">AOSE</text></svg>';">
-                        ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">${product.name}</h3>
-                        <div class="product-price">₹${product.price}</div>
-                        <div class="size-selector">
-                            ${['S', 'M', 'L', 'XL', 'XXL'].map(size => 
-                                `<button class="size-btn" onclick="selectProductSize(this, ${product.id}, '${size}')">${size}</button>`
-                            ).join('')}
-                        </div>
-                        <button class="add-to-cart-btn" onclick="addToCart(${product.id})">
-                            <i class="fas fa-plus"></i> Add to Bag
-                        </button>
-                    </div>
-                `;
-                grid.appendChild(productCard);
-            });
-        }
+totalEl.innerText = "₹" + total;
+countEl.innerText = count;
+localStorage.setItem('aose_cart', JSON.stringify(cart));
+}
 
-        // ============================================
-        // CART FUNCTIONS
-        // ============================================
-        function addToCart(productId) {
-            const addButton = document.querySelector(`[onclick="addToCart(${productId})"]`);
-            if (!addButton) return;
-            
-            const productCard = addButton.closest('.product-card');
-            const selectedSizeBtn = productCard ? productCard.querySelector('.size-btn.active') : null;
-            
-            if (!selectedSizeBtn) {
-                showToast('Please select a size first!', 'error');
-                openProductModal(productId);
-                return;
-            }
-            
-            addToCartWithSize(productId, selectedSizeBtn.textContent);
-        }
+function modQty(idx, amount) {
+cart[idx].qty += amount;
+if(cart[idx].qty <= 0) cart.splice(idx, 1);
+updateCartUI();
+}
 
-        function addToCartWithSize(productId, size) {
-            const product = products.find(p => p.id === productId);
-            if (!product) return;
-            
-            const existingItemIndex = cart.findIndex(item => item.id === productId && item.size === size);
-            
-            if (existingItemIndex > -1) {
-                cart[existingItemIndex].quantity += 1;
-            } else {
-                cart.push({ 
-                    ...product, 
-                    size: size, 
-                    quantity: 1, 
-                    cartId: Date.now() + Math.random() 
-                });
-            }
-            
-            saveCart();
-            updateCart();
-            showToast(`${product.name} (Size: ${size}) added to your bag!`, 'success');
-            
-            // Animate cart badge
-            const cartBadge = document.getElementById('cartCount');
-            gsap.to(cartBadge, {
-                scale: 1.5,
-                duration: 0.2,
-                yoyo: true,
-                repeat: 1
-            });
-        }
+function saveCart() { localStorage.setItem('aose_cart', JSON.stringify(cart)); }
+function toggleCart() {
+document.getElementById('cartSidebar').classList.toggle('active');
+document.getElementById('overlay').classList.toggle('active');
+}
 
-        // ============================================
-        // ADMIN FUNCTIONS
-        // ============================================
-        function toggleAdmin() {
-            const adminPanel = document.getElementById('adminPanel');
-            if (!adminPanel) return;
-            
-            adminPanel.classList.toggle('active');
-            document.getElementById('adminPass').value = '';
-            
-            if (adminPanel.classList.contains('active')) {
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = '';
-            }
-        }
+/* ================= 5. AI MEASUREMENT TOOL ================= */
+let stream = null, points = [], refSize = 3.37;
+const video = document.getElementById('mt-video');
+const canvas = document.getElementById('mt-canvas');
+const ctx = canvas.getContext('2d');
 
-        function loginAdmin() {
-            const password = document.getElementById('adminPass')?.value;
-            const adminLogin = document.getElementById('adminLogin');
-            const adminDashboard = document.getElementById('adminDashboard');
-            
-            if (!password || !adminLogin || !adminDashboard) return;
-            
-            if (password === ADMIN_PASSWORD) {
-                adminLogin.style.display = 'none';
-                adminDashboard.style.display = 'block';
-                renderAdminDashboard();
-                showToast('Admin login successful! Welcome to the dashboard.', 'success');
-            } else {
-                showToast('Wrong password! Try: admin123', 'error');
-            }
-        }
+function setRef(size, el) {
+refSize = size;
+document.querySelectorAll('.ref-btn').forEach(b => b.classList.remove('selected'));
+el.classList.add('selected');
+}
 
-        // ============================================
-        // UTILITY FUNCTIONS
-        // ============================================
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toastNotification');
-            const toastMessage = document.getElementById('toastMessage');
-            
-            if (!toast || !toastMessage) return;
-            
-            toastMessage.textContent = message;
-            toast.className = `toast-notification show ${type === 'error' ? 'error' : ''}`;
-            
-            // Animate toast
-            gsap.from(toast, {
-                x: 200,
-                duration: 0.5,
-                ease: "back.out(1.7)"
-            });
-            
-            setTimeout(() => { 
-                toast.classList.remove('show'); 
-            }, 3000);
-        }
+async function startCamera() {
+try {
+stream = await navigator.mediaDevices.getUserMedia({
+video: { facingMode: 'environment', width: {ideal: 1920}, height: {ideal: 1080} }
+});
+video.srcObject = stream;
+video.onloadedmetadata = () => {
+canvas.width = video.videoWidth;
+canvas.height = video.videoHeight;
+};
+document.getElementById('cam-placeholder').style.display = 'none';
+document.getElementById('btn-start').style.display = 'none';
+document.getElementById('btn-capture').style.display = 'flex';
+} catch(e) { alert("Camera access denied."); }
+}
 
-        function openModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                
-                // Animate modal
-                gsap.from(modal.querySelector('.modal-box'), {
-                    scale: 0.8,
-                    opacity: 0,
-                    duration: 0.3,
-                    ease: "back.out(1.7)"
-                });
-            }
-        }
+function captureImage() {
+ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+video.style.display = 'none';
+canvas.style.display = 'block';
+stream.getTracks().forEach(t => t.stop());
 
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        }
+document.getElementById('btn-capture').style.display = 'none';
+document.getElementById('btn-retake').style.display = 'flex';
+document.getElementById('mt-instructions').innerHTML = "Tap <strong>Left</strong> then <strong>Right</strong> edge of the CARD.";
 
-        function scrollToSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            if (section) {
-                // Smooth scroll with animation
-                gsap.to(window, {
-                    duration: 1,
-                    scrollTo: {
-                        y: section,
-                        offsetY: 80
-                    },
-                    ease: "power2.inOut"
-                });
-            }
-        }
+canvas.onclick = (e) => {
+if(points.length >= 4) return;
 
-        // ============================================
-        // FIXED BUGS AND ENHANCEMENTS
-        // ============================================
-        
-        // Fix for image loading issues
-        window.addEventListener('error', function(e) {
-            if (e.target.tagName === 'IMG') {
-                e.target.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400"><rect width="300" height="400" fill="%23f8f4ec"/><text x="150" y="200" text-anchor="middle" fill="%230f3d2e" font-family="sans-serif" font-size="24">AOSE</text></svg>';
-            }
-        }, true);
-        
-        // Fix for iOS viewport height
-        function setViewportHeight() {
-            let vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
-        }
-        
-        setViewportHeight();
-        window.addEventListener('resize', setViewportHeight);
-        
-        // Fix for mobile menu scroll
-        document.querySelectorAll('.mobile-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                if (this.getAttribute('href') === '#') {
-                    e.preventDefault();
-                }
-            });
-        });
-        
-        // Add hover effects for all interactive elements
-        document.querySelectorAll('button, .product-card, .menu-link').forEach(element => {
-            element.addEventListener('mouseenter', function() {
-                gsap.to(this, {
-                    scale: 1.02,
-                    duration: 0.2,
-                    ease: "power2.out"
-                });
-            });
-            
-            element.addEventListener('mouseleave', function() {
-                gsap.to(this, {
-                    scale: 1,
-                    duration: 0.2,
-                    ease: "power2.out"
-                });
-            });
-        });
-        
-        // Enhanced page load animation
-        gsap.from('body', {
-            opacity: 0,
-            duration: 0.5,
-            ease: "power2.inOut"
-        });
-        
-        // Parallax effect for hero
-        window.addEventListener('scroll', function() {
-            const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.hero-bg');
-            if (hero) {
-                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-            }
-        });
+// Map screen click to canvas resolution
+const rect = canvas.getBoundingClientRect();
+const scaleX = canvas.width / rect.width;
+const scaleY = canvas.height / rect.height;
+const x = (e.clientX - rect.left) * scaleX;
+const y = (e.clientY - rect.top) * scaleY;
 
-        // Auto-open chatbot on first visit
-        let firstVisit = localStorage.getItem('aose_first_visit');
-        if (!firstVisit) {
-            setTimeout(() => {
-                toggleChatbot();
-                localStorage.setItem('aose_first_visit', 'true');
-            }, 3000);
-        }
+points.push({x, y});
+drawPoints();
 
-        // Chatbot auto-suggest based on user activity
-        let userActivity = {
-            viewedProducts: [],
-            timeOnSite: 0
-        };
+if(points.length === 2) document.getElementById('mt-instructions').innerHTML = "Card set. Tap <strong>Left</strong> then <strong>Right</strong> SHOULDER.";
+if(points.length === 4) calculate();
+};
+}
 
-        setInterval(() => {
-            userActivity.timeOnSite++;
-            
-            // Suggest help based on time spent
-            if (userActivity.timeOnSite === 30) { // 30 seconds
-                if (!document.getElementById('chatbotWindow').classList.contains('active')) {
-                    const chatbotButton = document.getElementById('chatbotButton');
-                    chatbotButton.classList.add('pulse');
-                    
-                    // Remove pulse after 5 seconds
-                    setTimeout(() => {
-                        chatbotButton.classList.remove('pulse');
-                    }, 5000);
-                }
-            }
-        }, 1000);
+function drawPoints() {
+ctx.lineWidth = 4;
+points.forEach((p, i) => {
+ctx.fillStyle = i < 2 ? '#C6A664' : '#0F3D2E';
+ctx.beginPath(); ctx.arc(p.x, p.y, 10, 0, Math.PI*2); ctx.fill();
+});
+if(points.length >= 2) {
+ctx.strokeStyle = '#C6A664'; ctx.beginPath(); ctx.moveTo(points[0].x, points[0].y); ctx.lineTo(points[1].x, points[1].y); ctx.stroke();
+}
+if(points.length === 4) {
+ctx.strokeStyle = '#0F3D2E'; ctx.beginPath(); ctx.moveTo(points[2].x, points[2].y); ctx.lineTo(points[3].x, points[3].y); ctx.stroke();
+}
+}
 
-    </script>
+function calculate() {
+const dist = (p1, p2) => Math.hypot(p1.x - p2.x, p1.y - p2.y);
+const refPx = dist(points[0], points[1]);
+const shoulderPx = dist(points[2], points[3]);
+
+const measuredShoulder = ((shoulderPx / refPx) * refSize).toFixed(1);
+
+// Draw Result on Canvas
+const midX = (points[2].x + points[3].x) / 2;
+const midY = (points[2].y + points[3].y) / 2 - 50;
+ctx.font = "bold 60px Arial";
+ctx.fillStyle = "white"; ctx.strokeStyle="black"; ctx.lineWidth=2;
+ctx.strokeText(measuredShoulder + '"', midX, midY);
+ctx.fillText(measuredShoulder + '"', midX, midY);
+
+findClosestSize(measuredShoulder);
+}
+
+function findClosestSize(measured) {
+// Logic: Find size in SIZE_DATA closest to measured shoulder
+let closest = null;
+let minDiff = Infinity;
+
+SIZE_DATA.forEach(row => {
+const diff = Math.abs(row.shoulder - measured);
+if(diff < minDiff) {
+minDiff = diff;
+closest = row;
+}
+});
+
+userFitProfile = closest;
+
+document.getElementById('mt-instructions').innerHTML = "Analysis Complete.";
+document.getElementById('fitResult').style.display = 'block';
+document.getElementById('res-shoulder').innerText = measured + '"';
+document.getElementById('res-size').innerText = closest.size;
+document.getElementById('res-chest').innerText = closest.chest + '"';
+document.getElementById('res-height').innerText = closest.height + '"';
+document.getElementById('res-sleeve').innerText = closest.sleeve + '"';
+document.getElementById('res-front').innerText = closest.front + '"';
+}
+
+function resetTool() {
+points = [];
+video.style.display = 'block';
+canvas.style.display = 'none';
+document.getElementById('fitResult').style.display = 'none';
+startCamera();
+document.getElementById('btn-retake').style.display = 'none';
+}
+
+function applySizeToOrder() {
+showToast(`Size ${userFitProfile.size} saved!`);
+document.getElementById('collection').scrollIntoView();
+}
+
+/* ================= 6. GEMINI-STYLE CHATBOT ================= */
+function toggleChat() {
+document.getElementById('chatContainer').classList.toggle('active');
+}
+
+function handleChatEnter(e) {
+if(e.key === 'Enter') handleUserMessage();
+}
+
+function handleUserMessage() {
+const input = document.getElementById('chatInput');
+const txt = input.value.trim();
+if(!txt) return;
+
+addMsg(txt, 'user');
+input.value = '';
+document.getElementById('typingIndicator').style.display = 'flex';
+document.getElementById('chatBody').scrollTop = document.getElementById('chatBody').scrollHeight;
+
+// SIMULATED GEMINI AI RESPONSE
+setTimeout(() => {
+document.getElementById('typingIndicator').style.display = 'none';
+const lower = txt.toLowerCase();
+let response = "I'm not sure about that. Try asking about sizes, tracking, or our collection.";
+
+if(lower.includes('size') || lower.includes('measure') || lower.includes('fit')) {
+response = "You can use our **AI Measure Tool** above to find your exact fit using your camera. Or check the Size Chart: <br>S: 16\" Shoulder<br>M: 16.5\" Shoulder<br>L: 17\" Shoulder";
+} else if(lower.includes('track') || lower.includes('order') || lower.includes('status')) {
+response = "You can track your order by clicking the 'Truck' icon in the top menu and entering your Order ID.";
+} else if(lower.includes('price') || lower.includes('cost')) {
+response = "Our Premium Stitch & Wear collection is priced at ₹999 across all designs.";
+} else if(lower.includes('ship') || lower.includes('delivery')) {
+response = "We ship across India within 3-5 business days via BlueDart express shipping.";
+} else if(lower.includes('hello') || lower.includes('hi')) {
+response = "Hello! I am the AOSE AI Assistant. How can I help you elevate your style today?";
+} else if(lower.includes('chest') && lower.includes('xl')) {
+response = "According to our chart, size **XL** has a Chest measurement of **42 inches**.";
+}
+
+addMsg(response, 'bot');
+}, 1000);
+}
+
+function addMsg(text, sender) {
+const div = document.createElement('div');
+div.className = `chat-msg msg-${sender}`;
+div.innerHTML = text; // Allow HTML for line breaks
+const body = document.getElementById('chatBody');
+body.insertBefore(div, document.getElementById('typingIndicator'));
+body.scrollTop = body.scrollHeight;
+}
+
+/* ================= 7. CHECKOUT ================= */
+function openCheckoutModal() {
+if(cart.length === 0) return;
+toggleCart();
+document.getElementById('modalOverlay').classList.add('active');
+document.getElementById('checkoutModal').classList.add('active');
+
+if(userFitProfile) {
+document.getElementById('attachedMeasurement').style.display = 'block';
+document.getElementById('attachedMeasurement').innerHTML = `<i class="fas fa-ruler-combined"></i> <strong>${userFitProfile.size}</strong> Fit Profile Attached`;
+}
+
+const total = cart.reduce((s,i)=>s+(i.price*i.qty), 0);
+document.getElementById('qrcode').innerHTML = "";
+new QRCode(document.getElementById('qrcode'), {
+text: `upi://pay?pa=${CONFIG.upi}&pn=AOSE&am=${total}&cu=INR`,
+width: 100, height: 100
+});
+}
+
+function closeModal() {
+document.getElementById('modalOverlay').classList.remove('active');
+document.getElementById('checkoutModal').classList.remove('active');
+}
+
+function placeOrder() {
+const name = document.getElementById('coName').value;
+const phone = document.getElementById('coPhone').value;
+const addr = document.getElementById('coAddress').value;
+
+if(!name || !phone || !addr) { showToast("Fill all fields", "error"); return; }
+
+const total = cart.reduce((s,i)=>s+(i.price*i.qty), 0);
+const items = cart.map(i => `${i.name} (${i.size}) x${i.qty}`).join(', ');
+
+let msg = `*NEW ORDER - AOSE*\n\nName: ${name}\nPhone: ${phone}\nAddress: ${addr}\n\nItems: ${items}\nTotal: ₹${total}`;
+if(userFitProfile) {
+msg += `\n\n*AI FIT PROFILE ATTACHED:*\nSize: ${userFitProfile.size}\nShoulder: ${userFitProfile.shoulder}"\nChest: ${userFitProfile.chest}"`;
+}
+
+window.open(`https://wa.me/${CONFIG.phone}?text=${encodeURIComponent(msg)}`, '_blank');
+
+cart = [];
+userFitProfile = null;
+updateCartUI();
+closeModal();
+showToast("Order Sent!");
+}
+
+/* ================= UTILS ================= */
+function showToast(msg, type='success') {
+const t = document.getElementById('toast');
+document.getElementById('toastMsg').innerText = msg;
+t.style.background = type === 'error' ? '#dc3545' : '#28a745';
+t.classList.add('show');
+setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
 </body>
 </html>
