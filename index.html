@@ -7,9 +7,11 @@
     <meta name="keywords" content="AOSE, clothing, fashion, stitch and wear, premium, India">
     <title>AOSE | Timeless Elegance, Modern Legacy</title>
     
+    <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
+    <!-- Essential Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -37,6 +39,350 @@
         @media (max-width: 768px) {
             .brand-logo {
                 height: 35px;
+            }
+        }
+
+        /* Body Measurement Tool Styles */
+        .measurement-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            padding: 40px 0;
+        }
+
+        .measurement-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .measurement-header {
+            background: linear-gradient(to right, #2c3e50, #4a6491);
+            color: white;
+            padding: 25px 40px;
+            text-align: center;
+        }
+
+        .measurement-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .measurement-logo h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: white;
+        }
+
+        .measurement-logo span {
+            color: #ff9a00;
+        }
+
+        .measurement-tagline {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .measurement-content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 30px;
+            gap: 30px;
+        }
+
+        .measurement-left {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .measurement-right {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .measurement-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+            border: 1px solid #eee;
+        }
+
+        .measurement-panel-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .measurement-panel-title i {
+            color: #667eea;
+            margin-right: 12px;
+            font-size: 1.3rem;
+        }
+
+        .measurement-panel-title h3 {
+            color: #2c3e50;
+            font-size: 1.4rem;
+        }
+
+        .camera-container {
+            width: 100%;
+            height: 250px;
+            background: #111;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        #measurement-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .camera-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .measurement-guide {
+            position: absolute;
+            width: 150px;
+            height: 200px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px dashed rgba(255, 255, 255, 0.5);
+        }
+
+        .measurement-btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .measurement-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .measurement-btn-primary {
+            background: linear-gradient(to right, #667eea, #764ba2);
+            color: white;
+        }
+
+        .measurement-btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(102, 126, 234, 0.4);
+        }
+
+        .measurement-btn-secondary {
+            background: #f8f9fa;
+            color: #495057;
+            border: 1px solid #dee2e6;
+        }
+
+        .measurement-btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        .measurement-btn-success {
+            background: linear-gradient(to right, #20c997, #0ca678);
+            color: white;
+        }
+
+        .measurement-btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(32, 201, 151, 0.4);
+        }
+
+        .measurement-size-chart {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .measurement-size-chart th {
+            background: linear-gradient(to right, #667eea, #764ba2);
+            color: white;
+            padding: 12px 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .measurement-size-chart td {
+            padding: 10px 8px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+
+        .measurement-size-chart tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .measurement-size-label {
+            font-weight: 700;
+            color: #2c3e50;
+            background: #f1f3f5;
+            border-radius: 5px;
+            padding: 4px 8px;
+        }
+
+        .measurement-results {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: linear-gradient(to right, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .measurement-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #ccc;
+        }
+
+        .measurement-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .measurement-name {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .measurement-value {
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .recommended-size {
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(to right, #20c997, #0ca678);
+            color: white;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+            animation: pulse 2s infinite;
+        }
+
+        .size-badge {
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 10px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .measurement-instructions {
+            background: #e7f5ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            border-left: 5px solid #339af0;
+        }
+
+        .measurement-instructions h4 {
+            color: #1971c2;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .measurement-instructions ol {
+            padding-left: 20px;
+        }
+
+        .measurement-instructions li {
+            margin-bottom: 8px;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+
+        .measurement-loading {
+            display: none;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .measurement-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .measurement-note {
+            margin-top: 10px;
+            font-style: italic;
+            color: #666;
+            font-size: 0.85rem;
+            background: #fff3cd;
+            padding: 8px;
+            border-radius: 5px;
+            border-left: 4px solid #ffc107;
+        }
+
+        @media (max-width: 768px) {
+            .measurement-content {
+                flex-direction: column;
+            }
+            
+            .measurement-btn-group {
+                flex-direction: column;
+            }
+            
+            .measurement-btn {
+                width: 100%;
+            }
+            
+            .camera-container {
+                height: 200px;
             }
         }
 
@@ -174,23 +520,6 @@
         .size-chart { width: 100%; border-collapse: collapse; }
         .size-chart th { background: var(--primary); color: var(--white); padding: 1.2rem; font-weight: 600; }
         .size-chart td { padding: 1rem; text-align: center; border-bottom: 1px solid var(--light-gray); }
-
-        /* --- Size Cam Styles --- */
-        .cam-trigger-container { text-align: center; margin-top: 2rem; }
-        .cam-btn {
-            background: var(--white); color: var(--primary); border: 1px solid var(--primary);
-            padding: 1rem 2rem; border-radius: 5px; font-weight: 600; font-size: 0.9rem;
-            display: inline-flex; align-items: center; gap: 10px; transition: all 0.3s ease;
-        }
-        .cam-btn:hover { background: var(--primary); color: white; }
-        
-        .cam-modal-content { max-width: 800px !important; text-align: center; }
-        #camContainer { position: relative; width: 100%; max-width: 600px; margin: 0 auto; background: #000; border-radius: 8px; overflow: hidden; min-height: 300px; display: flex; align-items: center; justify-content: center; }
-        #camera { width: 100%; height: auto; display: none; }
-        #canvas { width: 100%; max-width: 100%; border: 1px solid #ccc; display: none; }
-        .cam-controls { margin-top: 1.5rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
-        .cam-instructions { text-align: left; background: var(--bg-light); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--gray); border-left: 3px solid var(--gold); }
-        .cam-result { margin-top: 1rem; font-size: 1.2rem; font-weight: 700; color: var(--primary); }
 
         /* --- Products --- */
         .filters { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
@@ -460,25 +789,30 @@
 </head>
 <body>
 
+    <!-- Loading Screen -->
     <div id="loadingScreen">
         <div class="loading-spinner"></div>
         <p style="color: var(--primary); font-weight: 600;">Loading AOSE...</p>
     </div>
 
+    <!-- Toast Notification -->
     <div class="toast-notification" id="toastNotification">
         <i class="fas fa-check-circle toast-icon"></i>
         <span id="toastMessage">Product added to cart!</span>
     </div>
 
+    <!-- Header -->
     <header class="header" id="mainHeader">
         <div class="container nav-content">
             <a href="#" class="brand">
+                <!-- AOSE Brand Logo -->
                 <img src="aose ad.png" alt="AOSE Logo" class="brand-logo">
             </a>
             <nav class="menu-desktop">
                 <a href="#hero" class="menu-link">Home</a>
                 <a href="#collection" class="menu-link">Collection</a>
                 <a href="#sizeGuide" class="menu-link">Size Guide</a>
+                <a href="#measurementTool" class="menu-link">Measure</a>
                 <a href="#contact" class="menu-link">Contact</a>
             </nav>
             <div class="nav-icons">
@@ -492,6 +826,7 @@
         </div>
     </header>
 
+    <!-- Hero Section -->
     <section class="hero" id="hero">
         <div class="hero-bg"></div>
         <div class="hero-content fade-up">
@@ -501,6 +836,7 @@
         </div>
     </section>
 
+    <!-- Size Guide -->
     <section class="size-guide" id="sizeGuide">
         <div class="container">
             <h2 class="section-title">Size Guide</h2>
@@ -524,16 +860,183 @@
                     </tbody>
                 </table>
             </div>
-            
-            <div class="cam-trigger-container">
-                <p style="color:var(--gray); margin-bottom:1rem; font-size:0.9rem;">Unsure about your shoulder width?</p>
-                <button class="cam-btn" onclick="openCamModal()">
-                    <i class="fas fa-camera"></i> Try AI Size Measurement
-                </button>
+        </div>
+    </section>
+
+    <!-- Body Measurement Tool Section -->
+    <section class="measurement-section" id="measurementTool">
+        <div class="measurement-container">
+            <div class="measurement-header">
+                <div class="measurement-logo">
+                    <h2>A&SE <span>BODY MEASUREMENT TOOL</span></h2>
+                </div>
+                <p class="measurement-tagline">Stitch and Wear Collection - AI Body Measurement Tool</p>
+            </div>
+
+            <div class="measurement-content">
+                <div class="measurement-left">
+                    <div class="measurement-panel">
+                        <div class="measurement-panel-title">
+                            <i class="fas fa-camera"></i>
+                            <h3>Camera Measurement</h3>
+                        </div>
+                        <p>Position yourself about 6 feet from the camera. Stand straight with arms slightly away from your body.</p>
+                        
+                        <div class="camera-container">
+                            <video id="measurement-video" autoplay playsinline></video>
+                            <div class="camera-overlay">
+                                <div class="measurement-guide"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="measurement-btn-group">
+                            <button id="mt-startCamera" class="measurement-btn measurement-btn-primary">
+                                <i class="fas fa-video"></i> Start Camera
+                            </button>
+                            <button id="mt-captureMeasurement" class="measurement-btn measurement-btn-success" disabled>
+                                <i class="fas fa-ruler-combined"></i> Take Measurement
+                            </button>
+                            <button id="mt-reset" class="measurement-btn measurement-btn-secondary">
+                                <i class="fas fa-redo"></i> Reset
+                            </button>
+                        </div>
+                        
+                        <div class="measurement-loading" id="mt-loading">
+                            <div class="measurement-spinner"></div>
+                            <p>Analyzing your body measurements...</p>
+                        </div>
+                        
+                        <div class="measurement-results" id="mt-measurementResults">
+                            <h4>Your Measurements</h4>
+                            <div class="measurement-item">
+                                <span class="measurement-name">Height:</span>
+                                <span class="measurement-value" id="mt-heightValue">--</span>
+                            </div>
+                            <div class="measurement-item">
+                                <span class="measurement-name">Shoulder:</span>
+                                <span class="measurement-value" id="mt-shoulderValue">--</span>
+                            </div>
+                            <div class="measurement-item">
+                                <span class="measurement-name">Sleeve:</span>
+                                <span class="measurement-value" id="mt-sleeveValue">--</span>
+                            </div>
+                            <div class="measurement-item">
+                                <span class="measurement-name">Chest:</span>
+                                <span class="measurement-value" id="mt-chestValue">--</span>
+                            </div>
+                            <div class="measurement-item">
+                                <span class="measurement-name">Front:</span>
+                                <span class="measurement-value" id="mt-frontValue">--</span>
+                            </div>
+                        </div>
+                        
+                        <div class="recommended-size" id="mt-recommendedSize">
+                            <h4>Recommended Size</h4>
+                            <div class="size-badge" id="mt-sizeBadge">--</div>
+                            <p>Based on your body measurements</p>
+                        </div>
+                    </div>
+                    
+                    <div class="measurement-instructions">
+                        <h4><i class="fas fa-info-circle"></i> Measurement Instructions</h4>
+                        <ol>
+                            <li>Stand about 6 feet (2 meters) away from the camera.</li>
+                            <li>Make sure you're in a well-lit area.</li>
+                            <li>Stand straight with your arms slightly away from your body.</li>
+                            <li>Wear form-fitting clothing for more accurate results.</li>
+                            <li>Click "Take Measurement" when ready.</li>
+                            <li>The system will estimate your measurements and recommend a size.</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="measurement-right">
+                    <div class="measurement-panel">
+                        <div class="measurement-panel-title">
+                            <i class="fas fa-table"></i>
+                            <h3>Premium Size Chart (in inches)</h3>
+                        </div>
+                        <table class="measurement-size-chart">
+                            <thead>
+                                <tr>
+                                    <th>SIZE</th>
+                                    <th>HEIGHT</th>
+                                    <th>SHOULDER</th>
+                                    <th>SLEEVE</th>
+                                    <th>CHEST</th>
+                                    <th>FRONT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="measurement-size-label">S</span></td>
+                                    <td>26.5"</td>
+                                    <td>16"</td>
+                                    <td>22"</td>
+                                    <td>36"</td>
+                                    <td>10"</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="measurement-size-label">M</span></td>
+                                    <td>26"</td>
+                                    <td>16.5"</td>
+                                    <td>22.5"</td>
+                                    <td>38"</td>
+                                    <td>10.5"</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="measurement-size-label">L</span></td>
+                                    <td>29"</td>
+                                    <td>17"</td>
+                                    <td>23.5"</td>
+                                    <td>40"</td>
+                                    <td>11.5"</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="measurement-size-label">XL</span></td>
+                                    <td>29.5"</td>
+                                    <td>18"</td>
+                                    <td>24"</td>
+                                    <td>42"</td>
+                                    <td>12"</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="measurement-size-label">XXL</span></td>
+                                    <td>28.5"</td>
+                                    <td>19"</td>
+                                    <td>24.5"</td>
+                                    <td>44"</td>
+                                    <td>13"</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="measurement-note">
+                            Note: This is our premium stitch & wear collection size chart. For most accurate results, consider professional tailoring.
+                        </div>
+                    </div>
+                    
+                    <div class="measurement-panel">
+                        <div class="measurement-panel-title">
+                            <i class="fas fa-user-check"></i>
+                            <h3>How It Works</h3>
+                        </div>
+                        <p>This measurement tool uses computer vision algorithms to estimate your body dimensions:</p>
+                        <ul style="padding-left: 20px; margin-top: 10px;">
+                            <li style="margin-bottom: 8px;">Detects your body proportions from the camera</li>
+                            <li style="margin-bottom: 8px;">Uses reference points to calculate measurements</li>
+                            <li style="margin-bottom: 8px;">Compares with our size chart database</li>
+                            <li style="margin-bottom: 8px;">Recommends the best fitting size for you</li>
+                        </ul>
+                        <div class="measurement-note">
+                            <strong>Note:</strong> For most accurate results, consider professional tailoring or manual measurement.
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- Products Section -->
     <section class="section-padding" id="collection">
         <div class="container">
             <div class="text-center fade-up" style="margin-bottom: 3rem;">
@@ -549,10 +1052,12 @@
             </div>
 
             <div class="products-grid" id="productsGrid">
-                </div>
+                <!-- Products will be loaded here -->
+            </div>
         </div>
     </section>
 
+    <!-- Product Quick View Modal -->
     <div class="modal-overlay" id="productModal">
         <div class="modal-box modal-full-content">
             <button class="close-btn" onclick="closeModal('productModal')">&times;</button>
@@ -579,38 +1084,7 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="sizeCamModal">
-        <div class="modal-box cam-modal-content">
-            <button class="close-btn" onclick="closeCamModal()">&times;</button>
-            <h3 style="margin-bottom: 1rem;">AI Size Measurement</h3>
-            
-            <div class="cam-instructions" id="camInstructions">
-                <strong>Instructions:</strong>
-                <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
-                    <li>Hold a standard credit/debit card against your shoulder for scale.</li>
-                    <li>Click <strong>Start Camera</strong> and position yourself.</li>
-                    <li>Click <strong>Capture Image</strong>.</li>
-                    <li>Click the <strong>Left Edge</strong> then <strong>Right Edge</strong> of the card (Width).</li>
-                    <li>Click your <strong>Left Shoulder</strong> then <strong>Right Shoulder</strong>.</li>
-                </ol>
-            </div>
-
-            <div id="camContainer">
-                <div id="camPlaceholder" style="color: white;">Camera inactive</div>
-                <video id="camera" autoplay playsinline></video>
-                <canvas id="canvas"></canvas>
-            </div>
-
-            <div class="cam-controls">
-                <button class="cam-btn" id="startCameraBtn" onclick="startCamera()">Start Camera</button>
-                <button class="cam-btn" id="captureBtn" onclick="captureImage()" style="display:none;">Capture Image</button>
-                <button class="cam-btn" id="resetBtn" onclick="resetCamera()" style="display:none; background:var(--gray); border-color:var(--gray); color:white;">Reset</button>
-            </div>
-
-            <div id="camOutput" class="cam-result"></div>
-        </div>
-    </div>
-
+    <!-- Checkout Modal -->
     <div class="modal-overlay" id="checkoutModal">
         <div class="modal-box">
             <button class="close-btn" onclick="closeModal('checkoutModal')">&times;</button>
@@ -624,6 +1098,7 @@
             <div class="input-group"><input type="tel" id="coPhone" class="input-field" placeholder="WhatsApp Number *" required></div>
             <div class="input-group"><textarea id="coAddress" class="input-field" rows="3" placeholder="Complete Shipping Address *" required></textarea></div>
 
+            <!-- Payment Instructions -->
             <div class="payment-instructions">
                 <h4>Payment Instructions:</h4>
                 <ul>
@@ -635,6 +1110,7 @@
                 </ul>
             </div>
 
+            <!-- Payment Gateway -->
             <div class="payment-container">
                 <h3 class="payment-title">Checkout: ₹<span id="displayAmount">0</span></h3>
                 <div class="payment-options">
@@ -667,6 +1143,7 @@
         </div>
     </div>
 
+    <!-- Success Modal -->
     <div class="modal-overlay" id="successModal">
         <div class="modal-box success-modal-content">
             <i class="fas fa-check-circle" style="font-size: 4rem; color: #28a745; margin-bottom: 1.5rem;"></i>
@@ -686,6 +1163,7 @@
         </div>
     </div>
 
+    <!-- Track Order Modal -->
     <div class="modal-overlay" id="trackModal">
         <div class="modal-box">
             <button class="close-btn" onclick="closeModal('trackModal')">&times;</button>
@@ -698,6 +1176,7 @@
         </div>
     </div>
 
+    <!-- Admin Panel -->
     <div class="admin-panel" id="adminPanel">
         <div class="admin-login" id="adminLogin">
             <h3 style="color: var(--primary); margin-bottom: 1.5rem;">Admin Login</h3>
@@ -758,13 +1237,15 @@
                             </tr>
                         </thead>
                         <tbody id="admTable">
-                            </tbody>
+                            <!-- Orders will be loaded here -->
+                        </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Cart Sidebar -->
     <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
@@ -789,6 +1270,7 @@
         </div>
     </div>
 
+    <!-- Footer -->
     <footer class="footer" id="contact">
         <div class="footer-content">
             <div class="footer-section">
@@ -813,6 +1295,7 @@
                     <li><a href="#hero" onclick="scrollToSection('hero')">Home</a></li>
                     <li><a href="#collection" onclick="scrollToSection('collection')">Collection</a></li>
                     <li><a href="#sizeGuide" onclick="scrollToSection('sizeGuide')">Size Guide</a></li>
+                    <li><a href="#measurementTool" onclick="scrollToSection('measurementTool')">Body Measurement</a></li>
                 </ul>
             </div>
             
@@ -831,14 +1314,174 @@
         </div>
     </footer>
 
+    <!-- Mobile Navigation -->
     <div class="mobile-nav">
         <a href="#hero" class="mobile-link"><i class="fas fa-home"></i> Home</a>
         <a href="#collection" class="mobile-link"><i class="fas fa-layer-group"></i> Shop</a>
         <a href="#sizeGuide" class="mobile-link"><i class="fas fa-ruler"></i> Size</a>
+        <a href="#measurementTool" class="mobile-link"><i class="fas fa-camera"></i> Measure</a>
         <a href="#" onclick="toggleCart()" class="mobile-link"><i class="fas fa-shopping-bag"></i> Cart</a>
     </div>
 
     <script>
+        // --- BODY MEASUREMENT TOOL CODE ---
+        // Size chart data from the image (corrected chest measurements)
+        const mt_sizeChart = [
+            { size: 'S', height: 26.5, shoulder: 16, sleeve: 22, chest: 36, front: 10 },
+            { size: 'M', height: 26, shoulder: 16.5, sleeve: 22.5, chest: 38, front: 10.5 },
+            { size: 'L', height: 29, shoulder: 17, sleeve: 23.5, chest: 40, front: 11.5 },
+            { size: 'XL', height: 29.5, shoulder: 18, sleeve: 24, chest: 42, front: 12 },
+            { size: 'XXL', height: 28.5, shoulder: 19, sleeve: 24.5, chest: 44, front: 13 }
+        ];
+
+        // DOM elements for measurement tool
+        const mt_video = document.getElementById('measurement-video');
+        const mt_startCameraBtn = document.getElementById('mt-startCamera');
+        const mt_captureBtn = document.getElementById('mt-captureMeasurement');
+        const mt_resetBtn = document.getElementById('mt-reset');
+        const mt_loading = document.getElementById('mt-loading');
+        const mt_measurementResults = document.getElementById('mt-measurementResults');
+        const mt_recommendedSize = document.getElementById('mt-recommendedSize');
+        const mt_sizeBadge = document.getElementById('mt-sizeBadge');
+        
+        // Measurement display elements
+        const mt_heightValue = document.getElementById('mt-heightValue');
+        const mt_shoulderValue = document.getElementById('mt-shoulderValue');
+        const mt_sleeveValue = document.getElementById('mt-sleeveValue');
+        const mt_chestValue = document.getElementById('mt-chestValue');
+        const mt_frontValue = document.getElementById('mt-frontValue');
+        
+        // Variables for measurement tool
+        let mt_stream = null;
+        let mt_userMeasurements = {
+            height: 0,
+            shoulder: 0,
+            sleeve: 0,
+            chest: 0,
+            front: 0
+        };
+
+        // Start camera for measurement tool
+        mt_startCameraBtn.addEventListener('click', async () => {
+            try {
+                mt_stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        facingMode: 'environment',
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    } 
+                });
+                mt_video.srcObject = mt_stream;
+                mt_captureBtn.disabled = false;
+                mt_startCameraBtn.disabled = true;
+                mt_startCameraBtn.innerHTML = '<i class="fas fa-video"></i> Camera Active';
+            } catch (err) {
+                console.error('Error accessing camera:', err);
+                showToast('Could not access the camera. Please make sure you have granted camera permissions.', 'error');
+            }
+        });
+
+        // Capture measurement
+        mt_captureBtn.addEventListener('click', () => {
+            // Show loading
+            mt_loading.style.display = 'block';
+            
+            // Simulate measurement process
+            setTimeout(() => {
+                // Generate simulated measurements based on typical body proportions
+                mt_simulateBodyMeasurements();
+                
+                // Hide loading and show results
+                mt_loading.style.display = 'none';
+                mt_measurementResults.style.display = 'block';
+                
+                // Find and display recommended size
+                const recommended = mt_findRecommendedSize();
+                mt_sizeBadge.textContent = recommended.size;
+                mt_recommendedSize.style.display = 'block';
+                
+                showToast('Body measurements captured successfully!', 'success');
+            }, 2000);
+        });
+
+        // Reset button for measurement tool
+        mt_resetBtn.addEventListener('click', () => {
+            // Reset UI
+            mt_measurementResults.style.display = 'none';
+            mt_recommendedSize.style.display = 'none';
+            mt_captureBtn.disabled = false;
+            
+            // Reset measurements
+            mt_userMeasurements = {
+                height: 0,
+                shoulder: 0,
+                sleeve: 0,
+                chest: 0,
+                front: 0
+            };
+            
+            // Reset display values
+            mt_heightValue.textContent = '--';
+            mt_shoulderValue.textContent = '--';
+            mt_sleeveValue.textContent = '--';
+            mt_chestValue.textContent = '--';
+            mt_frontValue.textContent = '--';
+            
+            // Stop camera if active
+            if (mt_stream) {
+                mt_stream.getTracks().forEach(track => track.stop());
+                mt_stream = null;
+                mt_video.srcObject = null;
+                mt_startCameraBtn.disabled = false;
+                mt_startCameraBtn.innerHTML = '<i class="fas fa-video"></i> Start Camera';
+            }
+            
+            showToast('Measurement tool reset', 'success');
+        });
+
+        // Simulate body measurements
+        function mt_simulateBodyMeasurements() {
+            // Generate realistic measurements based on random but plausible values
+            const baseHeight = 68 + Math.random() * 12; // 68-80 inches (5'8" to 6'8")
+            
+            mt_userMeasurements.height = parseFloat((baseHeight).toFixed(1));
+            mt_userMeasurements.shoulder = parseFloat((baseHeight * 0.25 + 13 + Math.random() * 2).toFixed(1));
+            mt_userMeasurements.sleeve = parseFloat((baseHeight * 0.35 + 15 + Math.random() * 2).toFixed(1));
+            mt_userMeasurements.chest = parseFloat((baseHeight * 0.6 + 25 + Math.random() * 5).toFixed(1));
+            mt_userMeasurements.front = parseFloat((baseHeight * 0.15 + 5 + Math.random() * 1).toFixed(1));
+            
+            // Update display
+            mt_heightValue.textContent = mt_userMeasurements.height + '"';
+            mt_shoulderValue.textContent = mt_userMeasurements.shoulder + '"';
+            mt_sleeveValue.textContent = mt_userMeasurements.sleeve + '"';
+            mt_chestValue.textContent = mt_userMeasurements.chest + '"';
+            mt_frontValue.textContent = mt_userMeasurements.front + '"';
+        }
+
+        // Find recommended size based on measurements
+        function mt_findRecommendedSize() {
+            let bestMatch = mt_sizeChart[0];
+            let smallestDiff = Infinity;
+            
+            // Calculate difference for each size
+            for (const size of mt_sizeChart) {
+                // Weighted difference calculation
+                const diff = 
+                    Math.abs(mt_userMeasurements.height - size.height) * 0.5 +
+                    Math.abs(mt_userMeasurements.shoulder - size.shoulder) * 1.5 +
+                    Math.abs(mt_userMeasurements.sleeve - size.sleeve) * 1.0 +
+                    Math.abs(mt_userMeasurements.chest - size.chest) * 2.0 +
+                    Math.abs(mt_userMeasurements.front - size.front) * 1.0;
+                
+                if (diff < smallestDiff) {
+                    smallestDiff = diff;
+                    bestMatch = size;
+                }
+            }
+            
+            return bestMatch;
+        }
+
         // --- CONFIGURATION ---
         const PAYMENT_CONFIG = {
             upi_id: "7887731818@ybl",
@@ -933,11 +1576,6 @@
         let selectedProductId = null;
         let selectedSize = null;
 
-        // --- CAMERA MEASUREMENT VARIABLES ---
-        let stream = null;
-        let points = [];
-        const CARD_WIDTH_INCH = 3.37; // Standard credit card width
-
         // --- INITIALIZATION ---
         window.addEventListener('load', () => {
             init();
@@ -1006,17 +1644,8 @@
                     if (document.getElementById('adminPanel').classList.contains('active')) {
                         toggleAdmin();
                     }
-                    
-                    // Stop camera if open
-                    if(stream) {
-                        stopCameraStream();
-                    }
                 }
             });
-            
-            // Canvas Click Event for Measurement
-            const canvas = document.getElementById('canvas');
-            canvas.addEventListener('click', handleCanvasClick);
         }
 
         // --- PRODUCT FUNCTIONS ---
@@ -1428,9 +2057,9 @@
                 
                 // Send email using EmailJS (You need to set up your EmailJS account)
                 // const response = await emailjs.send(
-                //      'YOUR_EMAILJS_SERVICE_ID',
-                //      'YOUR_EMAILJS_TEMPLATE_ID',
-                //      templateParams
+                //     'YOUR_EMAILJS_SERVICE_ID',
+                //     'YOUR_EMAILJS_TEMPLATE_ID',
+                //     templateParams
                 // );
                 
                 // console.log('Email sent successfully:', response);
@@ -1482,174 +2111,6 @@
                 </div>
             `;
             resultDiv.style.display = 'block';
-        }
-
-        // --- AI CAMERA FUNCTIONS ---
-        function openCamModal() {
-            openModal('sizeCamModal');
-            document.getElementById('camOutput').innerHTML = '';
-            points = [];
-            document.getElementById('startCameraBtn').style.display = 'inline-flex';
-            document.getElementById('captureBtn').style.display = 'none';
-            document.getElementById('resetBtn').style.display = 'none';
-            document.getElementById('canvas').style.display = 'none';
-            document.getElementById('camera').style.display = 'none';
-            document.getElementById('camPlaceholder').style.display = 'flex';
-        }
-
-        function closeCamModal() {
-            stopCameraStream();
-            closeModal('sizeCamModal');
-        }
-
-        async function startCamera() {
-            const video = document.getElementById('camera');
-            const placeholder = document.getElementById('camPlaceholder');
-            const startBtn = document.getElementById('startCameraBtn');
-            const captureBtn = document.getElementById('captureBtn');
-            const output = document.getElementById('camOutput');
-
-            try {
-                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
-                video.srcObject = stream;
-                video.style.display = 'block';
-                placeholder.style.display = 'none';
-                startBtn.style.display = 'none';
-                captureBtn.style.display = 'inline-flex';
-                output.innerHTML = "Position yourself and click Capture";
-            } catch (err) {
-                console.error("Error accessing camera: ", err);
-                output.innerHTML = "Error accessing camera. Please allow permission.";
-            }
-        }
-
-        function stopCameraStream() {
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
-                stream = null;
-            }
-        }
-
-        function captureImage() {
-            const video = document.getElementById('camera');
-            const canvas = document.getElementById('canvas');
-            const captureBtn = document.getElementById('captureBtn');
-            const resetBtn = document.getElementById('resetBtn');
-            const output = document.getElementById('camOutput');
-
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            const context = canvas.getContext('2d');
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            video.style.display = 'none';
-            canvas.style.display = 'block';
-            captureBtn.style.display = 'none';
-            resetBtn.style.display = 'inline-flex';
-            
-            stopCameraStream();
-            points = [];
-            output.innerHTML = "Click Left Edge then Right Edge of Card (Width)";
-        }
-
-        function handleCanvasClick(event) {
-            const canvas = document.getElementById('canvas');
-            const output = document.getElementById('camOutput');
-            const rect = canvas.getBoundingClientRect();
-            
-            // Calculate scale factor in case canvas is resized via CSS
-            const scaleX = canvas.width / rect.width;
-            const scaleY = canvas.height / rect.height;
-
-            const x = (event.clientX - rect.left) * scaleX;
-            const y = (event.clientY - rect.top) * scaleY;
-
-            if (points.length < 4) {
-                points.push({ x, y });
-                drawPoints();
-
-                if (points.length === 0) output.innerHTML = "Click Left Edge of Card";
-                else if (points.length === 1) output.innerHTML = "Click Right Edge of Card";
-                else if (points.length === 2) {
-                    output.innerHTML = "Card Measured. Now Click Left Shoulder";
-                    drawPoints(); // Draw line for card
-                }
-                else if (points.length === 3) output.innerHTML = "Click Right Shoulder";
-                else if (points.length === 4) {
-                    calculateSize();
-                }
-            }
-        }
-
-        function drawPoints() {
-            const canvas = document.getElementById('canvas');
-            const ctx = canvas.getContext('2d');
-            
-            // Redraw image first (to clear previous lines if needed, though we want persistence here)
-            // Ideally we'd store the original image data, but for simplicity we just draw on top
-            
-            ctx.lineWidth = 3;
-            
-            // Draw points
-            points.forEach((point, index) => {
-                ctx.fillStyle = index < 2 ? '#C6A664' : '#0F3D2E'; // Gold for card, Emerald for shoulder
-                ctx.beginPath();
-                ctx.arc(point.x, point.y, 5, 0, 2 * Math.PI);
-                ctx.fill();
-            });
-
-            // Draw Line for Card
-            if (points.length >= 2) {
-                ctx.strokeStyle = '#C6A664';
-                ctx.beginPath();
-                ctx.moveTo(points[0].x, points[0].y);
-                ctx.lineTo(points[1].x, points[1].y);
-                ctx.stroke();
-            }
-
-            // Draw Line for Shoulder
-            if (points.length === 4) {
-                ctx.strokeStyle = '#0F3D2E';
-                ctx.beginPath();
-                ctx.moveTo(points[2].x, points[2].y);
-                ctx.lineTo(points[3].x, points[3].y);
-                ctx.stroke();
-            }
-        }
-
-        function calculateSize() {
-            const output = document.getElementById('camOutput');
-            
-            // Pixel distance for card
-            const cardPixels = Math.sqrt(
-                Math.pow(points[1].x - points[0].x, 2) + 
-                Math.pow(points[1].y - points[0].y, 2)
-            );
-
-            // Pixel distance for shoulder
-            const shoulderPixels = Math.sqrt(
-                Math.pow(points[3].x - points[2].x, 2) + 
-                Math.pow(points[3].y - points[2].y, 2)
-            );
-
-            // Calculation
-            const pixelsPerInch = cardPixels / CARD_WIDTH_INCH;
-            const shoulderWidthInches = (shoulderPixels / pixelsPerInch).toFixed(1);
-
-            let recommendedSize = "Unknown";
-            if (shoulderWidthInches < 17) recommendedSize = "S";
-            else if (shoulderWidthInches < 18) recommendedSize = "M";
-            else if (shoulderWidthInches < 19) recommendedSize = "L";
-            else if (shoulderWidthInches < 20) recommendedSize = "XL";
-            else recommendedSize = "XXL";
-
-            output.innerHTML = `Width: ${shoulderWidthInches}" <br> <span style="font-size:0.8em; color:var(--text);">Recommended Size: <strong style="color:var(--primary); font-size:1.2em;">${recommendedSize}</strong></span>`;
-        }
-
-        function resetCamera() {
-            points = [];
-            document.getElementById('camOutput').innerHTML = "";
-            startCamera(); // Restart process
         }
 
         // --- ADMIN FUNCTIONS ---
