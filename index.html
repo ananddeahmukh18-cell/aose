@@ -3,178 +3,565 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AOSE | Timeless Elegance</title>
-    <meta name="description" content="AOSE - Premium Stitch & Wear Clothing">
+    <meta name="description" content="AOSE - Premium Stitch & Wear Clothing. Timeless Elegance, Modern Legacy.">
+    <meta name="keywords" content="AOSE, clothing, fashion, stitch and wear, premium, India">
+    <title>AOSE | Timeless Elegance, Modern Legacy</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Preload critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" defer></script>
 
     <style>
-        /* --- 1. CORE VARIABLES --- */
+        /* Critical CSS */
         :root {
-            --primary: #000000;
-            --primary-light: #1a1a1a;
-            --gold: #C6A664;
-            --gold-dim: #8a7038;
-            --white: #ffffff;
-            --text: #ffffff;
-            --text-muted: #aaaaaa;
-            --font-main: 'Montserrat', sans-serif;
-            --font-serif: 'Playfair Display', serif;
-            --transition: all 0.3s ease;
-            --shadow: 0 10px 30px rgba(0,0,0,0.5);
+            --primary: #0F3D2E; --primary-light: #1a5c45; --primary-dark: #051F16;
+            --gold: #C6A664; --gold-light: #E5D5A8;
+            --bg: #FAFAF9; --bg-light: #fffcf7; --bg-cream: #f8f4ec;
+            --white: #FFFFFF; --black: #1A1A1A; --text: #1A1A1A; --gray: #777777;
+            --border: #E5E5E5; --light-gray: #f0f0f0;
+            --success: #28a745; --error: #dc3545; --warning: #ffc107; --info: #17a2b8;
+            --font-main: 'Montserrat', sans-serif; --font-serif: 'Playfair Display', serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; }
-        body { font-family: var(--font-main); background: #050505; color: var(--text); line-height: 1.6; }
-
-        /* Animations */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        /* --- 2. HEADER --- */
-        .header { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 0.8rem 0; background: rgba(5,5,5,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(198, 166, 100, 0.2); transition: 0.3s; }
-        .header.scrolled { padding: 0.5rem 0; box-shadow: var(--shadow); }
-        .nav-content { max-width: 1400px; margin: 0 auto; padding: 0 5%; display: flex; justify-content: space-between; align-items: center; }
+        body { font-family: var(--font-main); background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; min-height: 100vh; }
         
-        .brand-logo { height: 50px; width: auto; object-fit: contain; }
+        /* Loading Screen */
+        #loadingScreen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-cream);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 9999; transition: opacity 0.3s ease;
+        }
+        .loading-spinner {
+            width: 50px; height: 50px; border: 3px solid rgba(15, 61, 46, 0.1);
+            border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Header */
+        .header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            padding: 1.2rem 0; background: rgba(250, 250, 249, 0.95); backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05); transition: 0.3s;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
+        .nav-content { display: flex; justify-content: space-between; align-items: center; }
+        .brand-logo { height: 45px; width: auto; object-fit: contain; transition: all 0.3s ease; }
+        .brand { display: flex; align-items: center; text-decoration: none; }
+        .header.scrolled .brand-logo { height: 35px; }
+        
         .menu-desktop { display: flex; gap: 2rem; }
-        .menu-link { color: var(--text); text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
+        .menu-link { text-decoration: none; color: var(--text); font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; font-weight: 500; position: relative; }
         .menu-link:hover { color: var(--gold); }
         
-        .nav-icons button { font-size: 1.2rem; color: var(--gold); background: none; border: none; cursor: pointer; position: relative; margin-left: 1rem; }
-        .cart-badge { position: absolute; top: -5px; right: -8px; background: var(--white); color: var(--primary); font-size: 0.6rem; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-
-        /* --- 3. HERO --- */
-        .hero { height: 85vh; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; color: white; overflow: hidden; }
-        .hero-bg { position: absolute; inset: 0; opacity: 0.4; background: url('https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?q=80&w=2187') center/cover; }
-        .hero-content { position: relative; z-index: 2; animation: fadeIn 1s ease-out; }
-        .hero h1 { font-family: var(--font-serif); font-size: clamp(2.5rem, 8vw, 5rem); line-height: 1.1; margin-bottom: 1.5rem; color: var(--white); text-shadow: 0 0 20px rgba(0,0,0,0.8); }
-        .btn-luxury { padding: 15px 40px; border: 1px solid var(--gold); color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; background: transparent; transition: 0.3s; cursor: pointer; }
-        .btn-luxury:hover { background: var(--gold); color: var(--primary); }
-
-        /* --- 4. PRECISION MEASUREMENT TOOL --- */
-        .measurement-section { padding: 5rem 0; background: #0a0a0a; border-top: 1px solid #222; }
-        .mt-container { max-width: 900px; margin: 0 auto; background: #111; border: 1px solid #333; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); }
-        .mt-header { background: #000; padding: 20px; text-align: center; border-bottom: 1px solid var(--gold-dim); }
-        .mt-body { padding: 2rem; }
-        
-        .camera-wrapper { position: relative; width: 100%; height: 500px; background: #000; margin: 20px 0; display: flex; align-items: center; justify-content: center; border: 1px solid #333; overflow: hidden; }
-        #mt-video, #mt-canvas, #captured-image { position: absolute; width: 100%; height: 100%; object-fit: contain; }
-        #mt-canvas { z-index: 10; cursor: crosshair; }
-        #captured-image { display: none; }
-        
-        .instruction-box { background: #1a1a1a; padding: 15px; border-radius: 8px; border-left: 4px solid var(--gold); color: #ddd; margin-bottom: 20px; font-size: 0.9rem; text-align: center; }
-        
-        .mt-controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-        .btn-tool { padding: 10px 20px; border-radius: 5px; font-weight: 600; cursor: pointer; border: 1px solid var(--gold); background: transparent; color: var(--gold); display: flex; align-items: center; gap: 8px; transition: 0.2s; }
-        .btn-tool:hover { background: var(--gold); color: var(--primary); }
-        .btn-tool.disabled { opacity: 0.5; pointer-events: none; border-color: #555; color: #555; }
-
-        .result-overlay { 
-            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); 
-            background: rgba(198, 166, 100, 0.9); color: black; 
-            padding: 10px 20px; border-radius: 50px; font-weight: bold; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5); z-index: 20; display: none;
+        .nav-icons { display: flex; gap: 1.2rem; align-items: center; color: var(--primary); }
+        .icon-btn { font-size: 1.2rem; position: relative; color: var(--primary); }
+        .cart-badge { 
+            position: absolute; top: -5px; right: -8px; background: var(--gold); color: white;
+            font-size: 0.6rem; width: 16px; height: 16px; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center;
         }
-
-        /* --- 5. PRODUCTS GRID --- */
-        .section-title { text-align: center; margin-bottom: 3rem; }
-        .section-title h2 { font-family: var(--font-serif); font-size: 2.5rem; color: var(--gold); }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; padding: 0 5%; max-width: 1400px; margin: 0 auto; }
-        .product-card { background: #111; border: 1px solid #222; transition: 0.3s; position: relative; }
-        .product-card:hover { transform: translateY(-5px); border-color: var(--gold); }
-        .product-image { height: 350px; overflow: hidden; background: #151515; position: relative; }
-        .product-image img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; filter: brightness(0.9); }
-        .product-card:hover img { transform: scale(1.05); filter: brightness(1); }
-        .badge { position: absolute; top: 10px; left: 10px; background: var(--white); color: var(--primary); padding: 4px 10px; font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; }
         
-        .product-details { padding: 20px; text-align: center; }
-        .product-name { font-family: var(--font-serif); font-size: 1.1rem; color: var(--white); margin-bottom: 5px; }
-        .product-price { color: var(--gold); font-weight: 600; margin-bottom: 15px; }
-        .size-opts { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; }
-        .size-pill { width: 35px; height: 35px; border: 1px solid #333; color: #888; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; cursor: pointer; transition: 0.2s; }
-        .size-pill:hover, .size-pill.active { border-color: var(--gold); color: var(--gold); }
-        .btn-add { width: 100%; padding: 12px; background: var(--gold); color: var(--primary); border: none; font-weight: 700; text-transform: uppercase; cursor: pointer; letter-spacing: 1px; }
-
-        /* --- 6. CART & CHECKOUT --- */
-        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; opacity: 0; visibility: hidden; transition: 0.3s; }
-        .overlay.active { opacity: 1; visibility: visible; }
-        .sidebar { position: fixed; top: 0; right: -400px; width: 400px; height: 100vh; background: #000; border-left: 1px solid #333; z-index: 2100; transition: 0.4s; display: flex; flex-direction: column; }
-        .sidebar.active { right: 0; }
-        .cart-items { flex: 1; overflow-y: auto; padding: 20px; }
-        .cart-item { display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 15px; }
-        .cart-item img { width: 60px; height: 80px; object-fit: cover; }
+        /* Hero */
+        .hero {
+            height: 90vh; position: relative; display: flex; align-items: center; justify-content: center;
+            text-align: center; color: var(--white); background: #000; margin-top: 0;
+        }
+        .hero-bg {
+            position: absolute; inset: 0; opacity: 0.6;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.3)), 
+                        url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=500') center/cover;
+        }
+        .hero-content { position: relative; z-index: 2; }
+        .hero h1 { font-size: clamp(2.5rem, 6vw, 5rem); margin-bottom: 1rem; color: white; line-height: 1.1; }
+        .btn-luxury {
+            padding: 1rem 3rem; border: 1px solid var(--white); color: var(--white);
+            font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase;
+            position: relative; overflow: hidden; z-index: 1; background: transparent;
+            transition: all 0.4s;
+        }
+        .btn-luxury:hover { color: var(--primary); background: var(--white); }
         
-        .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); background: #151515; border: 1px solid #333; padding: 30px; width: 90%; max-width: 450px; z-index: 2100; opacity: 0; visibility: hidden; transition: 0.3s; box-shadow: 0 0 50px rgba(0,0,0,0.8); }
-        .modal.active { transform: translate(-50%, -50%) scale(1); opacity: 1; visibility: visible; }
-        .modal-input { width: 100%; padding: 12px; background: #222; border: 1px solid #444; color: white; margin-bottom: 10px; font-family: inherit; border-radius: 5px; }
-
-        /* Payment Buttons */
-        .pay-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #333; border-radius: 8px; background: white; cursor: pointer; transition: 0.2s; font-weight: 700; color: #333; text-decoration: none; }
-        .pay-btn:hover { transform: translateY(-2px); }
-        .pay-gpay { border-color: #4285F4; color: #4285F4; }
-        .pay-phonepe { border-color: #5f259f; color: #5f259f; }
-        .pay-paytm { border-color: #00b9f5; color: #00b9f5; }
-        .pay-icon { width: 24px; height: 24px; }
-
-        /* --- 7. CHATBOT --- */
-        .chatbot-fab { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 24px; cursor: pointer; box-shadow: 0 5px 20px rgba(198, 166, 100, 0.4); z-index: 1500; animation: pulse 3s infinite; }
-        .chatbot-container { position: fixed; bottom: 90px; right: 20px; width: 350px; height: 500px; background: #111; border: 1px solid #333; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); z-index: 1500; display: none; flex-direction: column; overflow: hidden; }
-        .chatbot-container.active { display: flex; }
-        .chat-body { flex: 1; padding: 15px; overflow-y: auto; background: #111; display: flex; flex-direction: column; gap: 10px; }
-        .chat-msg { max-width: 85%; padding: 10px; border-radius: 8px; font-size: 0.9rem; line-height: 1.4; }
-        .msg-bot { background: #222; color: #ddd; align-self: flex-start; }
-        .msg-user { background: var(--gold-dim); color: white; align-self: flex-end; }
-        .chat-input-area { padding: 10px; border-top: 1px solid #333; display: flex; gap: 5px; background: #000; }
-        .chat-input { flex: 1; padding: 10px; background: #222; border: 1px solid #444; color: white; border-radius: 4px; }
-
-        /* --- 8. FOOTER --- */
-        .footer { background: #000; padding: 4rem 5% 2rem; border-top: 1px solid #222; margin-top: 5rem; color: #888; font-size: 0.9rem; }
-        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; max-width: 1400px; margin: 0 auto; }
-        .footer a { color: #888; text-decoration: none; display: block; margin-bottom: 0.5rem; transition: 0.3s; }
-        .footer a:hover { color: var(--gold); }
-        .social-links { margin-top: 15px; font-size: 1.5rem; display: flex; gap: 15px; }
-        .social-links a { color: var(--gold); }
-
-        /* Mobile Nav */
-        .mobile-nav { display: none; position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #333; padding: 10px; z-index: 999; justify-content: space-around; }
-        .mobile-link { display: flex; flex-direction: column; align-items: center; color: #888; text-decoration: none; font-size: 0.7rem; }
+        /* Measurement Tool Styles */
+        .measurement-section {
+            background: linear-gradient(135deg, #0F3D2E 0%, #1a5c45 100%);
+            padding: 4rem 0;
+        }
         
+        .measurement-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+        
+        .measurement-header {
+            background: var(--primary-dark);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .measurement-header h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--gold);
+        }
+        
+        .measurement-header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+        
+        .measurement-steps {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .step-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .step-circle.active {
+            background: var(--gold);
+            transform: scale(1.1);
+        }
+        
+        .step-circle.completed {
+            background: var(--success);
+        }
+        
+        .step-text {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+        }
+        
+        .measurement-content {
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            gap: 2rem;
+        }
+        
+        .measurement-panel {
+            background: var(--bg-light);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+        
+        .measurement-panel h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .camera-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+        
+        #measurement-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1); /* Mirror effect for user-friendly view */
+        }
+        
+        #measurement-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+        
+        .camera-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .measurement-guide {
+            width: 200px;
+            height: 300px;
+            border: 2px dashed rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            position: relative;
+        }
+        
+        .measurement-controls {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+        
+        .measurement-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: var(--light-gray);
+            color: var(--text);
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+        }
+        
+        .measurement-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        .reference-selector {
+            background: #fff8e1;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 5px solid var(--warning);
+        }
+        
+        .reference-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        
+        .reference-option {
+            padding: 0.75rem 1.5rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .reference-option:hover {
+            border-color: var(--primary);
+        }
+        
+        .reference-option.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .measurement-results {
+            display: none;
+            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 1.5rem;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .result-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .result-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+        
+        .result-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .size-recommendation {
+            background: linear-gradient(135deg, #20c997, #0ca678);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        
+        .size-badge {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin: 1rem 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .instructions {
+            background: #e7f5ff;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 5px solid var(--info);
+        }
+        
+        .instructions ol {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .instructions li {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+        
+        .highlight {
+            background: var(--gold-light);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        /* Responsive */
         @media (max-width: 768px) {
-            .menu-desktop { display: none; }
-            .mobile-nav { display: flex; }
-            .hero h1 { font-size: 2.5rem; }
-            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 1rem; }
-            .sidebar { width: 85%; }
-            .camera-wrapper { height: 300px; }
+            .measurement-content {
+                padding: 1rem;
+            }
+            
+            .camera-container {
+                height: 300px;
+            }
+            
+            .measurement-controls {
+                flex-direction: column;
+            }
+            
+            .measurement-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .reference-options {
+                flex-direction: column;
+            }
+            
+            .reference-option {
+                width: 100%;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
         }
-
-        /* Loading */
-        #loadingScreen { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center; color: var(--gold); font-family: var(--font-serif); font-size: 2rem; letter-spacing: 3px; }
+        
+        /* Rest of your existing styles... */
+        .section-padding { padding: 6rem 0; }
+        .text-center { text-align: center; }
+        .fade-up { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+        
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .product-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        /* Cart Styles */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            z-index: 2100;
+            transition: right 0.3s cubic-bezier(0.7,0,0.3,1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+        }
+        
+        .cart-sidebar.open {
+            right: 0;
+        }
+        
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2099;
+            display: none;
+        }
+        
+        .cart-overlay.active {
+            display: block;
+        }
+        
+        /* Toast Notification */
+        .toast-notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            z-index: 2000;
+            transform: translateX(150%);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 350px;
+        }
+        
+        .toast-notification.show {
+            transform: translateX(0);
+        }
+        
+        .toast-notification.error {
+            background: var(--error);
+        }
     </style>
 </head>
 <body>
 
-    <div id="loadingScreen">A O S E</div>
+    <!-- Loading Screen -->
+    <div id="loadingScreen">
+        <div class="loading-spinner"></div>
+        <p style="color: var(--primary); font-weight: 600;">Loading AOSE...</p>
+    </div>
 
-    <header class="header" id="header">
-        <div class="nav-content">
+    <!-- Toast Notification -->
+    <div class="toast-notification" id="toastNotification">
+        <i class="fas fa-check-circle toast-icon"></i>
+        <span id="toastMessage">Product added to cart!</span>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="mainHeader">
+        <div class="container nav-content">
             <a href="#" class="brand">
-                <img src="aose black golden logo.jpg" alt="AOSE" class="brand-logo" 
-                     onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAgNDAiPjx0ZXh0IHg9IjAiIHk9IjMwIiBmb250LWZhbWlseT0ic2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LXNpemU9IjI4IiBmaWxsPSIjQzZBNjY0Ij5BT1NFPC90ZXh0Pjwvc3ZnPg=='">
+                <img src="aose ad.png" alt="AOSE Logo" class="brand-logo">
             </a>
             <nav class="menu-desktop">
                 <a href="#hero" class="menu-link">Home</a>
                 <a href="#collection" class="menu-link">Collection</a>
-                <a href="#sizeGuide" class="menu-link">Size Chart</a>
-                <a href="#ai-measure" class="menu-link">AI Tailor</a>
+                <a href="#sizeGuide" class="menu-link">Size Guide</a>
+                <a href="#measurementTool" class="menu-link">Measure</a>
+                <a href="#contact" class="menu-link">Contact</a>
             </nav>
             <div class="nav-icons">
-                <button onclick="toggleCart()">
+                <button class="icon-btn" onclick="openModal('trackModal')"><i class="fas fa-truck"></i></button>
+                <button class="icon-btn admin-trigger" onclick="toggleAdmin()" style="display:none;"><i class="fas fa-cog"></i></button>
+                <button class="icon-btn" onclick="toggleCart()">
                     <i class="fas fa-shopping-bag"></i>
                     <span class="cart-badge" id="cartCount">0</span>
                 </button>
@@ -182,426 +569,891 @@
         </div>
     </header>
 
+    <!-- Hero Section -->
     <section class="hero" id="hero">
         <div class="hero-bg"></div>
-        <div class="hero-content reveal active">
-            <p style="letter-spacing: 3px; margin-bottom: 10px; color: var(--gold);">PREMIUM STITCH & WEAR</p>
+        <div class="hero-content fade-up">
+            <p style="letter-spacing:3px; text-transform:uppercase; margin-bottom:10px;">Premium Stitch & Wear</p>
             <h1>TIMELESS<br>ELEGANCE</h1>
-            <button class="btn-luxury" onclick="document.getElementById('collection').scrollIntoView()">Shop Collection</button>
+            <button class="btn-luxury" onclick="scrollToSection('collection')">Explore Collection</button>
         </div>
     </section>
 
-    <section class="measurement-section" id="ai-measure">
-        <div class="mt-container reveal">
-            <div class="mt-header">
-                <h3 style="color:var(--gold); margin:0;">AI Precision Tailor</h3>
-                <p style="color:#aaa; font-size:0.9rem;">Accurate measurement using Reference Scaling</p>
+    <!-- Enhanced Measurement Tool -->
+    <section class="measurement-section" id="measurementTool">
+        <div class="measurement-container">
+            <div class="measurement-header">
+                <h2><i class="fas fa-ruler-combined"></i> AI Body Measurement Tool</h2>
+                <p>Get accurate measurements for perfect-fitting stitch & wear clothing</p>
+                
+                <div class="measurement-steps">
+                    <div class="step-indicator">
+                        <div class="step-circle active" id="step1-circle">1</div>
+                        <div class="step-text">Camera Setup</div>
+                    </div>
+                    <div class="step-indicator">
+                        <div class="step-circle" id="step2-circle">2</div>
+                        <div class="step-text">Take Photo</div>
+                    </div>
+                    <div class="step-indicator">
+                        <div class="step-circle" id="step3-circle">3</div>
+                        <div class="step-text">Mark Points</div>
+                    </div>
+                    <div class="step-indicator">
+                        <div class="step-circle" id="step4-circle">4</div>
+                        <div class="step-text">Get Results</div>
+                    </div>
+                </div>
             </div>
-            <div class="mt-body">
-                <div class="instruction-box" id="mt-instructions">
-                    <strong>Step 1:</strong> Place a standard ID Card or Credit Card on your chest.
-                    <br>Click <strong>Start Camera</strong> to begin.
+
+            <div class="measurement-content">
+                <!-- Step 1: Camera Setup -->
+                <div class="measurement-panel" id="step1-panel">
+                    <h3><i class="fas fa-camera"></i> Step 1: Camera Setup</h3>
+                    
+                    <div class="instructions">
+                        <h4><i class="fas fa-info-circle"></i> Important Instructions:</h4>
+                        <ol>
+                            <li>Stand <span class="highlight">6 feet (2 meters)</span> away from the camera</li>
+                            <li>Wear <span class="highlight">form-fitting clothes</span> (t-shirt/tank top)</li>
+                            <li>Stand against a <span class="highlight">plain background</span></li>
+                            <li>Keep your <span class="highlight">arms slightly away</span> from your body</li>
+                            <li>Make sure you're in <span class="highlight">good lighting</span></li>
+                        </ol>
+                    </div>
+                    
+                    <div class="camera-container">
+                        <video id="measurement-video" autoplay playsinline></video>
+                        <canvas id="measurement-canvas"></canvas>
+                        <div class="camera-overlay">
+                            <div class="measurement-guide"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="measurement-controls">
+                        <button class="measurement-btn btn-primary" id="start-camera-btn">
+                            <i class="fas fa-video"></i> Start Camera
+                        </button>
+                        <button class="measurement-btn btn-secondary" id="next-step-btn" onclick="goToStep(2)" disabled>
+                            <i class="fas fa-arrow-right"></i> Continue to Step 2
+                        </button>
+                    </div>
                 </div>
                 
-                <div class="camera-wrapper">
-                    <video id="mt-video" autoplay playsinline></video>
-                    <canvas id="mt-canvas" style="display:none;"></canvas>
-                    <img id="captured-image" alt="Captured" style="display:none;">
-                    <div id="cam-placeholder" style="position:absolute; color:#333;"><i class="fas fa-camera fa-3x"></i></div>
-                    <div class="result-overlay" id="result-overlay">0.0"</div>
+                <!-- Step 2: Take Photo -->
+                <div class="measurement-panel" id="step2-panel" style="display: none;">
+                    <h3><i class="fas fa-camera"></i> Step 2: Take Photo</h3>
+                    
+                    <div class="instructions">
+                        <p><strong>Hold a standard object for scale reference:</strong></p>
+                        <p>Please hold a <span class="highlight">credit card, ID card, or smartphone</span> against your shoulder area. This helps us calculate accurate measurements.</p>
+                    </div>
+                    
+                    <div class="reference-selector">
+                        <p><strong>Select the reference object you're holding:</strong></p>
+                        <div class="reference-options">
+                            <div class="reference-option" data-width="3.375" onclick="selectReference(this, 'credit')">
+                                Credit Card (3.375")
+                            </div>
+                            <div class="reference-option" data-width="3.5" onclick="selectReference(this, 'phone')">
+                                Smartphone (3.5")
+                            </div>
+                            <div class="reference-option" data-width="4.25" onclick="selectReference(this, 'id')">
+                                ID Card (4.25")
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="camera-container">
+                        <video id="measurement-video-2" autoplay playsinline></video>
+                        <canvas id="measurement-canvas-2"></canvas>
+                    </div>
+                    
+                    <div class="measurement-controls">
+                        <button class="measurement-btn btn-secondary" onclick="goToStep(1)">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button class="measurement-btn btn-primary" id="capture-btn" disabled>
+                            <i class="fas fa-camera"></i> Capture Photo
+                        </button>
+                    </div>
                 </div>
-
-                <div class="mt-controls">
-                    <button class="btn-tool" id="btn-start" onclick="startCamera()"><i class="fas fa-camera"></i> Start Camera</button>
-                    <button class="btn-tool" id="btn-capture" onclick="captureImage()" style="display:none;"><i class="fas fa-circle"></i> Capture Photo</button>
-                    <button class="btn-tool" id="btn-retake" onclick="resetTool()" style="display:none;"><i class="fas fa-redo"></i> Retake</button>
-                    <button class="btn-tool" id="btn-save" onclick="saveFit()" style="display:none; border-color:#28a745; color:#28a745;"><i class="fas fa-check"></i> Save Size</button>
+                
+                <!-- Step 3: Mark Points -->
+                <div class="measurement-panel" id="step3-panel" style="display: none;">
+                    <h3><i class="fas fa-mouse-pointer"></i> Step 3: Mark Measurement Points</h3>
+                    
+                    <div class="instructions">
+                        <p><strong>Click on the image in this order:</strong></p>
+                        <ol>
+                            <li>Click on the <span class="highlight">LEFT edge</span> of your reference object</li>
+                            <li>Click on the <span class="highlight">RIGHT edge</span> of your reference object</li>
+                            <li>Click on your <span class="highlight">LEFT shoulder</span> point</li>
+                            <li>Click on your <span class="highlight">RIGHT shoulder</span> point</li>
+                        </ol>
+                        <p id="point-instruction" style="margin-top: 1rem; font-weight: 600; color: var(--primary);">
+                            Click on LEFT edge of reference object
+                        </p>
+                    </div>
+                    
+                    <div class="camera-container">
+                        <canvas id="marking-canvas"></canvas>
+                    </div>
+                    
+                    <div class="measurement-controls">
+                        <button class="measurement-btn btn-secondary" onclick="goToStep(2)">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button class="measurement-btn btn-primary" id="calculate-btn" disabled onclick="calculateMeasurements()">
+                            <i class="fas fa-calculator"></i> Calculate Measurements
+                        </button>
+                        <button class="measurement-btn btn-secondary" onclick="resetMarking()">
+                            <i class="fas fa-redo"></i> Reset Points
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 4: Results -->
+                <div class="measurement-panel" id="step4-panel" style="display: none;">
+                    <h3><i class="fas fa-chart-line"></i> Step 4: Your Measurements</h3>
+                    
+                    <div class="measurement-results" id="results-container">
+                        <div class="results-grid">
+                            <div class="result-item">
+                                <div class="result-label">Shoulder Width</div>
+                                <div class="result-value" id="shoulder-result">--</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label">Chest</div>
+                                <div class="result-value" id="chest-result">--</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label">Sleeve Length</div>
+                                <div class="result-value" id="sleeve-result">--</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label">Front Length</div>
+                                <div class="result-value" id="front-result">--</div>
+                            </div>
+                        </div>
+                        
+                        <div class="size-recommendation">
+                            <h4>Recommended Size</h4>
+                            <div class="size-badge" id="size-recommendation">--</div>
+                            <p>Based on your body measurements</p>
+                        </div>
+                    </div>
+                    
+                    <div class="measurement-controls">
+                        <button class="measurement-btn btn-secondary" onclick="goToStep(3)">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button class="measurement-btn btn-success" onclick="saveMeasurement()">
+                            <i class="fas fa-save"></i> Save Measurements
+                        </button>
+                        <button class="measurement-btn btn-primary" onclick="shareMeasurement()">
+                            <i class="fab fa-whatsapp"></i> Share via WhatsApp
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="chart-section" id="sizeGuide">
-        <div class="section-title">
-            <h2>Official Size Chart</h2>
-            <p>Premium measurements in inches</p>
-        </div>
-        <div class="chart-container">
-            <table class="aose-table">
-                <thead><tr><th>SIZE</th><th>HEIGHT</th><th>SHOULDER</th><th>SLEEVE</th><th>CHEST</th><th>FRONT</th></tr></thead>
-                <tbody id="chartBody"></tbody>
-            </table>
+    <!-- Rest of your existing HTML (Products, Cart, etc.) -->
+    <!-- Products Section -->
+    <section class="section-padding" id="collection">
+        <div class="container">
+            <div class="text-center fade-up" style="margin-bottom: 3rem;">
+                <h2 class="section-title">Premium Collection</h2>
+                <p class="section-subtitle">Handcrafted with precision, designed for the modern individual who values tradition and luxury.</p>
+            </div>
+
+            <div class="filters fade-up">
+                <button class="filter-btn active" onclick="filterProducts('all', this)">All View</button>
+                <button class="filter-btn" onclick="filterProducts('stitch_wear', this)">Stitch & Wear</button>
+                <button class="filter-btn" onclick="filterProducts('shirts', this)">Shirts</button>
+            </div>
+
+            <div class="products-grid" id="productsGrid">
+                <!-- Products loaded by JavaScript -->
+            </div>
         </div>
     </section>
 
-    <section id="collection" style="padding: 4rem 0;">
-        <div class="section-title reveal">
-            <h2>The Collection</h2>
-            <p>Unlimited Luxury.</p>
-        </div>
-        <div class="products-grid" id="grid"></div>
-    </section>
-
-    <div class="chatbot-fab" onclick="toggleChat()"><i class="fas fa-sparkles"></i></div>
-    <div class="chatbot-container" id="chatContainer">
-        <div class="chat-header">
-            <span>AOSE Assistant</span>
-            <i class="fas fa-times" style="margin-left:auto; cursor:pointer;" onclick="toggleChat()"></i>
-        </div>
-        <div class="chat-body" id="chatBody">
-            <div class="chat-msg msg-bot">Hello! I'm AOSE's AI. I can help with sizing, returns, or contact info.</div>
-        </div>
-        <div class="chat-input-area">
-            <input type="text" class="chat-input" id="chatInput" placeholder="Ask anything..." onkeypress="handleChatEnter(event)">
-            <button class="chat-send" onclick="handleUserMessage()"><i class="fas fa-paper-plane"></i></button>
-        </div>
-    </div>
-
-    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
-    <div class="sidebar" id="cartSidebar">
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
-            <h3>YOUR BAG</h3><i class="fas fa-times" style="cursor:pointer;" onclick="toggleCart()"></i>
+            <h3 class="cart-title"><i class="fas fa-shopping-bag"></i> Your Bag</h3>
+            <i class="fas fa-times cart-close" onclick="toggleCart()"></i>
         </div>
-        <div class="cart-items" id="cartItems"></div>
-        <div class="cart-footer">
-            <div style="display:flex; justify-content:space-between; margin-bottom:15px; color:white; font-weight:700;">
-                <span>Total</span><span id="cartTotal">₹0</span>
+        <div class="cart-items" id="cartItems">
+            <div class="cart-empty">
+                <i class="fas fa-shopping-bag"></i>
+                <h3>Your bag is empty</h3>
+                <p>Add some products to get started</p>
             </div>
-            <button class="btn-add" onclick="openCheckoutModal()">PROCEED TO CHECKOUT</button>
         </div>
-    </div>
-
-    <div class="overlay" id="modalOverlay"></div>
-    <div class="modal" id="checkoutModal">
-        <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
-            <h3 style="margin:0; color:var(--gold);">Secure Checkout</h3>
-            <i class="fas fa-times" style="cursor:pointer;" onclick="closeModal()"></i>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span class="total-amount">₹<span id="cartTotal">0</span></span>
+            </div>
+            <button class="checkout-btn" id="checkoutBtn" onclick="openCheckout()" disabled>
+                <i class="fas fa-credit-card"></i> Proceed to Checkout
+            </button>
         </div>
-        
-        <input type="text" id="coName" class="modal-input" placeholder="Full Name">
-        <input type="tel" id="coPhone" class="modal-input" placeholder="WhatsApp Number">
-        <textarea id="coAddress" class="modal-input" rows="2" placeholder="Shipping Address"></textarea>
-        
-        <div id="attachedMeasurement" style="display:none; background:#0f5132; color:#d1e7dd; padding:10px; border-radius:5px; margin-bottom:15px; font-size:0.9rem;">
-            <i class="fas fa-ruler-combined"></i> Custom Fit Profile Attached
-        </div>
-
-        <p style="color:#aaa; font-size:0.8rem; margin:10px 0 5px;">PAYMENT METHOD (UPI DEEP LINK)</p>
-        
-        <button class="pay-btn pay-gpay" onclick="payVia('gpay')">
-            <svg class="pay-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-6h2v6zm4 0h-2v-6h2v6z" fill="currentColor"/></svg>
-            Google Pay
-        </button>
-
-        <button class="pay-btn pay-phonepe" onclick="payVia('phonepe')">
-            <svg class="pay-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><text x="5" y="16" font-size="10" font-weight="bold" fill="currentColor">Pe</text></svg>
-            PhonePe
-        </button>
-
-        <button class="pay-btn pay-paytm" onclick="payVia('paytm')">
-            <svg class="pay-icon" viewBox="0 0 24 24"><path d="M2.5 7.5h19v9h-19z" fill="none" stroke="currentColor" stroke-width="2"/><text x="5" y="15" font-size="8" font-family="Arial" font-weight="bold" fill="currentColor">Paytm</text></svg>
-            Paytm
-        </button>
-
-        <p style="text-align:center; margin:10px 0; color:#666; font-size:0.8rem;">- OR -</p>
-
-        <button class="btn-add" onclick="placeOrder()" style="background:#25D366; color:white;">
-            <i class="fab fa-whatsapp"></i> Confirm & Pay on WhatsApp
-        </button>
     </div>
 
     <footer class="footer" id="contact">
-        <div class="footer-grid">
-            <div>
-                <h4 style="color:var(--gold);">AOSE CLOTHING</h4>
-                <p>Redefining modern luxury. Stitch & Wear.</p>
-                <div class="social-links">
-                    <a href="https://www.instagram.com/official_aose" target="_blank"><i class="fab fa-instagram"></i></a>
-                    <a href="mailto:aoseofficial77@gmail.com"><i class="fas fa-envelope"></i></a>
-                    <a href="https://wa.me/917887731818"><i class="fab fa-whatsapp"></i></a>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>AOSE</h3>
+                    <p style="opacity: 0.8;">Redefining luxury through craftsmanship and modern design philosophy.</p>
+                    <div class="social-links">
+                        <a href="https://wa.me/917887731818" class="social-link" target="_blank">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="mailto:aoseofficial77@gmail.com" class="social-link">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#hero" onclick="scrollToSection('hero')">Home</a></li>
+                        <li><a href="#collection" onclick="scrollToSection('collection')">Collection</a></li>
+                        <li><a href="#measurementTool" onclick="scrollToSection('measurementTool')">Measure</a></li>
+                    </ul>
                 </div>
             </div>
-            <div>
-                <h4>Contact Info</h4>
-                <ul>
-                    <li><i class="fas fa-phone"></i> +91 7887731818</li>
-                    <li><i class="fas fa-envelope"></i> aoseofficial77@gmail.com</li>
-                    <li><i class="fas fa-map-marker-alt"></i> Rashin, Maharashtra</li>
-                </ul>
+            
+            <div class="footer-bottom">
+                <p>© 2024 AOSE Clothing Company. All Rights Reserved.</p>
             </div>
-        </div>
-        <div style="text-align:center; margin-top:3rem; padding-top:2rem; border-top:1px solid #222; font-size:0.8rem;">
-            &copy; 2026 AOSE CLOTHING. All Rights Reserved.
         </div>
     </footer>
 
-    <div class="mobile-nav">
-        <a href="#hero" class="mobile-link"><i class="fas fa-home"></i> Home</a>
-        <a href="#collection" class="mobile-link"><i class="fas fa-layer-group"></i> Shop</a>
-        <a href="#ai-measure" class="mobile-link"><i class="fas fa-camera"></i> Measure</a>
-        <a href="#" onclick="toggleCart()" class="mobile-link"><i class="fas fa-shopping-bag"></i> Cart</a>
-    </div>
-
     <script>
-        /* ================= 1. CONSTANTS & DATA ================= */
-        const UPI_ID = "7887731818@ybl";
-        const MERCHANT_NAME = "AOSE Clothing";
-        
-        const PRODUCTS = [
-            { id: 1, category: "stitch_wear", name: "Signature Stitch & Wear", price: 999, image: "pro.jpg", badge: "Best Seller" },
-            { id: 2, category: "stitch_wear", name: "Classic Stitch & Wear", price: 999, image: "proo10.jpg", badge: "New" },
-            { id: 3, category: "stitch_wear", name: "Premium Stitch & Wear", price: 999, image: "proo11.jpg", badge: "Limited" },
-            { id: 4, category: "stitch_wear", name: "Elegant Stitch & Wear", price: 999, image: "proo12.jpg", badge: "Popular" },
-            { id: 5, category: "stitch_wear", name: "Royal Stitch & Wear", price: 999, image: "pro13.jpg", badge: "Exclusive" },
-            { id: 6, category: "stitch_wear", name: "Modern Stitch & Wear", price: 999, image: "proo14.jpg", badge: "Trending" },
-            { id: 7, category: "stitch_wear", name: "Heritage Stitch & Wear", price: 999, image: "proo15.jpg", badge: "Classic" },
-            { id: 8, category: "stitch_wear", name: "Urban Stitch & Wear", price: 999, image: "proo16.jpg", badge: "Urban" },
-            { id: 9, category: "stitch_wear", name: "Luxury Stitch & Wear", price: 999, image: "pro17.jpg", badge: "Luxury" },
-            { id: 10, category: "stitch_wear", name: "Premium Stitch & Wear", price: 999, image: "proo2.jpg", badge: "Premium" },
-            { id: 11, category: "stitch_wear", name: "Classic Collection", price: 999, image: "pro3.jpg", badge: "Classic" },
-            { id: 12, category: "stitch_wear", name: "Onyx Collection", price: 999, image: "pro4.jpg", badge: "Dark" },
-            { id: 13, category: "stitch_wear", name: "Azure Collection", price: 999, image: "pro5.jpg", badge: "Blue" },
-            { id: 14, category: "stitch_wear", name: "Frost Collection", price: 999, image: "propro.jpg", badge: "White" },
-            { id: 15, category: "stitch_wear", name: "Stealth Collection", price: 999, image: "propro2.jpg", badge: "Black" },
-            { id: 16, category: "stitch_wear", name: "Monarch Collection", price: 999, image: "proo7.jpg", badge: "Royal" },
-            { id: 17, category: "stitch_wear", name: "Ivory Collection", price: 999, image: "proo8.jpg", badge: "Cream" }
-        ];
+        // ============================================
+        // MEASUREMENT TOOL LOGIC
+        // ============================================
 
-        // Specific Data from Image
-        const SIZE_DATA = [
-            { size: 'S', height: 26.5, shoulder: 16, sleeve: 22, chest: 36, front: 10 },
-            { size: 'M', height: 26, shoulder: 16.5, sleeve: 22.5, chest: 38, front: 10.5 },
-            { size: 'L', height: 29, shoulder: 17, sleeve: 23.5, chest: 40, front: 11.5 },
-            { size: 'XL', height: 29.5, shoulder: 18, sleeve: 24, chest: 42, front: 12 },
-            { size: 'XXL', height: 28.5, shoulder: 19, sleeve: 24.5, chest: 44, front: 13 }
-        ];
-
-        let cart = JSON.parse(localStorage.getItem('aose_cart')) || [];
-        let userFitProfile = null;
-
-        /* ================= 2. INIT ================= */
-        window.onload = () => {
-            renderGrid();
-            renderSizeTable();
-            updateCartUI();
+        // Measurement Algorithm Configuration
+        const MeasurementConfig = {
+            // Standard sizes for comparison (in inches)
+            sizeChart: {
+                S: { shoulder: 16.5, chest: 36, sleeve: 22, front: 26 },
+                M: { shoulder: 17.5, chest: 38, sleeve: 23, front: 27 },
+                L: { shoulder: 18.5, chest: 40, sleeve: 24, front: 28 },
+                XL: { shoulder: 19.5, chest: 42, sleeve: 25, front: 29 },
+                XXL: { shoulder: 20.5, chest: 44, sleeve: 26, front: 30 }
+            },
             
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
-            }, {threshold: 0.1});
-            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-            setTimeout(() => document.getElementById('loadingScreen').style.display = 'none', 800);
-            window.onscroll = () => document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+            // Body proportion ratios (based on shoulder width)
+            proportions: {
+                chest: 2.2,    // Chest = shoulder × 2.2
+                sleeve: 1.32,  // Sleeve = shoulder × 1.32
+                front: 1.62    // Front = shoulder × 1.62
+            },
+            
+            // Camera distance constants (6 feet = 72 inches)
+            cameraDistance: 72, // inches
+            focalLength: 50,    // approximate focal length
+            sensorWidth: 36     // sensor width in mm
         };
 
-        /* ================= 3. RENDER ================= */
-        function renderGrid() {
-            const grid = document.getElementById('grid');
-            grid.innerHTML = PRODUCTS.map(p => {
-                const fallback = `this.onerror=null;this.src='https://placehold.co/400x500/1a1a1a/C6A664?text=AOSE';`;
-                return `
-                <div class="product-card reveal">
-                    <div class="product-image">
-                        <img src="${p.image}" alt="${p.name}" onerror="${fallback}">
-                        ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
-                    </div>
-                    <div class="product-details">
-                        <div class="product-name">${p.name}</div>
-                        <div class="product-price">₹${p.price}</div>
-                        <div class="size-opts">
-                            ${['S','M','L','XL','XXL'].map(s => `<div class="size-pill" onclick="selectSize(this)">${s}</div>`).join('')}
-                        </div>
-                        <button class="btn-add" onclick="addToCart(${p.id}, this)">ADD TO BAG</button>
-                    </div>
-                </div>`;
-            }).join('');
-        }
+        // State Management
+        const MeasurementState = {
+            currentStep: 1,
+            videoStream: null,
+            capturedImage: null,
+            referenceWidth: null,
+            referenceType: null,
+            clickedPoints: [],
+            measurements: {},
+            recommendedSize: null,
+            canvasContext: null,
+            markingContext: null
+        };
 
-        function renderSizeTable() {
-            document.getElementById('chartBody').innerHTML = SIZE_DATA.map(r => 
-                `<tr><td>${r.size}</td><td>${r.height}"</td><td>${r.shoulder}"</td><td>${r.sleeve}"</td><td>${r.chest}"</td><td>${r.front}"</td></tr>`
-            ).join('');
-        }
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initMeasurementTool();
+            initEcommerce();
+        });
 
-        function selectSize(el) {
-            el.closest('.size-opts').querySelectorAll('.size-pill').forEach(s => s.classList.remove('active'));
-            el.classList.add('active');
-        }
-
-        /* ================= 4. CART ================= */
-        function addToCart(pid, btn) {
-            const card = btn.closest('.product-card');
-            const activeSize = card.querySelector('.size-pill.active');
-            if(!activeSize) return alert("Select a size");
+        function initMeasurementTool() {
+            // Set up canvas contexts
+            const canvas = document.getElementById('measurement-canvas');
+            const markingCanvas = document.getElementById('marking-canvas');
             
-            const product = PRODUCTS.find(p => p.id === pid);
-            const existing = cart.find(i => i.id === pid && i.size === activeSize.innerText);
+            if (canvas) {
+                MeasurementState.canvasContext = canvas.getContext('2d');
+            }
             
-            if(existing) existing.qty++;
-            else cart.push({...product, size: activeSize.innerText, qty: 1});
+            if (markingCanvas) {
+                MeasurementState.markingContext = markingCanvas.getContext('2d');
+                markingCanvas.addEventListener('click', handleCanvasClick);
+            }
             
-            saveCart(); updateCartUI(); toggleCart();
+            // Set up button event listeners
+            document.getElementById('start-camera-btn').addEventListener('click', startCamera);
+            document.getElementById('capture-btn').addEventListener('click', capturePhoto);
         }
 
-        function updateCartUI() {
-            const list = document.getElementById('cartItems');
-            let total = 0;
-            list.innerHTML = cart.map((item, i) => {
-                total += item.price * item.qty;
-                return `<div class="cart-item">
-                    <img src="${item.image}" onerror="this.src='https://placehold.co/100?text=AOSE'">
-                    <div>
-                        <div style="color:white; font-weight:600;">${item.name}</div>
-                        <div style="color:gray; font-size:0.8rem;">Size: ${item.size} x ${item.qty}</div>
-                        <div style="color:var(--gold);">₹${item.price * item.qty} <i class="fas fa-trash" style="color:red; cursor:pointer; margin-left:10px;" onclick="remItem(${i})"></i></div>
-                    </div>
-                </div>`;
-            }).join('');
-            document.getElementById('cartTotal').innerText = "₹" + total;
-            document.getElementById('cartCount').innerText = cart.reduce((a,b)=>a+b.qty,0);
-        }
-
-        function remItem(i) { cart.splice(i,1); saveCart(); updateCartUI(); }
-        function saveCart() { localStorage.setItem('aose_cart', JSON.stringify(cart)); }
-        function toggleCart() { document.getElementById('cartSidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
-
-        /* ================= 5. AI MEASUREMENT (CANVAS) ================= */
-        let stream = null, points = [], refSize = 3.37; // Credit Card Width
-        const video = document.getElementById('mt-video');
-        const canvas = document.getElementById('mt-canvas');
-        const ctx = canvas.getContext('2d');
-
-        async function startCamera() {
-            try {
-                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-                video.srcObject = stream;
-                document.getElementById('cam-placeholder').style.display='none';
-                document.getElementById('btn-start').style.display='none';
-                document.getElementById('btn-capture').style.display='inline-flex';
-            } catch(e) { alert("Camera denied"); }
-        }
-
-        function captureImage() {
-            canvas.width = video.videoWidth; canvas.height = video.videoHeight;
-            ctx.drawImage(video, 0,0);
-            video.style.display='none'; canvas.style.display='block';
-            stream.getTracks().forEach(t=>t.stop());
-            document.getElementById('btn-capture').style.display='none';
-            document.getElementById('btn-retake').style.display='inline-flex';
-            document.getElementById('mt-instructions').innerHTML = "Tap <strong>Left</strong> then <strong>Right</strong> edge of the CARD.";
+        // Step Navigation
+        function goToStep(step) {
+            // Hide all panels
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`step${i}-panel`).style.display = 'none';
+                document.getElementById(`step${i}-circle`).classList.remove('active', 'completed');
+            }
             
-            canvas.onclick = (e) => {
-                if(points.length >= 4) return;
-                const rect = canvas.getBoundingClientRect();
-                const scaleX = canvas.width / rect.width;
-                const scaleY = canvas.height / rect.height;
-                points.push({ x: (e.clientX - rect.left)*scaleX, y: (e.clientY - rect.top)*scaleY });
-                drawPoints();
-                if(points.length===2) document.getElementById('mt-instructions').innerHTML = "Card Set. Now Tap <strong>Left</strong> then <strong>Right</strong> SHOULDER.";
-                if(points.length===4) calculate();
-            };
-        }
-
-        function drawPoints() {
-            ctx.lineWidth=5; 
-            points.forEach((p,i) => { ctx.fillStyle=i<2?'#C6A664':'#0F3D2E'; ctx.beginPath(); ctx.arc(p.x,p.y,10,0,Math.PI*2); ctx.fill(); });
-            if(points.length>=2) { ctx.strokeStyle='#C6A664'; ctx.beginPath(); ctx.moveTo(points[0].x,points[0].y); ctx.lineTo(points[1].x,points[1].y); ctx.stroke(); }
-            if(points.length===4) { ctx.strokeStyle='#0F3D2E'; ctx.beginPath(); ctx.moveTo(points[2].x,points[2].y); ctx.lineTo(points[3].x,points[3].y); ctx.stroke(); }
-        }
-
-        function calculate() {
-            const dist = (p1,p2) => Math.hypot(p1.x-p2.x, p1.y-p2.y);
-            const refPx = dist(points[0], points[1]);
-            const shoulderPx = dist(points[2], points[3]);
-            const inches = ((shoulderPx/refPx)*refSize).toFixed(1);
+            // Show current panel
+            document.getElementById(`step${step}-panel`).style.display = 'block';
             
-            // Find Closest Size
-            let closest = null, minDiff = Infinity;
-            SIZE_DATA.forEach(row => {
-                const diff = Math.abs(row.shoulder - inches);
-                if(diff < minDiff) { minDiff = diff; closest = row; }
-            });
-            userFitProfile = closest;
+            // Update step indicators
+            for (let i = 1; i <= step; i++) {
+                if (i === step) {
+                    document.getElementById(`step${i}-circle`).classList.add('active');
+                } else {
+                    document.getElementById(`step${i}-circle`).classList.add('completed');
+                }
+            }
             
-            // Draw Text
-            const mx = (points[2].x+points[3].x)/2;
-            const my = (points[2].y+points[3].y)/2 - 50;
-            ctx.font="bold 60px Arial"; ctx.fillStyle="#0F3D2E"; ctx.fillText(inches+'"', mx, my);
-
-            document.getElementById('mt-instructions').innerHTML = `Measured: <strong>${inches}"</strong>. Recommended: <strong>${closest.size}</strong>`;
-            document.getElementById('btn-save').style.display = 'inline-flex';
-        }
-
-        function resetTool() {
-            points=[]; video.style.display='block'; canvas.style.display='none';
-            document.getElementById('btn-retake').style.display='none';
-            document.getElementById('btn-save').style.display='none';
-            startCamera();
-        }
-        function saveFit() { document.getElementById('collection').scrollIntoView(); }
-
-        /* ================= 6. PAYMENT GATEWAYS ================= */
-        function openCheckoutModal() {
-            if(cart.length === 0) return alert("Cart empty");
-            toggleCart();
-            document.getElementById('modalOverlay').classList.add('active');
-            document.getElementById('checkoutModal').classList.add('active');
-            if(userFitProfile) {
-                document.getElementById('attachedMeasurement').style.display='block';
-                document.getElementById('attachedMeasurement').innerHTML = `<i class="fas fa-check"></i> Fit Profile: ${userFitProfile.size} (${userFitProfile.shoulder}")`;
+            MeasurementState.currentStep = step;
+            
+            // Clean up video stream if going back
+            if (step === 1 && MeasurementState.videoStream) {
+                stopCamera();
             }
         }
-        function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); document.getElementById('checkoutModal').classList.remove('active'); }
 
-        function payVia(app) {
-            const name = document.getElementById('coName').value;
-            if(!name) return alert("Enter Full Name first");
-            const total = cart.reduce((s,i)=>s+(i.price*i.qty), 0);
-            const note = `AOSE Order for ${name}`;
-            
-            let scheme = "upi://pay";
-            if(app === 'gpay') scheme = "tez://upi/pay";
-            if(app === 'phonepe') scheme = "phonepe://pay";
-            if(app === 'paytm') scheme = "paytmmp://pay";
-            
-            window.location.href = `${scheme}?pa=${UPI_ID}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${total}&cu=INR&tn=${encodeURIComponent(note)}`;
+        // Camera Functions
+        async function startCamera() {
+            try {
+                const constraints = {
+                    video: {
+                        facingMode: 'user',
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    },
+                    audio: false
+                };
+                
+                MeasurementState.videoStream = await navigator.mediaDevices.getUserMedia(constraints);
+                const videoElement = document.getElementById('measurement-video');
+                videoElement.srcObject = MeasurementState.videoStream;
+                
+                // Enable continue button
+                document.getElementById('next-step-btn').disabled = false;
+                document.getElementById('start-camera-btn').innerHTML = '<i class="fas fa-check"></i> Camera Ready';
+                document.getElementById('start-camera-btn').disabled = true;
+                
+                showToast('Camera started successfully!', 'success');
+            } catch (error) {
+                console.error('Camera error:', error);
+                showToast('Failed to access camera. Please check permissions.', 'error');
+            }
         }
 
-        function placeOrder() {
-            const name = document.getElementById('coName').value;
-            const phone = document.getElementById('coPhone').value;
-            const addr = document.getElementById('coAddress').value;
-            if(!name || !phone || !addr) return alert("Fill all fields");
-            
-            const total = cart.reduce((s,i)=>s+(i.price*i.qty), 0);
-            const items = cart.map(i => `${i.name} (${i.size}) x${i.qty}`).join(', ');
-            
-            let msg = `*NEW AOSE ORDER*\nName: ${name}\nPhone: ${phone}\nAddress: ${addr}\nItems: ${items}\nTotal: ₹${total}`;
-            if(userFitProfile) msg += `\n\n*Fit Profile:* Size ${userFitProfile.size}`;
-            
-            window.open(`https://wa.me/917887731818?text=${encodeURIComponent(msg)}`, '_blank');
-            cart=[]; saveCart(); updateCartUI(); closeModal();
+        function stopCamera() {
+            if (MeasurementState.videoStream) {
+                MeasurementState.videoStream.getTracks().forEach(track => track.stop());
+                MeasurementState.videoStream = null;
+            }
         }
 
-        /* ================= 7. CHATBOT ================= */
-        function toggleChat() { document.getElementById('chatContainer').classList.toggle('active'); }
-        function handleChatEnter(e) { if(e.key==='Enter') handleUserMessage(); }
-        function handleUserMessage() {
-            const val = document.getElementById('chatInput').value;
-            if(!val) return;
-            const chat = document.getElementById('chatBody');
-            chat.innerHTML += `<div class="chat-msg msg-user">${val}</div>`;
-            document.getElementById('chatInput').value = '';
+        // Reference Selection
+        function selectReference(element, type) {
+            // Remove selection from all options
+            document.querySelectorAll('.reference-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Add selection to clicked option
+            element.classList.add('selected');
+            
+            // Store reference data
+            MeasurementState.referenceWidth = parseFloat(element.dataset.width);
+            MeasurementState.referenceType = type;
+            
+            // Enable capture button
+            document.getElementById('capture-btn').disabled = false;
+            
+            showToast(`Reference selected: ${MeasurementState.referenceWidth}"`, 'success');
+        }
+
+        // Photo Capture
+        function capturePhoto() {
+            const video = document.getElementById('measurement-video');
+            const canvas = document.getElementById('measurement-canvas-2');
+            const context = canvas.getContext('2d');
+            
+            // Set canvas dimensions
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            
+            // Draw video frame to canvas
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Store captured image
+            MeasurementState.capturedImage = canvas.toDataURL('image/jpeg');
+            
+            // Switch to marking step
+            goToStep(3);
+            
+            // Initialize marking canvas with the captured image
+            const markingCanvas = document.getElementById('marking-canvas');
+            markingCanvas.width = canvas.width;
+            markingCanvas.height = canvas.height;
+            
+            const img = new Image();
+            img.onload = function() {
+                MeasurementState.markingContext.drawImage(img, 0, 0, markingCanvas.width, markingCanvas.height);
+            };
+            img.src = MeasurementState.capturedImage;
+            
+            // Stop camera
+            stopCamera();
+            
+            showToast('Photo captured! Now mark the measurement points.', 'success');
+        }
+
+        // Point Marking Logic
+        function handleCanvasClick(event) {
+            const canvas = event.target;
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            
+            const x = (event.clientX - rect.left) * scaleX;
+            const y = (event.clientY - rect.top) * scaleY;
+            
+            // Add point to array
+            MeasurementState.clickedPoints.push({ x, y });
+            
+            // Draw the point
+            drawPoint(x, y, MeasurementState.clickedPoints.length);
+            
+            // Update instructions
+            updatePointInstructions();
+            
+            // If we have 4 points, enable calculate button
+            if (MeasurementState.clickedPoints.length === 4) {
+                document.getElementById('calculate-btn').disabled = false;
+                
+                // Draw lines between points
+                drawLines();
+            }
+        }
+
+        function drawPoint(x, y, pointNumber) {
+            const ctx = MeasurementState.markingContext;
+            const colors = ['#FF0000', '#00FF00', '#0000FF', '#FF9900'];
+            const labels = ['Ref Left', 'Ref Right', 'Shoulder Left', 'Shoulder Right'];
+            
+            // Draw point
+            ctx.beginPath();
+            ctx.arc(x, y, 8, 0, Math.PI * 2);
+            ctx.fillStyle = colors[pointNumber - 1];
+            ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = 'white';
+            ctx.stroke();
+            
+            // Draw label
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(pointNumber.toString(), x, y);
+            
+            // Draw label text
+            ctx.fillStyle = colors[pointNumber - 1];
+            ctx.font = 'bold 12px Arial';
+            ctx.fillText(labels[pointNumber - 1], x, y + 20);
+        }
+
+        function drawLines() {
+            const ctx = MeasurementState.markingContext;
+            const points = MeasurementState.clickedPoints;
+            
+            // Draw reference line (red)
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, points[0].y);
+            ctx.lineTo(points[1].x, points[1].y);
+            ctx.strokeStyle = '#FF0000';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // Draw shoulder line (blue)
+            ctx.beginPath();
+            ctx.moveTo(points[2].x, points[2].y);
+            ctx.lineTo(points[3].x, points[3].y);
+            ctx.strokeStyle = '#0000FF';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // Add distance labels
+            const refDistance = calculateDistance(points[0], points[1]);
+            const shoulderDistance = calculateDistance(points[2], points[3]);
+            
+            // Reference distance label
+            const refMidX = (points[0].x + points[1].x) / 2;
+            const refMidY = (points[0].y + points[1].y) / 2;
+            
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            ctx.fillRect(refMidX - 40, refMidY - 15, 80, 30);
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 12px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(`${refDistance.toFixed(0)} px`, refMidX, refMidY);
+            
+            // Shoulder distance label
+            const shoulderMidX = (points[2].x + points[3].x) / 2;
+            const shoulderMidY = (points[2].y + points[3].y) / 2;
+            
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            ctx.fillRect(shoulderMidX - 40, shoulderMidY - 15, 80, 30);
+            ctx.fillStyle = 'white';
+            ctx.fillText(`${shoulderDistance.toFixed(0)} px`, shoulderMidX, shoulderMidY);
+        }
+
+        function updatePointInstructions() {
+            const instructions = [
+                'Click on LEFT edge of reference object',
+                'Click on RIGHT edge of reference object',
+                'Click on LEFT shoulder point',
+                'Click on RIGHT shoulder point',
+                'All points marked! Click "Calculate Measurements"'
+            ];
+            
+            const index = MeasurementState.clickedPoints.length;
+            document.getElementById('point-instruction').textContent = instructions[Math.min(index, 4)];
+        }
+
+        function resetMarking() {
+            MeasurementState.clickedPoints = [];
+            const canvas = document.getElementById('marking-canvas');
+            const ctx = MeasurementState.markingContext;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Redraw image
+            const img = new Image();
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            };
+            img.src = MeasurementState.capturedImage;
+            
+            // Reset instructions and button
+            updatePointInstructions();
+            document.getElementById('calculate-btn').disabled = true;
+            
+            showToast('Points reset. Please mark again.', 'info');
+        }
+
+        // ============================================
+        // MEASUREMENT ALGORITHM
+        // ============================================
+
+        function calculateMeasurements() {
+            if (MeasurementState.clickedPoints.length !== 4 || !MeasurementState.referenceWidth) {
+                showToast('Please mark all 4 points and select a reference object.', 'error');
+                return;
+            }
+            
+            // Calculate pixel distances
+            const refDistance = calculateDistance(
+                MeasurementState.clickedPoints[0],
+                MeasurementState.clickedPoints[1]
+            );
+            
+            const shoulderDistance = calculateDistance(
+                MeasurementState.clickedPoints[2],
+                MeasurementState.clickedPoints[3]
+            );
+            
+            // Calculate pixel-to-inch ratio
+            const pixelsPerInch = refDistance / MeasurementState.referenceWidth;
+            
+            // Calculate actual shoulder width in inches
+            const shoulderWidthInches = shoulderDistance / pixelsPerInch;
+            
+            // Apply correction factor based on camera distance
+            const correctedShoulder = applyDistanceCorrection(shoulderWidthInches);
+            
+            // Calculate other measurements using proportions
+            MeasurementState.measurements = {
+                shoulder: correctedShoulder,
+                chest: correctedShoulder * MeasurementConfig.proportions.chest,
+                sleeve: correctedShoulder * MeasurementConfig.proportions.sleeve,
+                front: correctedShoulder * MeasurementConfig.proportions.front
+            };
+            
+            // Find recommended size
+            MeasurementState.recommendedSize = findRecommendedSize(MeasurementState.measurements);
+            
+            // Display results
+            displayResults();
+            
+            // Move to results step
+            goToStep(4);
+            
+            showToast('Measurements calculated successfully!', 'success');
+        }
+
+        function calculateDistance(point1, point2) {
+            const dx = point2.x - point1.x;
+            const dy = point2.y - point1.y;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        function applyDistanceCorrection(measuredValue) {
+            // Simple distance correction formula
+            // When standing 6 feet away, measurements are approximately 92% accurate
+            // This is a simplified model - in production you'd want more sophisticated correction
+            return measuredValue * 1.08; // Add 8% correction
+        }
+
+        function findRecommendedSize(measurements) {
+            let bestSize = 'M'; // Default size
+            let minDifference = Infinity;
+            
+            // Calculate difference for each size
+            for (const [size, sizeData] of Object.entries(MeasurementConfig.sizeChart)) {
+                const difference = 
+                    Math.abs(measurements.shoulder - sizeData.shoulder) * 2 + // Weight shoulder more
+                    Math.abs(measurements.chest - sizeData.chest) * 1.5 +
+                    Math.abs(measurements.sleeve - sizeData.sleeve) * 1 +
+                    Math.abs(measurements.front - sizeData.front) * 0.5;
+                
+                if (difference < minDifference) {
+                    minDifference = difference;
+                    bestSize = size;
+                }
+            }
+            
+            return bestSize;
+        }
+
+        function displayResults() {
+            // Display measurements
+            document.getElementById('shoulder-result').textContent = 
+                `${MeasurementState.measurements.shoulder.toFixed(1)}"`;
+            document.getElementById('chest-result').textContent = 
+                `${MeasurementState.measurements.chest.toFixed(1)}"`;
+            document.getElementById('sleeve-result').textContent = 
+                `${MeasurementState.measurements.sleeve.toFixed(1)}"`;
+            document.getElementById('front-result').textContent = 
+                `${MeasurementState.measurements.front.toFixed(1)}"`;
+            
+            // Display recommended size
+            document.getElementById('size-recommendation').textContent = 
+                MeasurementState.recommendedSize;
+            
+            // Show results container
+            document.getElementById('results-container').style.display = 'block';
+        }
+
+        // Save and Share Functions
+        function saveMeasurement() {
+            if (!MeasurementState.measurements.shoulder) {
+                showToast('No measurements to save.', 'error');
+                return;
+            }
+            
+            // Save to localStorage
+            const savedMeasurements = JSON.parse(localStorage.getItem('aose_measurements') || '[]');
+            const measurementData = {
+                date: new Date().toISOString(),
+                measurements: MeasurementState.measurements,
+                size: MeasurementState.recommendedSize,
+                reference: MeasurementState.referenceType
+            };
+            
+            savedMeasurements.push(measurementData);
+            localStorage.setItem('aose_measurements', JSON.stringify(savedMeasurements));
+            
+            showToast('Measurements saved successfully!', 'success');
+        }
+
+        function shareMeasurement() {
+            if (!MeasurementState.measurements.shoulder) {
+                showToast('No measurements to share.', 'error');
+                return;
+            }
+            
+            const message = `*AOSE Body Measurement Results*%0A%0A` +
+                           `*Shoulder Width:* ${MeasurementState.measurements.shoulder.toFixed(1)}"%0A` +
+                           `*Chest:* ${MeasurementState.measurements.chest.toFixed(1)}"%0A` +
+                           `*Sleeve Length:* ${MeasurementState.measurements.sleeve.toFixed(1)}"%0A` +
+                           `*Front Length:* ${MeasurementState.measurements.front.toFixed(1)}"%0A%0A` +
+                           `*Recommended Size:* ${MeasurementState.recommendedSize}%0A%0A` +
+                           `_Generated using AOSE Measurement Tool_`;
+            
+            window.open(`https://wa.me/917887731818?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toastNotification');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.className = `toast-notification show ${type === 'error' ? 'error' : ''}`;
+            
             setTimeout(() => {
-                let reply = "I can help with sizes, returns, or contact info.";
-                const lower = val.toLowerCase();
-                if(lower.includes('size')) reply = "Check our Official Size Chart or use the AI Tailor above! S starts at 16\" shoulder.";
-                else if(lower.includes('contact') || lower.includes('phone')) reply = "WhatsApp: +91 7887731818<br>Email: aoseofficial77@gmail.com";
-                else if(lower.includes('return')) reply = "We offer a 48-hour return policy for defects.";
-                chat.innerHTML += `<div class="chat-msg msg-bot">${reply}</div>`;
-                chat.scrollTop = chat.scrollHeight;
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // ============================================
+        // E-COMMERCE FUNCTIONALITY (Simplified)
+        // ============================================
+
+        function initEcommerce() {
+            // Load products
+            renderProducts('all');
+            updateCart();
+            
+            // Setup scroll effect
+            window.addEventListener('scroll', () => {
+                const header = document.getElementById('mainHeader');
+                header.classList.toggle('scrolled', window.scrollY > 50);
+            });
+            
+            // Hide loading screen
+            setTimeout(() => {
+                document.getElementById('loadingScreen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loadingScreen').style.display = 'none';
+                }, 300);
             }, 1000);
         }
+
+        // Basic e-commerce functions (simplified)
+        let cart = JSON.parse(localStorage.getItem('aose_cart')) || [];
+        
+        function renderProducts(filter) {
+            const products = [
+                { id: 1, name: "Premium Stitch & Wear", price: 1499, category: "stitch_wear", image: "https://images.unsplash.com/photo-1594938298603-c8148c47e356?w=400&h=500&fit=crop" },
+                { id: 2, name: "Classic Oxford Shirt", price: 1299, category: "shirts", image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=400&h=500&fit=crop" },
+                { id: 3, name: "Luxury Satin Shirt", price: 1899, category: "shirts", image: "https://images.unsplash.com/photo-1621072118058-2e8f5ca5d022?w=400&h=500&fit=crop" }
+            ];
+            
+            const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
+            const grid = document.getElementById('productsGrid');
+            
+            grid.innerHTML = filtered.map(product => `
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="${product.image}" alt="${product.name}" loading="lazy">
+                        <span class="product-badge">New</span>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        <div class="product-price">₹${product.price}</div>
+                        <button class="add-to-cart-btn" onclick="addToCart(${product.id})">
+                            <i class="fas fa-plus"></i> Add to Bag
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterProducts(cat, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderProducts(cat);
+        }
+
+        function addToCart(productId) {
+            const product = { id: productId, name: `Product ${productId}`, price: 1499, quantity: 1 };
+            cart.push(product);
+            saveCart();
+            updateCart();
+            showToast('Product added to cart!', 'success');
+        }
+
+        function updateCart() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            document.getElementById('cartCount').textContent = totalItems;
+            document.getElementById('cartTotal').textContent = totalPrice;
+            
+            // Update cart items display
+            const cartItems = document.getElementById('cartItems');
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="cart-empty">
+                        <i class="fas fa-shopping-bag"></i>
+                        <h3>Your bag is empty</h3>
+                        <p>Add some products to get started</p>
+                    </div>
+                `;
+                document.getElementById('checkoutBtn').disabled = true;
+            } else {
+                // Simplified cart items display
+                document.getElementById('checkoutBtn').disabled = false;
+            }
+        }
+
+        function saveCart() {
+            localStorage.setItem('aose_cart', JSON.stringify(cart));
+        }
+
+        function toggleCart() {
+            const sidebar = document.getElementById('cartSidebar');
+            const overlay = document.getElementById('cartOverlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+        }
+
+        function openCheckout() {
+            if (cart.length === 0) {
+                showToast('Your cart is empty!', 'error');
+                return;
+            }
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const message = `*New Order Request*%0A%0A` +
+                           `Items: ${cart.map(item => `${item.name} x${item.quantity}`).join(', ')}%0A` +
+                           `Total: ₹${total}%0A%0A` +
+                           `_Please contact customer to complete order_`;
+            
+            window.open(`https://wa.me/917887731818?text=${encodeURIComponent(message)}`, '_blank');
+            showToast('Opening WhatsApp for order confirmation', 'success');
+        }
+
+        // Admin console command
+        window.enableAdmin = () => {
+            document.querySelector('.admin-trigger').style.display = 'inline-block';
+            showToast('Admin button enabled!', 'success');
+        };
     </script>
 </body>
 </html>
