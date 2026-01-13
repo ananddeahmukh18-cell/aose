@@ -3,111 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="AOSE - Premium Stitch & Wear Clothing. Timeless Elegance, Modern Legacy.">
-    <meta name="keywords" content="AOSE, clothing, fashion, stitch and wear, premium, India">
-    <title>AOSE | Timeless Elegance, Modern Legacy</title>
+    <title>AOSE | Timeless Elegance</title>
+    <meta name="description" content="AOSE - Premium Stitch & Wear Clothing">
     
-    <!-- Preload critical resources -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <!-- Defer non-critical scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <style>
-        /* Critical CSS - Inline for immediate render */
+        /* --- 1. CORE VARIABLES --- */
         :root {
-            --primary: #0F3D2E; --primary-light: #1a5c45; --primary-dark: #051F16;
-            --gold: #C6A664; --gold-light: #E5D5A8;
-            --bg: #FAFAF9; --bg-light: #fffcf7; --bg-cream: #f8f4ec;
-            --white: #FFFFFF; --black: #1A1A1A; --text: #1A1A1A; --gray: #777777;
-            --border: #E5E5E5; --light-gray: #f0f0f0;
-            --success: #28a745; --error: #dc3545;
-            --font-main: 'Montserrat', sans-serif; --font-serif: 'Playfair Display', serif;
+            --primary: #000000;
+            --primary-light: #1a1a1a;
+            --gold: #C6A664;
+            --gold-dim: #8a7038;
+            --white: #ffffff;
+            --text: #ffffff;
+            --text-muted: #aaaaaa;
+            --font-main: 'Montserrat', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            --transition: all 0.3s ease;
+            --shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; }
-        body { font-family: var(--font-main); background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; min-height: 100vh; }
+        body { font-family: var(--font-main); background: #050505; color: var(--text); line-height: 1.6; }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* --- 2. HEADER --- */
+        .header { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 0.8rem 0; background: rgba(5,5,5,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(198, 166, 100, 0.2); transition: 0.3s; }
+        .header.scrolled { padding: 0.5rem 0; box-shadow: var(--shadow); }
+        .nav-content { max-width: 1400px; margin: 0 auto; padding: 0 5%; display: flex; justify-content: space-between; align-items: center; }
         
-        /* Loading Screen - Show immediately */
-        #loadingScreen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-cream);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 9999; transition: opacity 0.3s ease;
-        }
-        .loading-spinner {
-            width: 50px; height: 50px; border: 3px solid rgba(15, 61, 46, 0.1);
-            border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .brand-logo { height: 50px; width: auto; object-fit: contain; }
+        .menu-desktop { display: flex; gap: 2rem; }
+        .menu-link { color: var(--text); text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
+        .menu-link:hover { color: var(--gold); }
         
-        /* Header - Critical for initial render */
-        .header {
-            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-            padding: 1.2rem 0; background: rgba(250, 250, 249, 0.95); backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0,0,0,0.05); transition: 0.3s;
-        }
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
-        .nav-content { display: flex; justify-content: space-between; align-items: center; }
-        .brand-logo { height: 45px; width: auto; object-fit: contain; transition: all 0.3s ease; }
-        .brand { display: flex; align-items: center; text-decoration: none; }
+        .nav-icons button { font-size: 1.2rem; color: var(--gold); background: none; border: none; cursor: pointer; position: relative; margin-left: 1rem; }
+        .cart-badge { position: absolute; top: -5px; right: -8px; background: var(--white); color: var(--primary); font-size: 0.6rem; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+
+        /* --- 3. HERO --- */
+        .hero { height: 85vh; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; color: white; overflow: hidden; }
+        .hero-bg { position: absolute; inset: 0; opacity: 0.4; background: url('https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?q=80&w=2187') center/cover; }
+        .hero-content { position: relative; z-index: 2; animation: fadeIn 1s ease-out; }
+        .hero h1 { font-family: var(--font-serif); font-size: clamp(2.5rem, 8vw, 5rem); line-height: 1.1; margin-bottom: 1.5rem; color: var(--white); text-shadow: 0 0 20px rgba(0,0,0,0.8); }
+        .btn-luxury { padding: 15px 40px; border: 1px solid var(--gold); color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; background: transparent; transition: 0.3s; cursor: pointer; }
+        .btn-luxury:hover { background: var(--gold); color: var(--primary); }
+
+        /* --- 4. PRECISION MEASUREMENT TOOL --- */
+        .measurement-section { padding: 5rem 0; background: #0a0a0a; border-top: 1px solid #222; }
+        .mt-container { max-width: 900px; margin: 0 auto; background: #111; border: 1px solid #333; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); }
+        .mt-header { background: #000; padding: 20px; text-align: center; border-bottom: 1px solid var(--gold-dim); }
+        .mt-body { padding: 2rem; }
         
-        /* Hero Section */
-        .hero {
-            height: 90vh; position: relative; display: flex; align-items: center; justify-content: center;
-            text-align: center; color: var(--white); background: #000; margin-top: 0;
-        }
-        .hero-bg {
-            position: absolute; inset: 0; opacity: 0.6;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.3)), 
-                        url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=500') center/cover;
-        }
-        .hero-content { position: relative; z-index: 2; }
-        .hero h1 { font-size: clamp(2.5rem, 6vw, 5rem); margin-bottom: 1rem; color: white; line-height: 1.1; }
+        .camera-wrapper { position: relative; width: 100%; height: 500px; background: #000; margin: 20px 0; display: flex; align-items: center; justify-content: center; border: 1px solid #333; overflow: hidden; }
+        #mt-video, #mt-canvas, #captured-image { position: absolute; width: 100%; height: 100%; object-fit: contain; }
+        #mt-canvas { z-index: 10; cursor: crosshair; }
+        #captured-image { display: none; }
         
-        /* Rest of CSS - Load after critical content */
+        .instruction-box { background: #1a1a1a; padding: 15px; border-radius: 8px; border-left: 4px solid var(--gold); color: #ddd; margin-bottom: 20px; font-size: 0.9rem; text-align: center; }
+        
+        .mt-controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        .btn-tool { padding: 10px 20px; border-radius: 5px; font-weight: 600; cursor: pointer; border: 1px solid var(--gold); background: transparent; color: var(--gold); display: flex; align-items: center; gap: 8px; transition: 0.2s; }
+        .btn-tool:hover { background: var(--gold); color: var(--primary); }
+        .btn-tool.disabled { opacity: 0.5; pointer-events: none; border-color: #555; color: #555; }
+
+        .result-overlay { 
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); 
+            background: rgba(198, 166, 100, 0.9); color: black; 
+            padding: 10px 20px; border-radius: 50px; font-weight: bold; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5); z-index: 20; display: none;
+        }
+
+        /* --- 5. PRODUCTS GRID --- */
+        .section-title { text-align: center; margin-bottom: 3rem; }
+        .section-title h2 { font-family: var(--font-serif); font-size: 2.5rem; color: var(--gold); }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; padding: 0 5%; max-width: 1400px; margin: 0 auto; }
+        .product-card { background: #111; border: 1px solid #222; transition: 0.3s; position: relative; }
+        .product-card:hover { transform: translateY(-5px); border-color: var(--gold); }
+        .product-image { height: 350px; overflow: hidden; background: #151515; position: relative; }
+        .product-image img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; filter: brightness(0.9); }
+        .product-card:hover img { transform: scale(1.05); filter: brightness(1); }
+        .badge { position: absolute; top: 10px; left: 10px; background: var(--white); color: var(--primary); padding: 4px 10px; font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; }
+        
+        .product-details { padding: 20px; text-align: center; }
+        .product-name { font-family: var(--font-serif); font-size: 1.1rem; color: var(--white); margin-bottom: 5px; }
+        .product-price { color: var(--gold); font-weight: 600; margin-bottom: 15px; }
+        .size-opts { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; }
+        .size-pill { width: 35px; height: 35px; border: 1px solid #333; color: #888; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; cursor: pointer; transition: 0.2s; }
+        .size-pill:hover, .size-pill.active { border-color: var(--gold); color: var(--gold); }
+        .btn-add { width: 100%; padding: 12px; background: var(--gold); color: var(--primary); border: none; font-weight: 700; text-transform: uppercase; cursor: pointer; letter-spacing: 1px; }
+
+        /* --- 6. CART & CHECKOUT --- */
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; opacity: 0; visibility: hidden; transition: 0.3s; }
+        .overlay.active { opacity: 1; visibility: visible; }
+        .sidebar { position: fixed; top: 0; right: -400px; width: 400px; height: 100vh; background: #000; border-left: 1px solid #333; z-index: 2100; transition: 0.4s; display: flex; flex-direction: column; }
+        .sidebar.active { right: 0; }
+        .cart-items { flex: 1; overflow-y: auto; padding: 20px; }
+        .cart-item { display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 15px; }
+        .cart-item img { width: 60px; height: 80px; object-fit: cover; }
+        
+        .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); background: #151515; border: 1px solid #333; padding: 30px; width: 90%; max-width: 450px; z-index: 2100; opacity: 0; visibility: hidden; transition: 0.3s; box-shadow: 0 0 50px rgba(0,0,0,0.8); }
+        .modal.active { transform: translate(-50%, -50%) scale(1); opacity: 1; visibility: visible; }
+        .modal-input { width: 100%; padding: 12px; background: #222; border: 1px solid #444; color: white; margin-bottom: 10px; font-family: inherit; border-radius: 5px; }
+
+        /* Payment Buttons */
+        .pay-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #333; border-radius: 8px; background: white; cursor: pointer; transition: 0.2s; font-weight: 700; color: #333; text-decoration: none; }
+        .pay-btn:hover { transform: translateY(-2px); }
+        .pay-gpay { border-color: #4285F4; color: #4285F4; }
+        .pay-phonepe { border-color: #5f259f; color: #5f259f; }
+        .pay-paytm { border-color: #00b9f5; color: #00b9f5; }
+        .pay-icon { width: 24px; height: 24px; }
+
+        /* --- 7. CHATBOT --- */
+        .chatbot-fab { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 24px; cursor: pointer; box-shadow: 0 5px 20px rgba(198, 166, 100, 0.4); z-index: 1500; animation: pulse 3s infinite; }
+        .chatbot-container { position: fixed; bottom: 90px; right: 20px; width: 350px; height: 500px; background: #111; border: 1px solid #333; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); z-index: 1500; display: none; flex-direction: column; overflow: hidden; }
+        .chatbot-container.active { display: flex; }
+        .chat-body { flex: 1; padding: 15px; overflow-y: auto; background: #111; display: flex; flex-direction: column; gap: 10px; }
+        .chat-msg { max-width: 85%; padding: 10px; border-radius: 8px; font-size: 0.9rem; line-height: 1.4; }
+        .msg-bot { background: #222; color: #ddd; align-self: flex-start; }
+        .msg-user { background: var(--gold-dim); color: white; align-self: flex-end; }
+        .chat-input-area { padding: 10px; border-top: 1px solid #333; display: flex; gap: 5px; background: #000; }
+        .chat-input { flex: 1; padding: 10px; background: #222; border: 1px solid #444; color: white; border-radius: 4px; }
+
+        /* --- 8. FOOTER --- */
+        .footer { background: #000; padding: 4rem 5% 2rem; border-top: 1px solid #222; margin-top: 5rem; color: #888; font-size: 0.9rem; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; max-width: 1400px; margin: 0 auto; }
+        .footer a { color: #888; text-decoration: none; display: block; margin-bottom: 0.5rem; transition: 0.3s; }
+        .footer a:hover { color: var(--gold); }
+        .social-links { margin-top: 15px; font-size: 1.5rem; display: flex; gap: 15px; }
+        .social-links a { color: var(--gold); }
+
+        /* Mobile Nav */
+        .mobile-nav { display: none; position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #333; padding: 10px; z-index: 999; justify-content: space-around; }
+        .mobile-link { display: flex; flex-direction: column; align-items: center; color: #888; text-decoration: none; font-size: 0.7rem; }
+        
+        @media (max-width: 768px) {
+            .menu-desktop { display: none; }
+            .mobile-nav { display: flex; }
+            .hero h1 { font-size: 2.5rem; }
+            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 1rem; }
+            .sidebar { width: 85%; }
+            .camera-wrapper { height: 300px; }
+        }
+
+        /* Loading */
+        #loadingScreen { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center; color: var(--gold); font-family: var(--font-serif); font-size: 2rem; letter-spacing: 3px; }
     </style>
-    
-    <!-- Non-critical CSS loaded async -->
-    <link rel="stylesheet" href="data:text/css;base64,LyogTm9uLWNyaXRpY2FsIENTUyAqLw==" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="data:text/css;base64,LyogTm9uLWNyaXRpY2FsIENTUyAqLw=="></noscript>
 </head>
 <body>
 
-    <div id="loadingScreen">
-        <div class="loading-spinner"></div>
-        <p style="color: var(--primary); font-weight: 600;">Loading AOSE...</p>
-    </div>
+    <div id="loadingScreen">A O S E</div>
 
-    <div class="toast-notification" id="toastNotification">
-        <i class="fas fa-check-circle toast-icon"></i>
-        <span id="toastMessage">Product added to cart!</span>
-    </div>
-
-    <header class="header" id="mainHeader">
-        <div class="container nav-content">
+    <header class="header" id="header">
+        <div class="nav-content">
             <a href="#" class="brand">
-                <img src="aose ad.png" alt="AOSE Logo" class="brand-logo">
+                <img src="aose black golden logo.jpg" alt="AOSE" class="brand-logo" 
+                     onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAgNDAiPjx0ZXh0IHg9IjAiIHk9IjMwIiBmb250LWZhbWlseT0ic2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LXNpemU9IjI4IiBmaWxsPSIjQzZBNjY0Ij5BT1NFPC90ZXh0Pjwvc3ZnPg=='">
             </a>
             <nav class="menu-desktop">
                 <a href="#hero" class="menu-link">Home</a>
                 <a href="#collection" class="menu-link">Collection</a>
-                <a href="#sizeGuide" class="menu-link">Size Guide</a>
-                <a href="#measurementTool" class="menu-link">Measure</a>
-                <a href="#contact" class="menu-link">Contact</a>
+                <a href="#sizeGuide" class="menu-link">Size Chart</a>
+                <a href="#ai-measure" class="menu-link">AI Tailor</a>
             </nav>
             <div class="nav-icons">
-                <button class="icon-btn" onclick="openModal('trackModal')"><i class="fas fa-truck"></i></button>
-                <button class="icon-btn admin-trigger" onclick="toggleAdmin()" style="display:none;"><i class="fas fa-cog"></i></button>
-                <button class="icon-btn" onclick="toggleCart()">
+                <button onclick="toggleCart()">
                     <i class="fas fa-shopping-bag"></i>
                     <span class="cart-badge" id="cartCount">0</span>
                 </button>
@@ -117,1032 +184,424 @@
 
     <section class="hero" id="hero">
         <div class="hero-bg"></div>
-        <div class="hero-content fade-up">
-            <p style="letter-spacing:3px; text-transform:uppercase; margin-bottom:10px;">Premium Stitch & Wear</p>
+        <div class="hero-content reveal active">
+            <p style="letter-spacing: 3px; margin-bottom: 10px; color: var(--gold);">PREMIUM STITCH & WEAR</p>
             <h1>TIMELESS<br>ELEGANCE</h1>
-            <button class="btn-luxury" onclick="scrollToSection('collection')">Explore Collection</button>
+            <button class="btn-luxury" onclick="document.getElementById('collection').scrollIntoView()">Shop Collection</button>
         </div>
     </section>
 
-    <!-- Size Guide - Simplified -->
-    <section class="size-guide" id="sizeGuide">
-        <div class="container">
-            <h2 class="section-title">Size Guide</h2>
-            <p class="section-subtitle">Find your perfect fit</p>
-            <div class="size-chart-container">
-                <table class="size-chart">
-                    <thead>
-                        <tr>
-                            <th>Size</th>
-                            <th>Chest</th>
-                            <th>Length</th>
-                        </tr>
-                    </thead>
-                    <tbody id="sizeChartBody">
-                        <!-- Will be populated by JS -->
-                    </tbody>
-                </table>
+    <section class="measurement-section" id="ai-measure">
+        <div class="mt-container reveal">
+            <div class="mt-header">
+                <h3 style="color:var(--gold); margin:0;">AI Precision Tailor</h3>
+                <p style="color:#aaa; font-size:0.9rem;">Accurate measurement using Reference Scaling</p>
             </div>
-        </div>
-    </section>
-
-    <!-- Optimized Measurement Tool -->
-    <section class="measurement-section" id="measurementTool">
-        <div class="measurement-container">
-            <div class="measurement-header">
-                <div class="measurement-logo">
-                    <h2>A&SE <span>BODY MEASUREMENT TOOL</span></h2>
-                </div>
-                <p class="measurement-tagline">Get accurate measurements in seconds</p>
-                
-                <div class="measurement-steps">
-                    <div class="step-indicator">
-                        <div class="step-circle active" id="step1">1</div>
-                        <div class="step-text active">Photo</div>
-                    </div>
-                    <div class="step-indicator">
-                        <div class="step-circle" id="step2">2</div>
-                        <div class="step-text">Measure</div>
-                    </div>
-                    <div class="step-indicator">
-                        <div class="step-circle" id="step3">3</div>
-                        <div class="step-text">Results</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="measurement-content">
-                <div class="measurement-left">
-                    <div class="measurement-panel">
-                        <div class="measurement-panel-title">
-                            <i class="fas fa-camera"></i>
-                            <h3>Quick Measurement</h3>
-                        </div>
-                        
-                        <div class="camera-container" id="camera-container">
-                            <video id="measurement-video" autoplay playsinline></video>
-                            <canvas id="measurement-canvas" style="display:none;"></canvas>
-                        </div>
-                        
-                        <div class="measurement-btn-group">
-                            <button id="start-camera-btn" class="measurement-btn measurement-btn-primary">
-                                <i class="fas fa-video"></i> Start Camera
-                            </button>
-                            <button id="capture-btn" class="measurement-btn measurement-btn-success" disabled>
-                                <i class="fas fa-camera"></i> Capture
-                            </button>
-                            <button id="calculate-btn" class="measurement-btn measurement-btn-primary" style="display: none;">
-                                <i class="fas fa-ruler"></i> Get Measurements
-                            </button>
-                        </div>
-                        
-                        <div class="measurement-results" id="measurement-results" style="display: none;">
-                            <h4>Your Measurements</h4>
-                            <div class="measurement-item">
-                                <span class="measurement-name">Recommended Size:</span>
-                                <span class="measurement-value" id="recommended-size-badge">--</span>
-                            </div>
-                        </div>
-                    </div>
+            <div class="mt-body">
+                <div class="instruction-box" id="mt-instructions">
+                    <strong>Step 1:</strong> Place a standard ID Card or Credit Card on your chest.
+                    <br>Click <strong>Start Camera</strong> to begin.
                 </div>
                 
-                <div class="measurement-right">
-                    <div class="measurement-panel">
-                        <div class="measurement-panel-title">
-                            <i class="fas fa-table"></i>
-                            <h3>Size Chart</h3>
-                        </div>
-                        <div class="size-table-container" id="sizeTable">
-                            <!-- Will be populated by JS -->
-                        </div>
-                    </div>
+                <div class="camera-wrapper">
+                    <video id="mt-video" autoplay playsinline></video>
+                    <canvas id="mt-canvas" style="display:none;"></canvas>
+                    <img id="captured-image" alt="Captured" style="display:none;">
+                    <div id="cam-placeholder" style="position:absolute; color:#333;"><i class="fas fa-camera fa-3x"></i></div>
+                    <div class="result-overlay" id="result-overlay">0.0"</div>
+                </div>
+
+                <div class="mt-controls">
+                    <button class="btn-tool" id="btn-start" onclick="startCamera()"><i class="fas fa-camera"></i> Start Camera</button>
+                    <button class="btn-tool" id="btn-capture" onclick="captureImage()" style="display:none;"><i class="fas fa-circle"></i> Capture Photo</button>
+                    <button class="btn-tool" id="btn-retake" onclick="resetTool()" style="display:none;"><i class="fas fa-redo"></i> Retake</button>
+                    <button class="btn-tool" id="btn-save" onclick="saveFit()" style="display:none; border-color:#28a745; color:#28a745;"><i class="fas fa-check"></i> Save Size</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Products Section -->
-    <section class="section-padding" id="collection">
-        <div class="container">
-            <div class="text-center fade-up" style="margin-bottom: 3rem;">
-                <h2 class="section-title">Premium Collection</h2>
-                <p class="section-subtitle">Handcrafted with precision and luxury</p>
-            </div>
-
-            <div class="filters fade-up">
-                <button class="filter-btn active" onclick="filterProducts('all', this)">All</button>
-                <button class="filter-btn" onclick="filterProducts('stitch_wear', this)">Stitch & Wear</button>
-                <button class="filter-btn" onclick="filterProducts('shirts', this)">Shirts</button>
-            </div>
-
-            <div class="products-grid" id="productsGrid">
-                <!-- Products loaded by JS -->
-            </div>
+    <section class="chart-section" id="sizeGuide">
+        <div class="section-title">
+            <h2>Official Size Chart</h2>
+            <p>Premium measurements in inches</p>
+        </div>
+        <div class="chart-container">
+            <table class="aose-table">
+                <thead><tr><th>SIZE</th><th>HEIGHT</th><th>SHOULDER</th><th>SLEEVE</th><th>CHEST</th><th>FRONT</th></tr></thead>
+                <tbody id="chartBody"></tbody>
+            </table>
         </div>
     </section>
 
-    <!-- Optimized Modals -->
-    <div class="modal-overlay" id="productModal">
-        <div class="modal-box" style="max-width: 800px;">
-            <button class="close-btn" onclick="closeModal('productModal')">&times;</button>
-            <div class="product-modal-content" id="productModalContent">
-                <!-- Content loaded dynamically -->
-            </div>
+    <section id="collection" style="padding: 4rem 0;">
+        <div class="section-title reveal">
+            <h2>The Collection</h2>
+            <p>Unlimited Luxury.</p>
+        </div>
+        <div class="products-grid" id="grid"></div>
+    </section>
+
+    <div class="chatbot-fab" onclick="toggleChat()"><i class="fas fa-sparkles"></i></div>
+    <div class="chatbot-container" id="chatContainer">
+        <div class="chat-header">
+            <span>AOSE Assistant</span>
+            <i class="fas fa-times" style="margin-left:auto; cursor:pointer;" onclick="toggleChat()"></i>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <div class="chat-msg msg-bot">Hello! I'm AOSE's AI. I can help with sizing, returns, or contact info.</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Ask anything..." onkeypress="handleChatEnter(event)">
+            <button class="chat-send" onclick="handleUserMessage()"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
 
-    <div class="modal-overlay" id="checkoutModal">
-        <div class="modal-box">
-            <button class="close-btn" onclick="closeModal('checkoutModal')">&times;</button>
-            <div id="checkoutContent">
-                <!-- Checkout content loaded dynamically -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Cart Sidebar -->
-    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
-    <div class="cart-sidebar" id="cartSidebar">
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+    <div class="sidebar" id="cartSidebar">
         <div class="cart-header">
-            <h3 class="cart-title"><i class="fas fa-shopping-bag"></i> Your Bag</h3>
-            <i class="fas fa-times cart-close" onclick="toggleCart()"></i>
+            <h3>YOUR BAG</h3><i class="fas fa-times" style="cursor:pointer;" onclick="toggleCart()"></i>
         </div>
-        <div class="cart-items" id="cartItems">
-            <div class="cart-empty">
-                <i class="fas fa-shopping-bag"></i>
-                <h3>Your bag is empty</h3>
-            </div>
-        </div>
+        <div class="cart-items" id="cartItems"></div>
         <div class="cart-footer">
-            <div class="cart-total">
-                <span>Total:</span>
-                <span class="total-amount">₹<span id="cartTotal">0</span></span>
+            <div style="display:flex; justify-content:space-between; margin-bottom:15px; color:white; font-weight:700;">
+                <span>Total</span><span id="cartTotal">₹0</span>
             </div>
-            <button class="checkout-btn" id="checkoutBtn" onclick="openCheckout()" disabled>
-                <i class="fas fa-credit-card"></i> Checkout
-            </button>
+            <button class="btn-add" onclick="openCheckoutModal()">PROCEED TO CHECKOUT</button>
         </div>
     </div>
 
-    <!-- Footer -->
+    <div class="overlay" id="modalOverlay"></div>
+    <div class="modal" id="checkoutModal">
+        <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+            <h3 style="margin:0; color:var(--gold);">Secure Checkout</h3>
+            <i class="fas fa-times" style="cursor:pointer;" onclick="closeModal()"></i>
+        </div>
+        
+        <input type="text" id="coName" class="modal-input" placeholder="Full Name">
+        <input type="tel" id="coPhone" class="modal-input" placeholder="WhatsApp Number">
+        <textarea id="coAddress" class="modal-input" rows="2" placeholder="Shipping Address"></textarea>
+        
+        <div id="attachedMeasurement" style="display:none; background:#0f5132; color:#d1e7dd; padding:10px; border-radius:5px; margin-bottom:15px; font-size:0.9rem;">
+            <i class="fas fa-ruler-combined"></i> Custom Fit Profile Attached
+        </div>
+
+        <p style="color:#aaa; font-size:0.8rem; margin:10px 0 5px;">PAYMENT METHOD (UPI DEEP LINK)</p>
+        
+        <button class="pay-btn pay-gpay" onclick="payVia('gpay')">
+            <svg class="pay-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-6h2v6zm4 0h-2v-6h2v6z" fill="currentColor"/></svg>
+            Google Pay
+        </button>
+
+        <button class="pay-btn pay-phonepe" onclick="payVia('phonepe')">
+            <svg class="pay-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><text x="5" y="16" font-size="10" font-weight="bold" fill="currentColor">Pe</text></svg>
+            PhonePe
+        </button>
+
+        <button class="pay-btn pay-paytm" onclick="payVia('paytm')">
+            <svg class="pay-icon" viewBox="0 0 24 24"><path d="M2.5 7.5h19v9h-19z" fill="none" stroke="currentColor" stroke-width="2"/><text x="5" y="15" font-size="8" font-family="Arial" font-weight="bold" fill="currentColor">Paytm</text></svg>
+            Paytm
+        </button>
+
+        <p style="text-align:center; margin:10px 0; color:#666; font-size:0.8rem;">- OR -</p>
+
+        <button class="btn-add" onclick="placeOrder()" style="background:#25D366; color:white;">
+            <i class="fab fa-whatsapp"></i> Confirm & Pay on WhatsApp
+        </button>
+    </div>
+
     <footer class="footer" id="contact">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>AOSE</h3>
-                    <p style="opacity: 0.8;">Redefining luxury through craftsmanship.</p>
-                    <div class="social-links">
-                        <a href="https://wa.me/917887731818" class="social-link" target="_blank">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
-                        <a href="mailto:aoseofficial77@gmail.com" class="social-link">
-                            <i class="fas fa-envelope"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>Contact</h3>
-                    <ul class="footer-links">
-                        <li><i class="fas fa-phone"></i> +91 78877 31818</li>
-                        <li><i class="fas fa-envelope"></i> aoseofficial77@gmail.com</li>
-                    </ul>
+        <div class="footer-grid">
+            <div>
+                <h4 style="color:var(--gold);">AOSE CLOTHING</h4>
+                <p>Redefining modern luxury. Stitch & Wear.</p>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/official_aose" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="mailto:aoseofficial77@gmail.com"><i class="fas fa-envelope"></i></a>
+                    <a href="https://wa.me/917887731818"><i class="fab fa-whatsapp"></i></a>
                 </div>
             </div>
-            
-            <div class="footer-bottom">
-                <p>© 2024 AOSE Clothing Company. All Rights Reserved.</p>
+            <div>
+                <h4>Contact Info</h4>
+                <ul>
+                    <li><i class="fas fa-phone"></i> +91 7887731818</li>
+                    <li><i class="fas fa-envelope"></i> aoseofficial77@gmail.com</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Rashin, Maharashtra</li>
+                </ul>
             </div>
+        </div>
+        <div style="text-align:center; margin-top:3rem; padding-top:2rem; border-top:1px solid #222; font-size:0.8rem;">
+            &copy; 2026 AOSE CLOTHING. All Rights Reserved.
         </div>
     </footer>
 
-    <!-- Mobile Navigation -->
     <div class="mobile-nav">
         <a href="#hero" class="mobile-link"><i class="fas fa-home"></i> Home</a>
         <a href="#collection" class="mobile-link"><i class="fas fa-layer-group"></i> Shop</a>
-        <a href="#measurementTool" class="mobile-link"><i class="fas fa-camera"></i> Measure</a>
+        <a href="#ai-measure" class="mobile-link"><i class="fas fa-camera"></i> Measure</a>
         <a href="#" onclick="toggleCart()" class="mobile-link"><i class="fas fa-shopping-bag"></i> Cart</a>
     </div>
 
-    <!-- Inline Critical JavaScript -->
     <script>
-        // ============================================
-        // CRITICAL JAVASCRIPT - Loads immediately
-        // ============================================
+        /* ================= 1. CONSTANTS & DATA ================= */
+        const UPI_ID = "7887731818@ybl";
+        const MERCHANT_NAME = "AOSE Clothing";
         
-        // Configuration
-        const CONFIG = {
-            upi_id: "7887731818@ybl",
-            whatsapp: "917887731818",
-            admin_pass: "admin123"
-        };
-
-        // Core State Management
-        const APP_STATE = {
-            cart: JSON.parse(localStorage.getItem('aose_cart') || '[]'),
-            products: [],
-            orders: JSON.parse(localStorage.getItem('aose_orders') || '[]'),
-            selectedProduct: null,
-            measurement: null
-        };
-
-        // Cache DOM Elements
-        const DOM = {
-            loading: document.getElementById('loadingScreen'),
-            toast: document.getElementById('toastNotification'),
-            cartCount: document.getElementById('cartCount'),
-            cartItems: document.getElementById('cartItems'),
-            cartTotal: document.getElementById('cartTotal'),
-            checkoutBtn: document.getElementById('checkoutBtn'),
-            productsGrid: document.getElementById('productsGrid')
-        };
-
-        // Product Data (Lightweight)
         const PRODUCTS = [
-            { id: 1, category: "stitch_wear", name: "Signature Stitch & Wear", price: 1499, image: "https://images.unsplash.com/photo-1594938298603-c8148c47e356?w=400&h=500&fit=crop", badge: "Popular" },
-            { id: 2, category: "stitch_wear", name: "Royal Emerald Fabric", price: 1699, image: "https://images.unsplash.com/photo-1614213567116-c1f964a2c5a0?w=400&h=500&fit=crop", badge: "New" },
-            { id: 3, category: "stitch_wear", name: "Premium Stitch & Wear", price: 1599, image: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400&h=500&fit=crop", badge: "Premium" },
-            { id: 4, category: "shirts", name: "Classic White Oxford", price: 1299, image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=400&h=500&fit=crop", badge: "Essential" },
-            { id: 5, category: "shirts", name: "Midnight Satin Shirt", price: 1899, image: "https://images.unsplash.com/photo-1621072118058-2e8f5ca5d022?w=400&h=500&fit=crop", badge: "Luxury" }
+            { id: 1, category: "stitch_wear", name: "Signature Stitch & Wear", price: 999, image: "pro.jpg", badge: "Best Seller" },
+            { id: 2, category: "stitch_wear", name: "Classic Stitch & Wear", price: 999, image: "proo10.jpg", badge: "New" },
+            { id: 3, category: "stitch_wear", name: "Premium Stitch & Wear", price: 999, image: "proo11.jpg", badge: "Limited" },
+            { id: 4, category: "stitch_wear", name: "Elegant Stitch & Wear", price: 999, image: "proo12.jpg", badge: "Popular" },
+            { id: 5, category: "stitch_wear", name: "Royal Stitch & Wear", price: 999, image: "pro13.jpg", badge: "Exclusive" },
+            { id: 6, category: "stitch_wear", name: "Modern Stitch & Wear", price: 999, image: "proo14.jpg", badge: "Trending" },
+            { id: 7, category: "stitch_wear", name: "Heritage Stitch & Wear", price: 999, image: "proo15.jpg", badge: "Classic" },
+            { id: 8, category: "stitch_wear", name: "Urban Stitch & Wear", price: 999, image: "proo16.jpg", badge: "Urban" },
+            { id: 9, category: "stitch_wear", name: "Luxury Stitch & Wear", price: 999, image: "pro17.jpg", badge: "Luxury" },
+            { id: 10, category: "stitch_wear", name: "Premium Stitch & Wear", price: 999, image: "proo2.jpg", badge: "Premium" },
+            { id: 11, category: "stitch_wear", name: "Classic Collection", price: 999, image: "pro3.jpg", badge: "Classic" },
+            { id: 12, category: "stitch_wear", name: "Onyx Collection", price: 999, image: "pro4.jpg", badge: "Dark" },
+            { id: 13, category: "stitch_wear", name: "Azure Collection", price: 999, image: "pro5.jpg", badge: "Blue" },
+            { id: 14, category: "stitch_wear", name: "Frost Collection", price: 999, image: "propro.jpg", badge: "White" },
+            { id: 15, category: "stitch_wear", name: "Stealth Collection", price: 999, image: "propro2.jpg", badge: "Black" },
+            { id: 16, category: "stitch_wear", name: "Monarch Collection", price: 999, image: "proo7.jpg", badge: "Royal" },
+            { id: 17, category: "stitch_wear", name: "Ivory Collection", price: 999, image: "proo8.jpg", badge: "Cream" }
         ];
 
-        // Size Data
-        const SIZE_CHART = [
-            { size: 'S', chest: '36-38"', length: '26"' },
-            { size: 'M', chest: '38-40"', length: '27"' },
-            { size: 'L', chest: '40-42"', length: '28"' },
-            { size: 'XL', chest: '42-44"', length: '29"' },
-            { size: 'XXL', chest: '44-46"', length: '30"' }
+        // Specific Data from Image
+        const SIZE_DATA = [
+            { size: 'S', height: 26.5, shoulder: 16, sleeve: 22, chest: 36, front: 10 },
+            { size: 'M', height: 26, shoulder: 16.5, sleeve: 22.5, chest: 38, front: 10.5 },
+            { size: 'L', height: 29, shoulder: 17, sleeve: 23.5, chest: 40, front: 11.5 },
+            { size: 'XL', height: 29.5, shoulder: 18, sleeve: 24, chest: 42, front: 12 },
+            { size: 'XXL', height: 28.5, shoulder: 19, sleeve: 24.5, chest: 44, front: 13 }
         ];
 
-        // Critical Functions
-        function initApp() {
-            // Hide loading screen quickly
-            setTimeout(() => {
-                DOM.loading.style.opacity = '0';
-                setTimeout(() => DOM.loading.style.display = 'none', 300);
-            }, 500);
-            
-            // Initialize components
-            renderSizeChart();
-            renderProducts('all');
-            updateCart();
-            setupEventListeners();
-            
-            // Add scroll effect
-            window.addEventListener('scroll', throttle(() => {
-                const header = document.getElementById('mainHeader');
-                header.classList.toggle('scrolled', window.scrollY > 50);
-            }, 100));
-        }
+        let cart = JSON.parse(localStorage.getItem('aose_cart')) || [];
+        let userFitProfile = null;
 
-        function renderSizeChart() {
-            const tbody = document.getElementById('sizeChartBody');
-            if (tbody) {
-                tbody.innerHTML = SIZE_CHART.map(row => 
-                    `<tr><td>${row.size}</td><td>${row.chest}</td><td>${row.length}</td></tr>`
-                ).join('');
-            }
-        }
-
-        function renderProducts(filter) {
-            const list = filter === 'all' ? PRODUCTS : PRODUCTS.filter(p => p.category === filter);
-            DOM.productsGrid.innerHTML = list.map(product => `
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="${product.image}" alt="${product.name}" loading="lazy">
-                        ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">${product.name}</h3>
-                        <div class="product-price">₹${product.price}</div>
-                        <button class="add-to-cart-btn" onclick="quickAddToCart(${product.id})">
-                            <i class="fas fa-plus"></i> Add to Bag
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function quickAddToCart(productId) {
-            const product = PRODUCTS.find(p => p.id === productId);
-            if (!product) return;
+        /* ================= 2. INIT ================= */
+        window.onload = () => {
+            renderGrid();
+            renderSizeTable();
+            updateCartUI();
             
-            const existing = APP_STATE.cart.find(item => item.id === productId);
-            if (existing) {
-                existing.quantity += 1;
-            } else {
-                APP_STATE.cart.push({ ...product, size: 'M', quantity: 1, cartId: Date.now() });
-            }
-            
-            saveCart();
-            updateCart();
-            showToast(`${product.name} added to bag!`, 'success');
-        }
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
+            }, {threshold: 0.1});
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        function updateCart() {
-            const totalItems = APP_STATE.cart.reduce((sum, item) => sum + item.quantity, 0);
-            DOM.cartCount.textContent = totalItems;
-            
-            if (APP_STATE.cart.length === 0) {
-                DOM.cartItems.innerHTML = `<div class="cart-empty"><i class="fas fa-shopping-bag"></i><h3>Your bag is empty</h3></div>`;
-                DOM.cartTotal.textContent = '0';
-                DOM.checkoutBtn.disabled = true;
-                return;
-            }
-            
-            const total = APP_STATE.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            DOM.cartItems.innerHTML = APP_STATE.cart.map(item => `
-                <div class="cart-item">
-                    <img src="${item.image}" alt="${item.name}" class="cart-item-image" loading="lazy">
-                    <div class="cart-item-info">
-                        <h4 class="cart-item-name">${item.name}</h4>
-                        <div class="cart-item-controls">
-                            <button class="quantity-btn" onclick="updateCartItem(${item.cartId}, 'decrease')">-</button>
-                            <span class="cart-item-quantity">${item.quantity}</span>
-                            <button class="quantity-btn" onclick="updateCartItem(${item.cartId}, 'increase')">+</button>
-                        </div>
-                    </div>
-                    <div class="cart-item-price">₹${item.price * item.quantity}</div>
-                </div>
-            `).join('');
-            DOM.cartTotal.textContent = total;
-            DOM.checkoutBtn.disabled = false;
-        }
-
-        function updateCartItem(cartId, action) {
-            const index = APP_STATE.cart.findIndex(item => item.cartId == cartId);
-            if (index === -1) return;
-            
-            switch (action) {
-                case 'increase': APP_STATE.cart[index].quantity += 1; break;
-                case 'decrease': 
-                    if (APP_STATE.cart[index].quantity > 1) {
-                        APP_STATE.cart[index].quantity -= 1;
-                    } else {
-                        APP_STATE.cart.splice(index, 1);
-                    }
-                    break;
-            }
-            saveCart();
-            updateCart();
-        }
-
-        function saveCart() {
-            localStorage.setItem('aose_cart', JSON.stringify(APP_STATE.cart));
-        }
-
-        function toggleCart() {
-            const sidebar = document.getElementById('cartSidebar');
-            const overlay = document.getElementById('cartOverlay');
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('active');
-            document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
-        }
-
-        function openCheckout() {
-            if (APP_STATE.cart.length === 0) {
-                showToast('Your cart is empty!', 'error');
-                return;
-            }
-            toggleCart();
-            
-            const total = APP_STATE.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const content = document.getElementById('checkoutContent');
-            content.innerHTML = `
-                <div class="checkout-header">
-                    <h3>Secure Checkout</h3>
-                    <p>Total: <strong style="color:var(--primary);">₹${total}</strong></p>
-                </div>
-                <div class="input-group">
-                    <input type="text" id="coName" class="input-field" placeholder="Full Name *" required>
-                </div>
-                <div class="input-group">
-                    <input type="tel" id="coPhone" class="input-field" placeholder="WhatsApp Number *" required>
-                </div>
-                <div class="input-group">
-                    <textarea id="coAddress" class="input-field" rows="2" placeholder="Shipping Address *" required></textarea>
-                </div>
-                <button class="confirm-btn" onclick="processOrder(${total})">
-                    <i class="fab fa-whatsapp"></i> Confirm Order
-                </button>
-            `;
-            openModal('checkoutModal');
-        }
-
-        function processOrder(total) {
-            const name = document.getElementById('coName')?.value.trim();
-            const phone = document.getElementById('coPhone')?.value.trim();
-            const address = document.getElementById('coAddress')?.value.trim();
-            
-            if (!name || !phone || !address) {
-                showToast('Please fill all required fields!', 'error');
-                return;
-            }
-            
-            const orderId = `AOSE-${Date.now().toString(36).toUpperCase().slice(-6)}`;
-            const items = APP_STATE.cart.map(item => `${item.name} x${item.quantity}`).join(', ');
-            
-            // Save order
-            const order = {
-                id: orderId,
-                customerName: name,
-                customerPhone: phone,
-                customerAddress: address,
-                items: items,
-                total: total,
-                date: new Date().toISOString(),
-                status: 'Pending'
-            };
-            
-            APP_STATE.orders.unshift(order);
-            localStorage.setItem('aose_orders', JSON.stringify(APP_STATE.orders));
-            
-            // Clear cart
-            APP_STATE.cart = [];
-            saveCart();
-            updateCart();
-            
-            // Send WhatsApp message
-            const message = `*NEW AOSE ORDER*%0A%0A*Order ID:* ${orderId}%0A*Customer:* ${name}%0A*Phone:* ${phone}%0A*Items:* ${items}%0A*Total:* ₹${total}%0A*Address:* ${address}`;
-            window.open(`https://wa.me/${CONFIG.whatsapp}?text=${message}`, '_blank');
-            
-            // Show success
-            closeModal('checkoutModal');
-            showToast(`Order ${orderId} confirmed!`, 'success');
-        }
-
-        function filterProducts(cat, btn) {
-            if (btn) {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            }
-            renderProducts(cat);
-        }
-
-        // Utility Functions
-        function showToast(message, type = 'success') {
-            DOM.toast.querySelector('#toastMessage').textContent = message;
-            DOM.toast.className = `toast-notification show ${type === 'error' ? 'error' : ''}`;
-            setTimeout(() => DOM.toast.classList.remove('show'), 2000);
-        }
-
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        function scrollToSection(sectionId) {
-            const element = document.getElementById(sectionId);
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-        function throttle(func, limit) {
-            let inThrottle;
-            return function() {
-                if (!inThrottle) {
-                    func.apply(this, arguments);
-                    inThrottle = true;
-                    setTimeout(() => inThrottle = false, limit);
-                }
-            }
-        }
-
-        function setupEventListeners() {
-            // Escape key closes modals
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    document.querySelectorAll('.modal-overlay.active').forEach(modal => {
-                        modal.classList.remove('active');
-                    });
-                    document.body.style.overflow = '';
-                }
-            });
-        }
-
-        // Measurement Tool Functions
-        let measurementStream = null;
-        let measurementCanvas = null;
-        let measurementContext = null;
-
-        async function startMeasurementCamera() {
-            try {
-                measurementStream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } } 
-                });
-                const video = document.getElementById('measurement-video');
-                video.srcObject = measurementStream;
-                document.getElementById('capture-btn').disabled = false;
-                showToast('Camera ready! Stand 6 feet away.', 'success');
-            } catch (err) {
-                showToast('Camera access denied', 'error');
-            }
-        }
-
-        function captureMeasurement() {
-            const video = document.getElementById('measurement-video');
-            const canvas = document.getElementById('measurement-canvas');
-            
-            if (!measurementCanvas) {
-                measurementCanvas = canvas;
-                measurementContext = canvas.getContext('2d');
-            }
-            
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            measurementContext.drawImage(video, 0, 0);
-            
-            video.style.display = 'none';
-            canvas.style.display = 'block';
-            
-            // Stop camera
-            if (measurementStream) {
-                measurementStream.getTracks().forEach(track => track.stop());
-                measurementStream = null;
-            }
-            
-            document.getElementById('capture-btn').style.display = 'none';
-            document.getElementById('calculate-btn').style.display = 'flex';
-            showToast('Photo captured! Click "Get Measurements"', 'success');
-        }
-
-        function calculateMeasurement() {
-            // Simulate measurement calculation
-            const sizes = ['S', 'M', 'L', 'XL', 'XXL'];
-            const recommended = sizes[Math.floor(Math.random() * sizes.length)];
-            
-            document.getElementById('recommended-size-badge').textContent = recommended;
-            document.getElementById('measurement-results').style.display = 'block';
-            
-            // Update size table highlight
-            document.querySelectorAll('.size-row').forEach(row => {
-                row.classList.remove('highlighted');
-                if (row.dataset.size === recommended) {
-                    row.classList.add('highlighted');
-                }
-            });
-            
-            showToast(`Recommended size: ${recommended}`, 'success');
-        }
-
-        // Initialize measurement tool
-        document.getElementById('start-camera-btn').addEventListener('click', startMeasurementCamera);
-        document.getElementById('capture-btn').addEventListener('click', captureMeasurement);
-        document.getElementById('calculate-btn').addEventListener('click', calculateMeasurement);
-
-        // Initialize size table
-        const sizeTable = document.getElementById('sizeTable');
-        if (sizeTable) {
-            sizeTable.innerHTML = `
-                <div class="size-table">
-                    <div class="size-row" data-size="S">
-                        <span class="size-label">S</span>
-                        <span class="size-value">Shoulder: 16"</span>
-                        <span class="size-value">Chest: 36"</span>
-                    </div>
-                    <div class="size-row" data-size="M">
-                        <span class="size-label">M</span>
-                        <span class="size-value">Shoulder: 16.5"</span>
-                        <span class="size-value">Chest: 38"</span>
-                    </div>
-                    <div class="size-row" data-size="L">
-                        <span class="size-label">L</span>
-                        <span class="size-value">Shoulder: 17"</span>
-                        <span class="size-value">Chest: 40"</span>
-                    </div>
-                    <div class="size-row" data-size="XL">
-                        <span class="size-label">XL</span>
-                        <span class="size-value">Shoulder: 18"</span>
-                        <span class="size-value">Chest: 42"</span>
-                    </div>
-                    <div class="size-row" data-size="XXL">
-                        <span class="size-label">XXL</span>
-                        <span class="size-value">Shoulder: 19"</span>
-                        <span class="size-value">Chest: 44"</span>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Admin console command
-        window.enableAdmin = () => {
-            document.querySelector('.admin-trigger').style.display = 'inline-block';
-            showToast('Admin enabled! Password: admin123', 'success');
+            setTimeout(() => document.getElementById('loadingScreen').style.display = 'none', 800);
+            window.onscroll = () => document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
         };
 
-        // Start the app
-        window.addEventListener('DOMContentLoaded', initApp);
+        /* ================= 3. RENDER ================= */
+        function renderGrid() {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = PRODUCTS.map(p => {
+                const fallback = `this.onerror=null;this.src='https://placehold.co/400x500/1a1a1a/C6A664?text=AOSE';`;
+                return `
+                <div class="product-card reveal">
+                    <div class="product-image">
+                        <img src="${p.image}" alt="${p.name}" onerror="${fallback}">
+                        ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
+                    </div>
+                    <div class="product-details">
+                        <div class="product-name">${p.name}</div>
+                        <div class="product-price">₹${p.price}</div>
+                        <div class="size-opts">
+                            ${['S','M','L','XL','XXL'].map(s => `<div class="size-pill" onclick="selectSize(this)">${s}</div>`).join('')}
+                        </div>
+                        <button class="btn-add" onclick="addToCart(${p.id}, this)">ADD TO BAG</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function renderSizeTable() {
+            document.getElementById('chartBody').innerHTML = SIZE_DATA.map(r => 
+                `<tr><td>${r.size}</td><td>${r.height}"</td><td>${r.shoulder}"</td><td>${r.sleeve}"</td><td>${r.chest}"</td><td>${r.front}"</td></tr>`
+            ).join('');
+        }
+
+        function selectSize(el) {
+            el.closest('.size-opts').querySelectorAll('.size-pill').forEach(s => s.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        /* ================= 4. CART ================= */
+        function addToCart(pid, btn) {
+            const card = btn.closest('.product-card');
+            const activeSize = card.querySelector('.size-pill.active');
+            if(!activeSize) return alert("Select a size");
+            
+            const product = PRODUCTS.find(p => p.id === pid);
+            const existing = cart.find(i => i.id === pid && i.size === activeSize.innerText);
+            
+            if(existing) existing.qty++;
+            else cart.push({...product, size: activeSize.innerText, qty: 1});
+            
+            saveCart(); updateCartUI(); toggleCart();
+        }
+
+        function updateCartUI() {
+            const list = document.getElementById('cartItems');
+            let total = 0;
+            list.innerHTML = cart.map((item, i) => {
+                total += item.price * item.qty;
+                return `<div class="cart-item">
+                    <img src="${item.image}" onerror="this.src='https://placehold.co/100?text=AOSE'">
+                    <div>
+                        <div style="color:white; font-weight:600;">${item.name}</div>
+                        <div style="color:gray; font-size:0.8rem;">Size: ${item.size} x ${item.qty}</div>
+                        <div style="color:var(--gold);">₹${item.price * item.qty} <i class="fas fa-trash" style="color:red; cursor:pointer; margin-left:10px;" onclick="remItem(${i})"></i></div>
+                    </div>
+                </div>`;
+            }).join('');
+            document.getElementById('cartTotal').innerText = "₹" + total;
+            document.getElementById('cartCount').innerText = cart.reduce((a,b)=>a+b.qty,0);
+        }
+
+        function remItem(i) { cart.splice(i,1); saveCart(); updateCartUI(); }
+        function saveCart() { localStorage.setItem('aose_cart', JSON.stringify(cart)); }
+        function toggleCart() { document.getElementById('cartSidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
+
+        /* ================= 5. AI MEASUREMENT (CANVAS) ================= */
+        let stream = null, points = [], refSize = 3.37; // Credit Card Width
+        const video = document.getElementById('mt-video');
+        const canvas = document.getElementById('mt-canvas');
+        const ctx = canvas.getContext('2d');
+
+        async function startCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                video.srcObject = stream;
+                document.getElementById('cam-placeholder').style.display='none';
+                document.getElementById('btn-start').style.display='none';
+                document.getElementById('btn-capture').style.display='inline-flex';
+            } catch(e) { alert("Camera denied"); }
+        }
+
+        function captureImage() {
+            canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+            ctx.drawImage(video, 0,0);
+            video.style.display='none'; canvas.style.display='block';
+            stream.getTracks().forEach(t=>t.stop());
+            document.getElementById('btn-capture').style.display='none';
+            document.getElementById('btn-retake').style.display='inline-flex';
+            document.getElementById('mt-instructions').innerHTML = "Tap <strong>Left</strong> then <strong>Right</strong> edge of the CARD.";
+            
+            canvas.onclick = (e) => {
+                if(points.length >= 4) return;
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                points.push({ x: (e.clientX - rect.left)*scaleX, y: (e.clientY - rect.top)*scaleY });
+                drawPoints();
+                if(points.length===2) document.getElementById('mt-instructions').innerHTML = "Card Set. Now Tap <strong>Left</strong> then <strong>Right</strong> SHOULDER.";
+                if(points.length===4) calculate();
+            };
+        }
+
+        function drawPoints() {
+            ctx.lineWidth=5; 
+            points.forEach((p,i) => { ctx.fillStyle=i<2?'#C6A664':'#0F3D2E'; ctx.beginPath(); ctx.arc(p.x,p.y,10,0,Math.PI*2); ctx.fill(); });
+            if(points.length>=2) { ctx.strokeStyle='#C6A664'; ctx.beginPath(); ctx.moveTo(points[0].x,points[0].y); ctx.lineTo(points[1].x,points[1].y); ctx.stroke(); }
+            if(points.length===4) { ctx.strokeStyle='#0F3D2E'; ctx.beginPath(); ctx.moveTo(points[2].x,points[2].y); ctx.lineTo(points[3].x,points[3].y); ctx.stroke(); }
+        }
+
+        function calculate() {
+            const dist = (p1,p2) => Math.hypot(p1.x-p2.x, p1.y-p2.y);
+            const refPx = dist(points[0], points[1]);
+            const shoulderPx = dist(points[2], points[3]);
+            const inches = ((shoulderPx/refPx)*refSize).toFixed(1);
+            
+            // Find Closest Size
+            let closest = null, minDiff = Infinity;
+            SIZE_DATA.forEach(row => {
+                const diff = Math.abs(row.shoulder - inches);
+                if(diff < minDiff) { minDiff = diff; closest = row; }
+            });
+            userFitProfile = closest;
+            
+            // Draw Text
+            const mx = (points[2].x+points[3].x)/2;
+            const my = (points[2].y+points[3].y)/2 - 50;
+            ctx.font="bold 60px Arial"; ctx.fillStyle="#0F3D2E"; ctx.fillText(inches+'"', mx, my);
+
+            document.getElementById('mt-instructions').innerHTML = `Measured: <strong>${inches}"</strong>. Recommended: <strong>${closest.size}</strong>`;
+            document.getElementById('btn-save').style.display = 'inline-flex';
+        }
+
+        function resetTool() {
+            points=[]; video.style.display='block'; canvas.style.display='none';
+            document.getElementById('btn-retake').style.display='none';
+            document.getElementById('btn-save').style.display='none';
+            startCamera();
+        }
+        function saveFit() { document.getElementById('collection').scrollIntoView(); }
+
+        /* ================= 6. PAYMENT GATEWAYS ================= */
+        function openCheckoutModal() {
+            if(cart.length === 0) return alert("Cart empty");
+            toggleCart();
+            document.getElementById('modalOverlay').classList.add('active');
+            document.getElementById('checkoutModal').classList.add('active');
+            if(userFitProfile) {
+                document.getElementById('attachedMeasurement').style.display='block';
+                document.getElementById('attachedMeasurement').innerHTML = `<i class="fas fa-check"></i> Fit Profile: ${userFitProfile.size} (${userFitProfile.shoulder}")`;
+            }
+        }
+        function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); document.getElementById('checkoutModal').classList.remove('active'); }
+
+        function payVia(app) {
+            const name = document.getElementById('coName').value;
+            if(!name) return alert("Enter Full Name first");
+            const total = cart.reduce((s,i)=>s+(i.price*i.qty), 0);
+            const note = `AOSE Order for ${name}`;
+            
+            let scheme = "upi://pay";
+            if(app === 'gpay') scheme = "tez://upi/pay";
+            if(app === 'phonepe') scheme = "phonepe://pay";
+            if(app === 'paytm') scheme = "paytmmp://pay";
+            
+            window.location.href = `${scheme}?pa=${UPI_ID}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${total}&cu=INR&tn=${encodeURIComponent(note)}`;
+        }
+
+        function placeOrder() {
+            const name = document.getElementById('coName').value;
+            const phone = document.getElementById('coPhone').value;
+            const addr = document.getElementById('coAddress').value;
+            if(!name || !phone || !addr) return alert("Fill all fields");
+            
+            const total = cart.reduce((s,i)=>s+(i.price*i.qty), 0);
+            const items = cart.map(i => `${i.name} (${i.size}) x${i.qty}`).join(', ');
+            
+            let msg = `*NEW AOSE ORDER*\nName: ${name}\nPhone: ${phone}\nAddress: ${addr}\nItems: ${items}\nTotal: ₹${total}`;
+            if(userFitProfile) msg += `\n\n*Fit Profile:* Size ${userFitProfile.size}`;
+            
+            window.open(`https://wa.me/917887731818?text=${encodeURIComponent(msg)}`, '_blank');
+            cart=[]; saveCart(); updateCartUI(); closeModal();
+        }
+
+        /* ================= 7. CHATBOT ================= */
+        function toggleChat() { document.getElementById('chatContainer').classList.toggle('active'); }
+        function handleChatEnter(e) { if(e.key==='Enter') handleUserMessage(); }
+        function handleUserMessage() {
+            const val = document.getElementById('chatInput').value;
+            if(!val) return;
+            const chat = document.getElementById('chatBody');
+            chat.innerHTML += `<div class="chat-msg msg-user">${val}</div>`;
+            document.getElementById('chatInput').value = '';
+            setTimeout(() => {
+                let reply = "I can help with sizes, returns, or contact info.";
+                const lower = val.toLowerCase();
+                if(lower.includes('size')) reply = "Check our Official Size Chart or use the AI Tailor above! S starts at 16\" shoulder.";
+                else if(lower.includes('contact') || lower.includes('phone')) reply = "WhatsApp: +91 7887731818<br>Email: aoseofficial77@gmail.com";
+                else if(lower.includes('return')) reply = "We offer a 48-hour return policy for defects.";
+                chat.innerHTML += `<div class="chat-msg msg-bot">${reply}</div>`;
+                chat.scrollTop = chat.scrollHeight;
+            }, 1000);
+        }
     </script>
-
-    <!-- Non-critical CSS loaded after JavaScript -->
-    <style>
-        /* Rest of CSS - Loaded after critical content */
-        .header.scrolled .brand-logo { height: 35px; }
-        @media (max-width: 768px) { .brand-logo { height: 35px; } }
-
-        .menu-desktop { display: flex; gap: 2rem; }
-        .menu-link { text-decoration: none; color: var(--text); font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; font-weight: 500; position: relative; }
-        .menu-link:hover { color: var(--gold); }
-
-        .nav-icons { display: flex; gap: 1.2rem; align-items: center; color: var(--primary); }
-        .icon-btn { font-size: 1.2rem; position: relative; color: var(--primary); }
-        .cart-badge { 
-            position: absolute; top: -5px; right: -8px; background: var(--gold); color: white;
-            font-size: 0.6rem; width: 16px; height: 16px; border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        .btn-luxury {
-            padding: 1rem 3rem; border: 1px solid var(--white); color: var(--white);
-            font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase;
-            position: relative; overflow: hidden; z-index: 1; background: transparent;
-            transition: all 0.4s;
-        }
-        .btn-luxury:hover { color: var(--primary); background: var(--white); }
-
-        .size-guide { padding: 4rem 5%; background: var(--bg-light); }
-        .section-title { text-align: center; font-size: 2.2rem; margin-bottom: 1rem; color: var(--primary); }
-        .section-subtitle { text-align: center; color: var(--gray); margin-bottom: 3rem; font-size: 1rem; max-width: 600px; margin: 0 auto 3rem; }
-        .size-chart-container { max-width: 800px; margin: 0 auto; background: var(--white); border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
-        .size-chart { width: 100%; border-collapse: collapse; }
-        .size-chart th { background: var(--primary); color: var(--white); padding: 1.2rem; font-weight: 600; }
-        .size-chart td { padding: 1rem; text-align: center; border-bottom: 1px solid var(--light-gray); }
-
-        /* Measurement Tool Styles */
-        .measurement-section {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: var(--white);
-            padding: 3rem 0;
-        }
-        .measurement-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            overflow: hidden;
-        }
-        .measurement-header {
-            background: var(--primary-dark);
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        .measurement-logo h2 {
-            font-size: 1.8rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-        }
-        .measurement-logo span {
-            color: var(--gold);
-        }
-        .measurement-steps {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 15px 0;
-        }
-        .step-indicator {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-        }
-        .step-circle {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: var(--light-gray);
-            color: var(--gray);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-        }
-        .step-circle.active {
-            background: var(--gold);
-            color: white;
-        }
-        .step-text {
-            font-size: 0.75rem;
-            color: var(--gray);
-        }
-        .step-text.active {
-            color: var(--gold);
-            font-weight: 600;
-        }
-        .measurement-content {
-            display: flex;
-            flex-wrap: wrap;
-            padding: 20px;
-            gap: 20px;
-        }
-        .measurement-left, .measurement-right {
-            flex: 1;
-            min-width: 300px;
-        }
-        .measurement-panel {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        .measurement-panel-title {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--light-gray);
-        }
-        .measurement-panel-title i {
-            color: var(--primary);
-            margin-right: 10px;
-        }
-        .measurement-panel-title h3 {
-            color: var(--primary);
-            font-size: 1.2rem;
-        }
-        .camera-container {
-            width: 100%;
-            height: 250px;
-            background: #111;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 15px;
-            position: relative;
-        }
-        #measurement-video, #measurement-canvas {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .measurement-btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-        .measurement-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            flex: 1;
-            min-width: 140px;
-        }
-        .measurement-btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-        .measurement-btn-primary:hover:not(:disabled) {
-            background: var(--primary-light);
-        }
-        .measurement-btn-success {
-            background: var(--success);
-            color: white;
-        }
-        .measurement-btn-success:hover {
-            background: #218838;
-        }
-        .measurement-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .measurement-results {
-            margin-top: 15px;
-            padding: 15px;
-            background: var(--bg-light);
-            border-radius: 10px;
-            border-left: 5px solid var(--primary);
-        }
-        .measurement-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px dashed #ccc;
-        }
-        .measurement-name {
-            font-weight: 600;
-            color: var(--text);
-        }
-        .measurement-value {
-            font-weight: 700;
-            color: var(--primary);
-            font-size: 1.2rem;
-        }
-        .size-table {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .size-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px;
-            border-radius: 8px;
-            background: var(--bg-light);
-            transition: all 0.3s ease;
-        }
-        .size-row.highlighted {
-            background: var(--primary);
-            color: white;
-        }
-        .size-row.highlighted .size-label,
-        .size-row.highlighted .size-value {
-            color: white;
-        }
-        .size-label {
-            font-weight: 700;
-            color: var(--primary);
-            min-width: 40px;
-        }
-        .size-value {
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-
-        /* Products */
-        .filters { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
-        .filter-btn { 
-            padding: 0.5rem 1.5rem; border: 1px solid var(--border); border-radius: 30px;
-            font-size: 0.9rem; color: var(--gray); transition: 0.3s;
-        }
-        .filter-btn.active, .filter-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
-
-        .products-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem; max-width: 1200px; margin: 0 auto;
-        }
-        .product-card { cursor: pointer; transition: 0.3s; background: var(--white); border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
-        .product-card:hover { transform: translateY(-5px); }
-        .product-image {
-            position: relative; aspect-ratio: 3/4; overflow: hidden; margin-bottom: 1rem;
-            background: #f0f0f0; border-radius: 8px; height: 250px;
-        }
-        .product-image img { width: 100%; height: 100%; transition: 0.5s; object-fit: cover; }
-        .product-card:hover .product-image img { transform: scale(1.05); }
-        .product-badge {
-            position: absolute; top: 10px; right: 10px; background: var(--gold);
-            color: var(--white); padding: 0.4rem 0.8rem; border-radius: 20px;
-            font-size: 0.8rem; font-weight: 600;
-        }
-        .product-info { padding: 1.5rem; }
-        .product-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--primary); }
-        .product-price { font-size: 1.3rem; font-weight: 800; color: var(--primary); margin-bottom: 1rem; }
-        .add-to-cart-btn {
-            width: 100%; padding: 0.8rem; background: var(--primary); color: var(--white);
-            border: none; border-radius: 8px; font-weight: 600; cursor: pointer;
-            transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-        }
-        .add-to-cart-btn:hover:not(:disabled) { background: var(--primary-light); }
-        .add-to-cart-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        /* Modals */
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 2000;
-            display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px);
-        }
-        .modal-overlay.active { display: flex; }
-        .modal-box {
-            background: var(--white); width: 90%; max-width: 500px; padding: 2rem;
-            border-radius: 12px; position: relative; max-height: 90vh; overflow-y: auto;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2); animation: slideUp 0.3s ease;
-        }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; font-size: 1.5rem; color: var(--gray); cursor: pointer; }
-        .input-group { margin-bottom: 1rem; }
-        .input-field { 
-            width: 100%; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; 
-            font-size: 0.95rem; font-family: var(--font-main);
-        }
-        .confirm-btn {
-            background: #25D366; color: white; width: 100%; padding: 1.2rem;
-            font-weight: 600; border-radius: 8px; margin-top: 1.5rem; font-size: 1rem;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            cursor: pointer; border: none;
-        }
-        .confirm-btn:hover { background: #20bd5a; }
-
-        /* Cart */
-        .cart-sidebar {
-            position: fixed; top: 0; right: -400px; width: 400px; height: 100vh;
-            background: white; z-index: 2100; transition: right 0.3s cubic-bezier(0.7,0,0.3,1);
-            display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.1);
-        }
-        .cart-sidebar.open { right: 0; }
-        .cart-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5); z-index: 2099; display: none;
-        }
-        .cart-overlay.active { display: block; }
-        .cart-header { padding: 1.5rem; border-bottom: 1px solid var(--light-gray); display: flex; justify-content: space-between; align-items: center; }
-        .cart-title { font-size: 1.3rem; font-weight: 700; color: var(--primary); }
-        .cart-close { font-size: 1.3rem; cursor: pointer; color: var(--gray); }
-        .cart-items { flex: 1; overflow-y: auto; padding: 1.5rem; }
-        .cart-empty { text-align: center; padding: 3rem 1rem; color: var(--gray); }
-        .cart-empty i { font-size: 3rem; margin-bottom: 1rem; color: var(--light-gray); }
-        .cart-item { display: flex; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--light-gray); }
-        .cart-item-image { width: 70px; height: 90px; object-fit: cover; border-radius: 5px; }
-        .cart-item-info { flex: 1; }
-        .cart-item-name { font-weight: 600; margin-bottom: 0.3rem; font-size: 0.9rem; }
-        .cart-item-controls { display: flex; align-items: center; gap: 0.8rem; margin-top: 0.5rem; }
-        .quantity-btn {
-            width: 28px; height: 28px; border: 1px solid var(--light-gray); background: var(--white);
-            border-radius: 50%; cursor: pointer; font-weight: 600; transition: all 0.2s ease;
-        }
-        .quantity-btn:hover { border-color: var(--primary); }
-        .cart-item-quantity { font-weight: 600; min-width: 25px; text-align: center; }
-        .cart-item-price { font-weight: 700; color: var(--primary); font-size: 0.9rem; }
-        .cart-footer { padding: 1.5rem; border-top: 1px solid var(--light-gray); background: var(--bg-light); }
-        .cart-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; font-size: 1.1rem; font-weight: 700; }
-        .total-amount { color: var(--primary); font-size: 1.4rem; }
-        .checkout-btn {
-            width: 100%; padding: 1rem; background: var(--primary); color: var(--white);
-            border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.3s ease;
-        }
-        .checkout-btn:hover:not(:disabled) { background: var(--primary-light); }
-        .checkout-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        /* Toast */
-        .toast-notification {
-            position: fixed; top: 100px; right: 20px; background: var(--success); color: white;
-            padding: 1rem 1.5rem; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-            z-index: 2000; transform: translateX(150%); transition: transform 0.3s ease;
-            display: flex; align-items: center; gap: 10px; max-width: 350px;
-        }
-        .toast-notification.show { transform: translateX(0); }
-        .toast-notification.error { background: var(--error); }
-
-        /* Footer */
-        .footer {
-            background: var(--primary-dark); color: var(--white); padding: 4rem 5%; margin-top: 4rem;
-        }
-        .footer-content {
-            max-width: 1400px; margin: 0 auto; display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem;
-        }
-        .footer-section h3 { font-size: 1.2rem; margin-bottom: 1rem; color: var(--gold); }
-        .footer-links { list-style: none; }
-        .footer-links li { margin-bottom: 0.5rem; }
-        .footer-links a { color: rgba(255, 255, 255, 0.8); transition: color 0.2s ease; text-decoration: none; }
-        .footer-links a:hover { color: var(--gold); }
-        .social-links { display: flex; gap: 1rem; margin-top: 1rem; }
-        .social-link {
-            width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 255, 255, 0.1);
-            display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
-            transition: all 0.3s ease; color: white; text-decoration: none;
-        }
-        .social-link:hover { background: var(--gold); transform: translateY(-3px); }
-        .footer-bottom {
-            text-align: center; padding-top: 2rem; margin-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
-        }
-
-        /* Mobile */
-        .mobile-nav {
-            position: fixed; bottom: 0; left: 0; width: 100%; background: var(--white);
-            border-top: 1px solid var(--light-gray); padding: 1rem; z-index: 999;
-            display: none; justify-content: space-around;
-        }
-        .mobile-link {
-            display: flex; flex-direction: column; align-items: center;
-            font-size: 0.7rem; color: var(--gray); gap: 5px; text-decoration: none;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .menu-desktop { display: none; }
-            .mobile-nav { display: flex; }
-            .cart-sidebar { width: 100%; right: -100%; }
-            .modal-box { padding: 1.5rem; }
-            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-            .hero { height: 70vh; }
-            .hero h1 { font-size: 2.5rem; }
-            .measurement-content { flex-direction: column; }
-            .measurement-btn { width: 100%; }
-            .camera-container { height: 200px; }
-        }
-
-        @media (max-width: 576px) {
-            .products-grid { grid-template-columns: 1fr; }
-            .filters { gap: 0.5rem; }
-            .filter-btn { padding: 0.5rem 1rem; font-size: 0.8rem; }
-        }
-    </style>
 </body>
 </html>
